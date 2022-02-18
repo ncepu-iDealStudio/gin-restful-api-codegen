@@ -1,0 +1,4 @@
+genCode:
+  templates_path: "assert/templates/go/tem_go_project"
+  dict_path: "assert/templates/go/dict"
+  result_path: "assert/result/sso_center"

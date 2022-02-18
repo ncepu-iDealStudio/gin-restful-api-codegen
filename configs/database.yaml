@@ -1,0 +1,6 @@
+mysql:
+  host : "39.99.146.111"
+  port : "3306"
+  username : "root"
+  password : "@dmin_!deal"
+  database : "OpenFilePlatform"

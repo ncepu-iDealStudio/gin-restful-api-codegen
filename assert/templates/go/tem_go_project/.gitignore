@@ -1,0 +1,4 @@
+.idea/
+cmd/gormt/err/
+logs/
+

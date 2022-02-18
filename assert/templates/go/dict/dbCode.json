@@ -1,0 +1,31 @@
+{
+  "static_dict": {
+    "project_name": "sso_center"
+  },
+  "models": {
+    "filepath": "assert/result/sso_center/internal/models/mysqlModel",
+    "file_header": "// coding: utf-8\n// @Author : lryself\n// @Software: GoLand\n\npackage mysqlModel\n\n",
+    "struct": {
+      "table_header": "type {{StructName}} struct {\n",
+      "column": "\t{{ColumnName}} {{GoType}} `gorm:\"column:{{ColumnName}};{{ColumnKey}}{{ColumnType}}{{ColumnNull}}{{ColumnDefault}}\" json:\"{{ColumnName}}\" form:\"{{ColumnName}}\"`\n",
+      "table_footer": "}\n"
+    },
+    "methods": {
+      "table_name": "func (m *{{StructName}}) TableName() string {\n\treturn \"{{TableName}}\"\n}\n",
+      "get_set": "func (m *{{StructName}}) Get{{ColumnName}}() {{GoType}} {\n\treturn m.{{ColumnName}}\n}\nfunc (m *{{StructName}}) Set{{ColumnName}}({{ColumnName}} {{GoType}}) {\n\tm.{{ColumnName}} = {{ColumnName}}\n}\n"
+    }
+  },
+  "dao": {
+    "filepath": "assert/result/sso_center/internal/dao",
+    "file_header": "// coding: utf-8\n// @Author : lryself\n// @Software: GoLand\n\npackage dao\n\nimport (\n\t\"{{project_name}}/internal/globals/database\"\n\t\"{{project_name}}/internal/models/mysqlModel\"\n)\n\n",
+    "struct": "type {{StructName}}Dao struct {\n\tmysqlModel.{{StructName}}\n}\n\n",
+    "methods":{
+      "CRUD": "func (m *{{StructName}}Dao) Get() error {\n\tmysqlManager := database.GetMysqlClient()\n\treturn mysqlManager.Where(map[string]interface{}{\n\t\t\"IsDeleted\": 0,\n\t}).Where(m).Take(m).Error\n}\n\nfunc (m *{{StructName}}Dao) Add() error {\n\tmysqlManager := database.GetMysqlClient()\n\treturn mysqlManager.Create(&m).Error\n}\n\nfunc (m *{{StructName}}Dao) Update(args map[string]interface{}) error {\n\tmysqlManager := database.GetMysqlClient()\n\terr := m.Get()\n\tif err != nil {\n\t\treturn err\n\t}\n\treturn mysqlManager.Model(&m).Updates(args).Error\n}\n\nfunc (m *{{StructName}}Dao) Delete() error {\n\tmysqlManager := database.GetMysqlClient()\n\terr := m.Get()\n\tif err != nil {\n\t\treturn err\n\t}\n\treturn mysqlManager.Model(&m).Updates(map[string]interface{}{\n\t\t\"IsDeleted\": 1,\n\t}).Error\n}"
+    }
+  },
+  "services": {
+    "filepath": "assert/result/sso_center/internal/services",
+    "file_header": "// coding: utf-8\n// @Author : lryself\n// @Software: GoLand\n\npackage services\n\nimport \"{{project_name}}/internal/dao\"\n\n",
+    "struct": "type {{StructName}}Service struct {\n\tdao.{{StructName}}Dao\n}"
+  }
+}

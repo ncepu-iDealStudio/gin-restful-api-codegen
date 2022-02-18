@@ -1,0 +1,6 @@
+{
+  "include": {
+    "tem_go_project": "sso_center"
+  },
+  "ignore_dir": ["\\..*"]
+}
