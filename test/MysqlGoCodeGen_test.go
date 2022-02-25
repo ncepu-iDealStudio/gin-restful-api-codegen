@@ -33,4 +33,12 @@ func TestGenCode(t *testing.T) {
 	if err != nil {
 		fmt.Println(err)
 	}
+	err = gencode.GenApiCode(dbModel)
+	if err != nil {
+		fmt.Println(err)
+	}
+	err = gencode.GenRouterCode(dbModel)
+	if err != nil {
+		fmt.Println(err)
+	}
 }

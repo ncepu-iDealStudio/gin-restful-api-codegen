@@ -9,6 +9,7 @@ import (
 	"LRYGoCodeGen/core/globals/config"
 	"LRYGoCodeGen/core/model/genmysql"
 	"LRYGoCodeGen/core/utils"
+	"LRYGoCodeGen/core/utils/str"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -18,17 +19,18 @@ import (
 	"strings"
 )
 
+type structModel struct {
+	Header string `json:"header"`
+	Row    string `json:"row"`
+	Footer string `json:"footer"`
+}
 type dbCode struct {
 	StaticDict map[string]string `json:"static_dict"`
 	Models     struct {
-		Filepath   string `json:"filepath,omitempty"`
-		FileHeader string `json:"file_header,omitempty"`
-		Struct     struct {
-			TableHeader string `json:"table_header,omitempty"`
-			Column      string `json:"column,omitempty"`
-			TableFooter string `json:"table_footer,omitempty"`
-		} `json:"struct"`
-		Methods struct {
+		Filepath   string      `json:"filepath,omitempty"`
+		FileHeader string      `json:"file_header,omitempty"`
+		Struct     structModel `json:"struct"`
+		Methods    struct {
 			TableName string `json:"table_name,omitempty"`
 			GetSet    string `json:"get_set,omitempty"`
 		} `json:"methods"`
@@ -38,7 +40,7 @@ type dbCode struct {
 		FileHeader string `json:"file_header,omitempty"`
 		Struct     string `json:"struct"`
 		Methods    struct {
-			CRUD string `json:"CRUD"`
+			CRUD string `json:"crud"`
 		} `json:"methods"`
 	} `json:"dao"`
 	Service struct {
@@ -46,6 +48,18 @@ type dbCode struct {
 		FileHeader string `json:"file_header,omitempty"`
 		Struct     string `json:"struct"`
 	} `json:"services"`
+	Apis struct {
+		Filepath   string `json:"filepath,omitempty"`
+		FileHeader string `json:"file_header,omitempty"`
+		Methods    struct {
+			CRUD string `json:"crud"`
+		} `json:"methods"`
+	} `json:"apis"`
+	Routers struct {
+		Filepath   string      `json:"filepath,omitempty"`
+		FileHeader string      `json:"file_header,omitempty"`
+		Struct     structModel `json:"struct"`
+	} `json:"routers"`
 }
 
 type typeDict struct {
@@ -78,10 +92,11 @@ func GenModelsCode(tableInfo *genmysql.DataBaseModel) error {
 	//构建替换字典
 	var kwargs map[string]string
 	kwargs = dbCodeModel.StaticDict
+	fileDir := replaceString(kwargs, dbCodeModel.Models.Filepath)
 
 	//判断结果文件夹存在
-	if !utils.PathExists(dbCodeModel.Models.Filepath) {
-		err = os.Mkdir(dbCodeModel.Models.Filepath, os.ModePerm)
+	if !utils.PathExists(fileDir) {
+		err = os.Mkdir(fileDir, os.ModePerm)
 		if err != nil {
 			return err
 		}
@@ -93,7 +108,7 @@ func GenModelsCode(tableInfo *genmysql.DataBaseModel) error {
 		timeFlag = false
 		s := ""
 
-		s = s + replaceString(kwargs, dbCodeModel.Models.Struct.TableHeader)
+		s = s + replaceString(kwargs, dbCodeModel.Models.Struct.Header)
 
 		for _, column := range table.Columns {
 			goType := getGoType(column.Type, typeDictModel)
@@ -106,10 +121,10 @@ func GenModelsCode(tableInfo *genmysql.DataBaseModel) error {
 			kwargs["ColumnType"] = tagColumnType(column.Type)
 			kwargs["ColumnNull"] = tagNull(column.Null)
 			kwargs["ColumnDefault"] = tagDefault(column.Default)
-			s = s + replaceString(kwargs, dbCodeModel.Models.Struct.Column)
+			s = s + replaceString(kwargs, dbCodeModel.Models.Struct.Row)
 		}
 
-		s = s + dbCodeModel.Models.Struct.TableFooter
+		s = s + dbCodeModel.Models.Struct.Footer
 
 		kwargs["TableName"] = table.TableName
 		s = s + replaceString(kwargs, dbCodeModel.Models.Methods.TableName)
@@ -123,7 +138,7 @@ func GenModelsCode(tableInfo *genmysql.DataBaseModel) error {
 		} else {
 			s = dbCodeModel.Models.FileHeader + s
 		}
-		err = ioutil.WriteFile(filepath.Join(dbCodeModel.Models.Filepath, fmt.Sprintf("%s.go", getTableName(table.TableName))), []byte(s), os.ModePerm)
+		err = ioutil.WriteFile(filepath.Join(fileDir, fmt.Sprintf("%s.go", getTableName(table.TableName))), []byte(s), os.ModePerm)
 		if err != nil {
 			return err
 		}
@@ -156,10 +171,11 @@ func GenDaoCode(tableInfo *genmysql.DataBaseModel) error {
 	//构建替换字典
 	var kwargs map[string]string
 	kwargs = dbCodeModel.StaticDict
+	fileDir := replaceString(kwargs, dbCodeModel.Dao.Filepath)
 
 	//判断结果文件夹存在
-	if !utils.PathExists(dbCodeModel.Dao.Filepath) {
-		err = os.Mkdir(dbCodeModel.Dao.Filepath, os.ModePerm)
+	if !utils.PathExists(fileDir) {
+		err = os.Mkdir(fileDir, os.ModePerm)
 		if err != nil {
 			return err
 		}
@@ -174,7 +190,7 @@ func GenDaoCode(tableInfo *genmysql.DataBaseModel) error {
 		s = s + replaceString(kwargs, dbCodeModel.Dao.Methods.CRUD)
 
 		s = replaceString(kwargs, dbCodeModel.Dao.FileHeader) + s
-		err = ioutil.WriteFile(filepath.Join(dbCodeModel.Dao.Filepath, fmt.Sprintf("%s.go", getTableName(table.TableName))), []byte(s), os.ModePerm)
+		err = ioutil.WriteFile(filepath.Join(fileDir, fmt.Sprintf("%s.go", getTableName(table.TableName))), []byte(s), os.ModePerm)
 		if err != nil {
 			return err
 		}
@@ -207,10 +223,11 @@ func GenServicesCode(tableInfo *genmysql.DataBaseModel) error {
 	//构建替换字典
 	var kwargs map[string]string
 	kwargs = dbCodeModel.StaticDict
+	fileDir := replaceString(kwargs, dbCodeModel.Service.Filepath)
 
 	//判断结果文件夹存在
-	if !utils.PathExists(dbCodeModel.Dao.Filepath) {
-		err = os.Mkdir(dbCodeModel.Dao.Filepath, os.ModePerm)
+	if !utils.PathExists(fileDir) {
+		err = os.Mkdir(fileDir, os.ModePerm)
 		if err != nil {
 			return err
 		}
@@ -223,11 +240,109 @@ func GenServicesCode(tableInfo *genmysql.DataBaseModel) error {
 		s = s + replaceString(kwargs, dbCodeModel.Service.Struct)
 
 		s = replaceString(kwargs, dbCodeModel.Service.FileHeader) + s
-		err = ioutil.WriteFile(filepath.Join(dbCodeModel.Service.Filepath, fmt.Sprintf("%s.go", getTableName(table.TableName))), []byte(s), os.ModePerm)
+		err = ioutil.WriteFile(filepath.Join(fileDir, fmt.Sprintf("%s.go", getTableName(table.TableName))), []byte(s), os.ModePerm)
 		if err != nil {
 			return err
 		}
 	}
+	return nil
+}
+
+func GenApiCode(tableInfo *genmysql.DataBaseModel) error {
+	// 读取配置文件
+	userConfig, err := config.GetUserConfig()
+	if err != nil {
+		return err
+	}
+	dictDBCode, err := ioutil.ReadFile(filepath.Join(userConfig.GenCodeConfig.DictPath, "dbCode.json"))
+	if err != nil {
+		return err
+	}
+	var dbCodeModel dbCode
+	err = json.Unmarshal(dictDBCode, &dbCodeModel)
+
+	dictTypeDict, err := ioutil.ReadFile(filepath.Join(userConfig.GenCodeConfig.DictPath, "typeDict.json"))
+	if err != nil {
+		return err
+	}
+	var typeDictModel typeDict
+	err = json.Unmarshal(dictTypeDict, &typeDictModel)
+	if err != nil {
+		return err
+	}
+	//构建替换字典
+	var kwargs map[string]string
+	kwargs = dbCodeModel.StaticDict
+
+	fileDir := replaceString(kwargs, dbCodeModel.Apis.Filepath)
+	//判断结果文件夹存在
+	if !utils.PathExists(fileDir) {
+		err = os.Mkdir(fileDir, os.ModePerm)
+		if err != nil {
+			return err
+		}
+	}
+	//生成代码
+	for _, table := range tableInfo.Tables {
+		kwargs["StructName"] = getTableName(table.TableName)
+		s := ""
+
+		s = s + replaceString(kwargs, dbCodeModel.Apis.Methods.CRUD)
+
+		s = replaceString(kwargs, dbCodeModel.Apis.FileHeader) + s
+		err = ioutil.WriteFile(filepath.Join(fileDir, fmt.Sprintf("%sResource.go", getTableName(table.TableName))), []byte(s), os.ModePerm)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func GenRouterCode(tableInfo *genmysql.DataBaseModel) error {
+	// 读取配置文件
+	userConfig, err := config.GetUserConfig()
+	if err != nil {
+		return err
+	}
+	dictDBCode, err := ioutil.ReadFile(filepath.Join(userConfig.GenCodeConfig.DictPath, "dbCode.json"))
+	if err != nil {
+		return err
+	}
+	var dbCodeModel dbCode
+	err = json.Unmarshal(dictDBCode, &dbCodeModel)
+
+	dictTypeDict, err := ioutil.ReadFile(filepath.Join(userConfig.GenCodeConfig.DictPath, "typeDict.json"))
+	if err != nil {
+		return err
+	}
+	var typeDictModel typeDict
+	err = json.Unmarshal(dictTypeDict, &typeDictModel)
+	if err != nil {
+		return err
+	}
+	//构建替换字典
+	var kwargs map[string]string
+	kwargs = dbCodeModel.StaticDict
+
+	fileDir := replaceString(kwargs, dbCodeModel.Routers.Filepath)
+	//判断结果文件夹存在
+	if !utils.PathExists(fileDir) {
+		err = os.Mkdir(fileDir, os.ModePerm)
+		if err != nil {
+			return err
+		}
+	}
+	//生成代码
+	s := replaceString(kwargs, dbCodeModel.Routers.FileHeader)
+	structStr := replaceString(kwargs, dbCodeModel.Routers.Struct.Header)
+	for _, table := range tableInfo.Tables {
+		kwargs["PackageName"] = str.LineToLowCamel(table.TableName)
+		kwargs["StructName"] = str.LineToUpCamel(table.TableName)
+		structStr += replaceString(kwargs, dbCodeModel.Routers.Struct.Row)
+	}
+	structStr += replaceString(kwargs, dbCodeModel.Routers.Struct.Footer)
+	s = s + structStr
+	err = ioutil.WriteFile(filepath.Join(fileDir, "urls.go"), []byte(s), os.ModePerm)
 	return nil
 }
 
