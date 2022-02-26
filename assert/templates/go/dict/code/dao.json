@@ -1,0 +1,19 @@
+{
+  "static_dict": {
+    "project_name": "test_project",
+    "father_path": "result"
+  },
+  "filepath": "{{father_path}}/{{project_name}}/internal/dao",
+  "file_header": "// coding: utf-8\n// @Author : lryself\n// @Software: GoLand\n\npackage dao",
+  "import": {
+    "header": "import (\n\t\"{{project_name}}/internal/globals/database\"\n\t\"{{project_name}}/internal/models/mysqlModel\"",
+    "footer": ")"
+  },
+  "struct": {
+    "header": "type {{StructName}}Dao struct {\n\tmysqlModel.{{StructName}}",
+    "footer": "}"
+  },
+  "methods":{
+    "crud": "func (m *{{StructName}}Dao) Get() error {\n\tmysqlManager := database.GetMysqlClient()\n\treturn mysqlManager.Where(map[string]interface{}{\n\t\t\"IsDeleted\": 0,\n\t}).Where(m).Take(m).Error\n}\n\nfunc (m *{{StructName}}Dao) Add() error {\n\tmysqlManager := database.GetMysqlClient()\n\treturn mysqlManager.Create(&m).Error\n}\n\nfunc (m *{{StructName}}Dao) Update(args map[string]interface{}) error {\n\tmysqlManager := database.GetMysqlClient()\n\terr := m.Get()\n\tif err != nil {\n\t\treturn err\n\t}\n\treturn mysqlManager.Model(&m).Updates(args).Error\n}\n\nfunc (m *{{StructName}}Dao) Delete() error {\n\tmysqlManager := database.GetMysqlClient()\n\terr := m.Get()\n\tif err != nil {\n\t\treturn err\n\t}\n\treturn mysqlManager.Model(&m).Updates(map[string]interface{}{\n\t\t\"IsDeleted\": 1,\n\t}).Error\n}"
+  }
+}

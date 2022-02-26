@@ -15,6 +15,7 @@ type UserConfig struct {
 }
 type GenCodeConfig struct {
 	TemplatesPath string `yaml:"templates_path"`
+	CodeModelPath string `yaml:"code_model_path"`
 	DictPath      string `yaml:"dict_path"`
 	ResultPath    string `yaml:"result_path"`
 }

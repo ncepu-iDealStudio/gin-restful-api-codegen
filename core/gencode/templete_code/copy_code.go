@@ -3,10 +3,10 @@
 // @Date : 2022/2/14 20:05
 // @Software: GoLand
 
-package gencode
+package templete_code
 
 import (
-	"LRYGoCodeGen/core/gencode/model"
+	"LRYGoCodeGen/core/gencode/templete_code/model"
 	"LRYGoCodeGen/core/globals/config"
 	"encoding/json"
 	"io/ioutil"

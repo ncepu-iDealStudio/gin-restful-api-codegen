@@ -1,0 +1,17 @@
+{
+  "static_dict": {
+    "project_name": "test_project",
+    "father_path": "result"
+  },
+  "filepath": "{{father_path}}/{{project_name}}/internal/models/mysqlModel",
+  "file_header": "// coding: utf-8\n// @Author : lryself\n// @Software: GoLand\n\npackage mysqlModel",
+  "struct": {
+    "header": "type {{StructName}} struct {",
+    "row": "\t{{ColumnName}} {{GoType}} `gorm:\"column:{{ColumnName}};{{ColumnKey}}{{ColumnType}}{{ColumnNull}}{{ColumnDefault}}\" json:\"{{ColumnName}}\" form:\"{{ColumnName}}\"`",
+    "footer": "}"
+  },
+  "methods": {
+    "table_name": "func (m *{{StructName}}) TableName() string {\n\treturn \"{{TableName}}\"\n}",
+    "get_set": "func (m *{{StructName}}) Get{{ColumnName}}() {{GoType}} {\n\treturn m.{{ColumnName}}\n}\nfunc (m *{{StructName}}) Set{{ColumnName}}({{ColumnName}} {{GoType}}) {\n\tm.{{ColumnName}} = {{ColumnName}}\n}"
+  }
+}
