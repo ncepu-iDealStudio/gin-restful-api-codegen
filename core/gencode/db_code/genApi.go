@@ -8,6 +8,7 @@ package db_code
 import (
 	"LRYGoCodeGen/core/model/genmysql"
 	"LRYGoCodeGen/core/utils"
+	"LRYGoCodeGen/core/utils/str"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -30,12 +31,21 @@ func GenApiCode(tableInfo *genmysql.DataBaseModel) error {
 	}
 	//生成代码
 	for _, table := range tableInfo.Tables {
-		kwargs["StructName"] = getTableName(table.TableName)
+		kwargs["PackageName"] = str.LineToLowCamel(table.TableName)
+		kwargs["StructName"] = str.LineToUpCamel(table.TableName)
 		var model GenCodeModel
 		model.Header = replaceString(kwargs, dbCode.Code.FileHeader)
 		model.Import = []string{replaceString(kwargs, dbCode.Code.Import.Header), replaceString(kwargs, dbCode.Code.Import.Footer)}
 		model.Methods = []string{replaceString(kwargs, dbCode.Code.Methods["crud"])}
-		err = ioutil.WriteFile(filepath.Join(fileDir, fmt.Sprintf("%sResource.go", getTableName(table.TableName))), []byte(model.String()), os.ModePerm)
+		if !utils.PathExists(filepath.Join(fileDir, str.LineToLowCamel(table.TableName))) {
+			err = os.Mkdir(filepath.Join(fileDir, str.LineToLowCamel(table.TableName)), os.ModePerm)
+			if err != nil {
+				return err
+			}
+		}
+		err = ioutil.WriteFile(
+			filepath.Join(fileDir, str.LineToLowCamel(table.TableName), fmt.Sprintf("%sResource.go", getTableName(table.TableName))),
+			[]byte(model.String()), os.ModePerm)
 		if err != nil {
 			return err
 		}

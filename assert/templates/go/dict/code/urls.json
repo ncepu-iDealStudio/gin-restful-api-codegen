@@ -1,0 +1,18 @@
+{
+  "static_dict": {
+    "project_name": "test_project",
+    "father_path": "result"
+  },
+  "filepath": "{{father_path}}/{{project_name}}/internal/routers/api1_0",
+  "file_header": "// coding: utf-8\n// @Author : lryself\n// @Software: GoLand\n\npackage api1_0\n",
+  "import": {
+    "header": "import (\n\t\"github.com/gin-gonic/gin\"\n\t\"test_project/internal/apis/api1_0\"",
+    "row": "\t\"{{project_name}}/internal/routers/api1_0/{{PackageName}}\"",
+    "footer": ")"
+  },
+  "struct": {
+    "header": "var (\n\tApi *gin.RouterGroup\n)\n\nfunc InitAPI1_0Router(engine *gin.Engine) {\n\tApi = engine.Group(\"api1_0\")\n\tApi.Any(\"version\", api1_0.GetVersion)",
+    "row": "\t{{PackageName}}.Init{{StructName}}RouterGroup(Api)",
+    "footer": "}"
+  }
+}

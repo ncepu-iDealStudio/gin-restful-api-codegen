@@ -15,11 +15,19 @@ import (
 )
 
 func GenRouterCode(tableInfo *genmysql.DataBaseModel) error {
-	var dbCode DBCode
-	err := dbCode.Init("router.json")
+	var dbcodeRouter DBCode
+	var dbcodeUrl DBCode
+	err := dbcodeRouter.Init("router.json")
+	if err != nil {
+		return err
+	}
+	err = dbcodeUrl.Init("urls.json")
+	if err != nil {
+		return err
+	}
 	//构建替换字典
-	kwargs := dbCode.Code.StaticDict
-	fileDir := replaceString(kwargs, dbCode.Code.Filepath)
+	kwargs := dbcodeRouter.Code.StaticDict
+	fileDir := replaceString(kwargs, dbcodeRouter.Code.Filepath)
 
 	//判断结果文件夹存在
 	if !utils.PathExists(fileDir) {
@@ -28,17 +36,49 @@ func GenRouterCode(tableInfo *genmysql.DataBaseModel) error {
 			return err
 		}
 	}
+	var modelUrl GenCodeModel
+	modelUrl.Header = replaceString(kwargs, dbcodeUrl.Code.FileHeader)
+	modelUrl.Import = []string{replaceString(kwargs, dbcodeUrl.Code.Import.Header)}
+	modelUrl.Struct = []string{replaceString(kwargs, dbcodeUrl.Code.Struct.Header)}
 	//生成代码
-	var model GenCodeModel
-	model.Header = replaceString(kwargs, dbCode.Code.FileHeader)
-	model.Import = []string{replaceString(kwargs, dbCode.Code.Import.Header), replaceString(kwargs, dbCode.Code.Import.Footer)}
-	model.Struct = []string{replaceString(kwargs, dbCode.Code.Struct.Header)}
 	for _, table := range tableInfo.Tables {
 		kwargs["PackageName"] = str.LineToLowCamel(table.TableName)
 		kwargs["StructName"] = str.LineToUpCamel(table.TableName)
-		model.Struct = append(model.Struct, replaceString(kwargs, dbCode.Code.Struct.Row))
+		var modelRouter GenCodeModel
+		modelRouter.Header = replaceString(kwargs, dbcodeRouter.Code.FileHeader)
+
+		modelRouter.Import = []string{replaceString(kwargs, dbcodeRouter.Code.Import.Header)}
+		modelRouter.Import = append(modelRouter.Import, replaceString(kwargs, dbcodeRouter.Code.Import.Row))
+		modelRouter.Import = append(modelRouter.Import, replaceString(kwargs, dbcodeRouter.Code.Import.Footer))
+
+		modelRouter.Struct = []string{replaceString(kwargs, dbcodeRouter.Code.Struct.Header)}
+		modelRouter.Struct = append(modelRouter.Struct, replaceString(kwargs, dbcodeRouter.Code.Struct.Row))
+		modelRouter.Struct = append(modelRouter.Struct, replaceString(kwargs, dbcodeRouter.Code.Struct.Footer))
+
+		if !utils.PathExists(filepath.Join(fileDir, str.LineToLowCamel(table.TableName))) {
+			err = os.Mkdir(filepath.Join(fileDir, str.LineToLowCamel(table.TableName)), os.ModePerm)
+			if err != nil {
+				return err
+			}
+		}
+		if err != nil {
+			return err
+		}
+		err = ioutil.WriteFile(filepath.Join(fileDir, str.LineToLowCamel(table.TableName), "urls.go"), []byte(modelRouter.String()), os.ModePerm)
+		if err != nil {
+			return err
+		}
+
+		modelUrl.Import = append(modelUrl.Import, replaceString(kwargs, dbcodeUrl.Code.Import.Row))
+		modelUrl.Struct = append(modelUrl.Struct, replaceString(kwargs, dbcodeUrl.Code.Struct.Row))
 	}
-	model.Struct = append(model.Struct, replaceString(kwargs, dbCode.Code.Struct.Footer))
-	err = ioutil.WriteFile(filepath.Join(fileDir, "urls.go"), []byte(model.String()), os.ModePerm)
+
+	modelUrl.Import = append(modelUrl.Import, replaceString(kwargs, dbcodeUrl.Code.Import.Footer))
+	modelUrl.Struct = append(modelUrl.Struct, replaceString(kwargs, dbcodeUrl.Code.Struct.Footer))
+	err = ioutil.WriteFile(filepath.Join(fileDir, "urls.go"), []byte(modelUrl.String()), os.ModePerm)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }

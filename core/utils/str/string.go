@@ -15,6 +15,6 @@ func LineToUpCamel(s string) string {
 
 func LineToLowCamel(s string) string {
 	s = LineToUpCamel(s)
-	s = strings.ToUpper(string([]rune(s)[0])) + string([]rune(s)[1:])
+	s = strings.ToLower(string([]rune(s)[0])) + string([]rune(s)[1:])
 	return s
 }

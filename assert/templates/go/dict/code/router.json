@@ -3,15 +3,16 @@
     "project_name": "test_project",
     "father_path": "result"
   },
-  "filepath": "{{father_path}}/{{project_name}}/internal/routers/api1_0/crud",
-  "file_header": "// coding: utf-8\n// @Author : lryself\n// @Software: GoLand\n\npackage crud",
+  "filepath": "{{father_path}}/{{project_name}}/internal/routers/api1_0",
+  "file_header": "// coding: utf-8\n// @Author : lryself\n// @Software: GoLand\n\npackage {{PackageName}}\n",
   "import": {
-    "header": "import (\n\t\"github.com/gin-gonic/gin\"\n\t\"{{project_name}}/internal/apis/crudApis\"",
+    "header": "import (\n\t\"github.com/gin-gonic/gin\"",
+    "row": "\t\"{{project_name}}/internal/apis/api1_0/{{PackageName}}\"",
     "footer": ")"
   },
   "struct": {
-    "header": "var (\n\tApi *gin.RouterGroup\n)\n\nfunc InitCRUDRouterGroup(engine *gin.RouterGroup) {\n\tApi = engine.Group(\"crud\")",
-    "row": "\tApi.Any(\"{{PackageName}}\", crudApis.{{StructName}}Api)",
+    "header": "var (\n\tApi *gin.RouterGroup\n)\n\nfunc Init{{StructName}}RouterGroup(engine *gin.RouterGroup) {\n\tApi = engine.Group(\"{{PackageName}}\")",
+    "row": "\tApi.Any(\"\", {{PackageName}}.{{StructName}}Api)",
     "footer": "}"
   }
 }
