@@ -6,17 +6,17 @@
 package snowflake
 
 import (
+	logs "gitee.com/lryself/go-utils/loggers"
 	"gitee.com/lryself/go-utils/snowflake"
 	"github.com/spf13/viper"
 	"strconv"
 	"sync"
-	"tem_go_project/internal/globals"
 )
 
 var (
 	worker     *snowflake.Worker
 	workerOnce sync.Once
-	log        = globals.GetLogger()
+	log        = logs.GetLogger()
 )
 
 func GetSnowflakeID() string {

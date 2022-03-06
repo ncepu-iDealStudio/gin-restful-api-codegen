@@ -1,6 +1,0 @@
-mysql:
-  host : "139.9.128.8"
-  port : "3306"
-  username : "root"
-  password : "idealwifi@2021"
-  database : "innovate-platform"

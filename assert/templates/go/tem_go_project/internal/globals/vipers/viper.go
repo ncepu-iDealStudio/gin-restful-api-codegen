@@ -6,10 +6,10 @@
 package vipers
 
 import (
+	logs "gitee.com/lryself/go-utils/loggers"
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
 	"sync"
-	"tem_go_project/internal/utils/logs"
 )
 
 var (

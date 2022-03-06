@@ -6,8 +6,8 @@
 package rsa
 
 import (
+	"gitee.com/lryself/go-utils/rsa"
 	"github.com/spf13/viper"
-	"tem_go_project/internal/utils/rsa"
 )
 
 func GetRSAHelper() rsa.RSA {

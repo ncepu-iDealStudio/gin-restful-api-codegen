@@ -3,8 +3,8 @@ package main
 import (
 	"encoding/gob"
 	"fmt"
+	logs "gitee.com/lryself/go-utils/loggers"
 	"github.com/spf13/viper"
-	"tem_go_project/internal/globals"
 	"tem_go_project/internal/settings"
 	"time"
 )
@@ -18,7 +18,8 @@ func main() {
 		fmt.Println("配置文件加载出错！", err)
 		return
 	}
-	var log = globals.GetLogger()
+	logs.InitLogger(viper.GetString("log.type"))
+	var log = logs.GetLogger()
 
 	//初始化数据库（mysql、redis）
 	err = settings.InitDatabase()

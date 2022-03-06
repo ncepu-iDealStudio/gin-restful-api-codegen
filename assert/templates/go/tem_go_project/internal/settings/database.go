@@ -6,13 +6,13 @@
 package settings
 
 import (
+	logs "gitee.com/lryself/go-utils/loggers"
 	"github.com/spf13/viper"
-	"tem_go_project/internal/globals"
 	"tem_go_project/internal/globals/database"
 )
 
 func InitDatabase() (err error) {
-	var log = globals.GetLogger()
+	var log = logs.GetLogger()
 	if viper.GetBool("system.UseMysql") {
 		err = database.InitMysqlClient()
 		if err != nil {

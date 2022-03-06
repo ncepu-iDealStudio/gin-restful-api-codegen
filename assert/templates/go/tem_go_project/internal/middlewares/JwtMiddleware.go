@@ -6,12 +6,13 @@
 package middlewares
 
 import (
+	logs "gitee.com/lryself/go-utils/loggers"
 	"github.com/gin-gonic/gin"
+	"github.com/spf13/viper"
 	"net/http"
 	"tem_go_project/internal/globals/codes"
+	"tem_go_project/internal/globals/jwt"
 	"tem_go_project/internal/models/ginModels"
-	"tem_go_project/internal/utils/jwt"
-	"tem_go_project/internal/utils/logs"
 )
 
 var log = logs.GetLogger()
@@ -35,7 +36,7 @@ func TokenRequire() gin.HandlerFunc {
 
 		//token验证
 		token := c.Request.Header.Get("Token")
-		jwtChaim, err := jwt.VerifyToken(token)
+		jwtChaim, err := jwt.VerifyToken(token, []byte(viper.GetString("system.Secret")))
 		if err != nil {
 			log.Errorln(err)
 			c.JSON(http.StatusOK, gin.H{
@@ -96,6 +97,7 @@ func TokenRequire() gin.HandlerFunc {
 		//加载用户信息到上下文
 
 		var User ginModels.UserModel
+
 		User.UserID = jwtChaim.UserID
 		User.IsPlatUser = jwtChaim.IsPlatUser
 		User.IsAdmin = jwtChaim.IsAdmin

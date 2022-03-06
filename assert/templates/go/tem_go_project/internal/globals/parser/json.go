@@ -3,7 +3,7 @@
 // @Date : 2022/1/17 10:43
 // @Software: GoLand
 
-package responseParser
+package parser
 
 import (
 	"errors"
@@ -37,6 +37,9 @@ func JsonParameterIllegal(c *gin.Context, msg string, err error) {
 func JsonDataError(c *gin.Context, msg string, err error) {
 	if msg == "" {
 		msg = "数据错误!"
+	}
+	if err == nil {
+		err = errors.New(msg)
 	}
 	c.JSON(http.StatusOK, gin.H{
 		"code":    codes.DataError,
