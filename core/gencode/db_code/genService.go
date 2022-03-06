@@ -35,6 +35,10 @@ func GenServicesCode(tableInfo *genmysql.DataBaseModel) error {
 		model.Header = replaceString(kwargs, dbCode.Code.FileHeader)
 		model.Import = []string{replaceString(kwargs, dbCode.Code.Import.Header), replaceString(kwargs, dbCode.Code.Import.Footer)}
 		model.Struct = []string{replaceString(kwargs, dbCode.Code.Struct.Header), replaceString(kwargs, dbCode.Code.Struct.Footer)}
+		model.Methods = []string{}
+		for _, m := range dbCode.Code.Methods {
+			model.Methods = append(model.Methods, replaceString(kwargs, m))
+		}
 		err = ioutil.WriteFile(filepath.Join(fileDir, fmt.Sprintf("%s.go", getTableName(table.TableName))), []byte(model.String()), os.ModePerm)
 		if err != nil {
 			return err

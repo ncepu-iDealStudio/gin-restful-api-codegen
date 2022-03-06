@@ -1,6 +1,6 @@
 {
   "static_dict": {
-    "project_name": "test_project",
+    "project_name": "usercenter-service",
     "father_path": "result"
   },
   "filepath": "{{father_path}}/{{project_name}}/internal/models/mysqlModel",

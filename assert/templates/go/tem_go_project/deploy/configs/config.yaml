@@ -24,14 +24,14 @@ system:
   DataCenterID: 00001
   #  fs本地文件系统路径
   FsPath: fs
-  #  部署服务器ip
+#  部署服务器ip
   SysIP: 0.0.0.0
-  #  部署服务器端口
+#  部署服务器端口
   SysPort: 8000
-  #  使用mysql
+#  使用mysql
   UseMysql: true
   #  使用redis
-  UseRedis: false
+  UseRedis: true
 remote:
   #  ES路由
   ESUrl: http://192.168.41.100:9200

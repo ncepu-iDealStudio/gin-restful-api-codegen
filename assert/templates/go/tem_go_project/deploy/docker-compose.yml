@@ -9,8 +9,8 @@ services:
 #    container_name: tem_go_project
     restart: always
     volumes:
-      - /docker/tem_go_project/configs:/apps/configs
-      - /docker/tem_go_project/logs:/apps/logs
+      - /docker/deploy/tem_go_project/configs:/apps/configs
+      - /docker/deploy/tem_go_project/logs:/apps/logs
     ports:
       - "8000:8000"
     command:

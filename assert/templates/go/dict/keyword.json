@@ -1,6 +1,6 @@
 {
   "include": {
-    "tem_go_project": "test_project"
+    "tem_go_project": "usercenter-service"
   },
   "ignore_dir": ["\\..*"]
 }

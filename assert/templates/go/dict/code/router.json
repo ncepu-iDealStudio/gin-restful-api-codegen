@@ -1,6 +1,6 @@
 {
   "static_dict": {
-    "project_name": "test_project",
+    "project_name": "usercenter-service",
     "father_path": "result"
   },
   "filepath": "{{father_path}}/{{project_name}}/internal/routers/api1_0",
@@ -12,7 +12,7 @@
   },
   "struct": {
     "header": "var (\n\tApi *gin.RouterGroup\n)\n\nfunc Init{{StructName}}RouterGroup(engine *gin.RouterGroup) {\n\tApi = engine.Group(\"{{PackageName}}\")",
-    "row": "\tApi.Any(\"\", {{PackageName}}.{{StructName}}Api)",
+    "row": "\tApi.Any(\"\", {{PackageName}}.{{StructName}}Api)\n\tApi.GET(\"list\", {{PackageName}}.GetListHandler)",
     "footer": "}"
   }
 }

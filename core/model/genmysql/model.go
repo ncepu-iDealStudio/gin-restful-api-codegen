@@ -12,10 +12,10 @@ import (
 
 type DataBaseModel struct {
 	DataBaseName string
-	Tables       []tableModel
+	Tables       []TableModel
 }
 
-type tableModel struct {
+type TableModel struct {
 	TableName string
 	Comment   string
 	Columns   []columnModel
@@ -39,7 +39,7 @@ func (m *DataBaseModel) GetTables(orm *MySQLOrm) error {
 		return err
 	}
 	for k, v := range tables {
-		var table tableModel
+		var table TableModel
 		table.TableName = k
 		table.Comment = v
 		table.GetColumns(orm)
@@ -51,7 +51,7 @@ func (m *DataBaseModel) GetTables(orm *MySQLOrm) error {
 	return nil
 }
 
-func (m *tableModel) GetColumns(orm *MySQLOrm) {
+func (m *TableModel) GetColumns(orm *MySQLOrm) {
 	columns, err := orm.GetColumns(m.TableName)
 	if err != nil {
 		return

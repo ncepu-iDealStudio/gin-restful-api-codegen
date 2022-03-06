@@ -1,12 +1,12 @@
 {
   "static_dict": {
-    "project_name": "test_project",
+    "project_name": "usercenter-service",
     "father_path": "result"
   },
   "filepath": "{{father_path}}/{{project_name}}/internal/routers/api1_0",
   "file_header": "// coding: utf-8\n// @Author : lryself\n// @Software: GoLand\n\npackage api1_0\n",
   "import": {
-    "header": "import (\n\t\"github.com/gin-gonic/gin\"\n\t\"test_project/internal/apis/api1_0\"",
+    "header": "import (\n\t\"github.com/gin-gonic/gin\"\n\t\"{{project_name}}/internal/apis/api1_0\"",
     "row": "\t\"{{project_name}}/internal/routers/api1_0/{{PackageName}}\"",
     "footer": ")"
   },

@@ -36,7 +36,10 @@ func GenApiCode(tableInfo *genmysql.DataBaseModel) error {
 		var model GenCodeModel
 		model.Header = replaceString(kwargs, dbCode.Code.FileHeader)
 		model.Import = []string{replaceString(kwargs, dbCode.Code.Import.Header), replaceString(kwargs, dbCode.Code.Import.Footer)}
-		model.Methods = []string{replaceString(kwargs, dbCode.Code.Methods["crud"])}
+		model.Methods = []string{}
+		for _, m := range dbCode.Code.Methods {
+			model.Methods = append(model.Methods, replaceString(kwargs, m))
+		}
 		if !utils.PathExists(filepath.Join(fileDir, str.LineToLowCamel(table.TableName))) {
 			err = os.Mkdir(filepath.Join(fileDir, str.LineToLowCamel(table.TableName)), os.ModePerm)
 			if err != nil {
