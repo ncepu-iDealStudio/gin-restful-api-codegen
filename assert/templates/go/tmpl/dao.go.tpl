@@ -24,7 +24,7 @@ func (m *{{$CodeDict.TableInfo.StructName}}Dao) Add() error {
     mysqlManager := database.GetMysqlClient()
     err := m.Get()
     if err == nil {
-    return errors.New("数据已存在")
+        return errors.New("数据已存在")
     }
     return mysqlManager.Create(&m).Error
 }
@@ -33,7 +33,7 @@ func (m *{{$CodeDict.TableInfo.StructName}}Dao) Update(args map[string]interface
     mysqlManager := database.GetMysqlClient()
     err := m.Get()
     if err != nil {
-    return err
+        return err
     }
     return mysqlManager.Model(&m).Updates(args).Error
 }
@@ -42,9 +42,9 @@ func (m *{{$CodeDict.TableInfo.StructName}}Dao) Delete() error {
     mysqlManager := database.GetMysqlClient()
     err := m.Get()
     if err != nil {
-    return err
+        return err
     }
     return mysqlManager.Model(&m).Updates(map[string]interface{}{
-    "IsDeleted": 1,
+        "IsDeleted": 1,
     }).Error
 }

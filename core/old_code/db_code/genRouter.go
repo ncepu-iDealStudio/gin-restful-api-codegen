@@ -6,7 +6,7 @@
 package db_code
 
 import (
-	"LRYGoCodeGen/core/model/genmysql"
+	"LRYGoCodeGen/core/gen_mysql"
 	"LRYGoCodeGen/core/utils"
 	"LRYGoCodeGen/core/utils/str"
 	"io/ioutil"
@@ -14,7 +14,7 @@ import (
 	"path/filepath"
 )
 
-func GenRouterCode(tableInfo *genmysql.DataBaseModel) error {
+func GenRouterCode(tableInfo *gen_mysql.DataBaseModel) error {
 	var dbcodeRouter DBCode
 	var dbcodeUrl DBCode
 	err := dbcodeRouter.Init("router.json")

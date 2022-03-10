@@ -2,4 +2,4 @@ genCode:
   templates_path: "assert/templates/go/tem_go_project"
   code_model_path: "assert/templates/go/dict/code"
   dict_path: "assert/templates/go/dict"
-  result_path: "result/usercenter-service"
+  result_path: "result/project-center-service"

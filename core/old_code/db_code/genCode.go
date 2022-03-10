@@ -6,8 +6,8 @@
 package db_code
 
 import (
-	"LRYGoCodeGen/core/gencode/db_code/models"
 	"LRYGoCodeGen/core/globals/config"
+	"LRYGoCodeGen/core/old_code/db_code/models"
 	"encoding/json"
 	"io/ioutil"
 	"path/filepath"

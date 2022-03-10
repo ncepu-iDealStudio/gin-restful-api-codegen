@@ -3,7 +3,7 @@
 // @Date : 2022/2/12 16:01
 // @Software: GoLand
 
-package genmysql
+package gen_mysql
 
 import (
 	"database/sql"

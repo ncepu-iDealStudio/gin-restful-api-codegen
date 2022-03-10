@@ -3,10 +3,10 @@
 // @Date : 2022/3/6 19:39
 // @Software: GoLand
 
-package db_code
+package gen_db
 
 import (
-	"LRYGoCodeGen/core/model/genmysql"
+	"LRYGoCodeGen/core/gen_mysql"
 	"LRYGoCodeGen/core/utils/str"
 	"encoding/json"
 	"io/ioutil"
@@ -20,7 +20,7 @@ type UrlCodeDict struct {
 	Tables      []map[string]string
 }
 
-func GenUrlCode(tableInfo *genmysql.DataBaseModel, tmplPath string, outPath string) error {
+func GenUrlCode(tableInfo *gen_mysql.DataBaseModel, tmplPath string, outPath string) error {
 	var tmp map[string]string
 	staticDict, err := ioutil.ReadFile("assert/templates/go/dict/static_dict.json")
 	if err != nil {

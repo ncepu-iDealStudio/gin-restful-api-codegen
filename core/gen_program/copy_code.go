@@ -3,10 +3,10 @@
 // @Date : 2022/2/14 20:05
 // @Software: GoLand
 
-package templete_code
+package gen_program
 
 import (
-	"LRYGoCodeGen/core/gencode/templete_code/model"
+	model2 "LRYGoCodeGen/core/gen_program/model"
 	"LRYGoCodeGen/core/globals/config"
 	"encoding/json"
 	"io/ioutil"
@@ -18,12 +18,12 @@ func CopyCodeFromTemplates() error {
 	if err != nil {
 		return err
 	}
-	dirModel, err := model.GetDirModel(userConfig.GenCodeConfig.TemplatesPath)
+	dirModel, err := model2.GetDirModel(userConfig.GenCodeConfig.TemplatesPath)
 	if err != nil {
 		return err
 	}
 	dictKeywordFile, err := ioutil.ReadFile(filepath.Join(userConfig.GenCodeConfig.DictPath, "keyword.json"))
-	var replaceDict model.KeyWord
+	var replaceDict model2.KeyWord
 	err = json.Unmarshal(dictKeywordFile, &replaceDict)
 	if err != nil {
 		return err

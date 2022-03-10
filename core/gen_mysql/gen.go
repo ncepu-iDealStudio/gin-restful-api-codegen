@@ -3,7 +3,7 @@
 // @Date : 2022/2/12 15:58
 // @Software: GoLand
 
-package genmysql
+package gen_mysql
 
 import "LRYGoCodeGen/core/globals/config"
 

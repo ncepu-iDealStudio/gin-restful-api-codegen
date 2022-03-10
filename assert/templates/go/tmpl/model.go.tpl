@@ -13,7 +13,7 @@ type {{$CodeDict.TableInfo.StructName}}Model struct { {{range .TableInfo.Columns
 }
 
 func (m *{{$CodeDict.TableInfo.StructName}}Model) TableName() string {
-    return "approval_collegeTask"
+    return "{{$CodeDict.TableInfo.TableName}}"
 }
 {{range .TableInfo.Columns}}
 func (m *{{$CodeDict.TableInfo.StructName}}Model) Get{{.Field}}() {{.GoType}} {

@@ -6,27 +6,27 @@
 package test
 
 import (
-	"LRYGoCodeGen/core/gencode/db_code"
-	"LRYGoCodeGen/core/model/genmysql"
+	"LRYGoCodeGen/core/gen_mysql"
+	db_code2 "LRYGoCodeGen/core/old_code/db_code"
 	"fmt"
 	"testing"
 )
 
 func TestGenDBCode(t *testing.T) {
 	var err error
-	dbModel, err := genmysql.GetMysqlDBModel()
+	dbModel, err := gen_mysql.GetMysqlDBModel()
 	if err != nil {
 		fmt.Println(err)
 	}
-	err = db_code.GenModelsCode(dbModel)
+	err = db_code2.GenModelsCode(dbModel)
 	if err != nil {
 		fmt.Println(err)
 	}
-	err = db_code.GenDaoCode(dbModel)
+	err = db_code2.GenDaoCode(dbModel)
 	if err != nil {
 		fmt.Println(err)
 	}
-	err = db_code.GenServicesCode(dbModel)
+	err = db_code2.GenServicesCode(dbModel)
 	if err != nil {
 		fmt.Println(err)
 	}

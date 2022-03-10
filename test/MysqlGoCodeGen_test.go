@@ -6,41 +6,41 @@
 package test
 
 import (
-	"LRYGoCodeGen/core/gencode/db_code"
-	"LRYGoCodeGen/core/gencode/templete_code"
-	"LRYGoCodeGen/core/model/genmysql"
+	"LRYGoCodeGen/core/gen_mysql"
+	"LRYGoCodeGen/core/gen_program"
+	db_code2 "LRYGoCodeGen/core/old_code/db_code"
 	"fmt"
 	"testing"
 )
 
 func TestGenCode(t *testing.T) {
-	err := templete_code.CopyCodeFromTemplates()
+	err := gen_program.CopyCodeFromTemplates()
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
 	}
-	dbModel, err := genmysql.GetMysqlDBModel()
+	dbModel, err := gen_mysql.GetMysqlDBModel()
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
 	}
-	err = db_code.GenModelsCode(dbModel)
+	err = db_code2.GenModelsCode(dbModel)
 	if err != nil {
 		t.Fatal("model生成报错：", err)
 	}
-	err = db_code.GenDaoCode(dbModel)
+	err = db_code2.GenDaoCode(dbModel)
 	if err != nil {
 		t.Fatal("dao生成报错：", err)
 	}
-	err = db_code.GenServicesCode(dbModel)
+	err = db_code2.GenServicesCode(dbModel)
 	if err != nil {
 		t.Fatal("service生成报错：", err)
 	}
-	err = db_code.GenApiCode(dbModel)
+	err = db_code2.GenApiCode(dbModel)
 	if err != nil {
 		t.Fatal("api生成报错：", err)
 	}
-	err = db_code.GenRouterCode(dbModel)
+	err = db_code2.GenRouterCode(dbModel)
 	if err != nil {
 		t.Fatal("router生成报错：", err)
 	}

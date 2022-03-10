@@ -7,10 +7,13 @@ package {{$CodeDict.TableInfo.PackageName}}
 import (
     "github.com/gin-gonic/gin"
     "gitee.com/lryself/go-utils/structs"
+    "net/http"
+    "{{$CodeDict.Dict.ProjectName}}/internal/globals/codes"
     "{{$CodeDict.Dict.ProjectName}}/internal/globals/parser"
     "{{$CodeDict.Dict.ProjectName}}/internal/services"
 )
 
+// todo 请将AutoID修改为业务主键名
 func {{$CodeDict.TableInfo.StructName}}Api(c *gin.Context) {
     var err error
     var {{$CodeDict.TableInfo.StructName}}Service services.{{$CodeDict.TableInfo.StructName}}Service
@@ -28,6 +31,22 @@ func {{$CodeDict.TableInfo.StructName}}Api(c *gin.Context) {
             return
         }
     } else if c.Request.Method == "POST" {
+        var {{$CodeDict.TableInfo.StructName}} services.{{$CodeDict.TableInfo.StructName}}Service
+        {{$CodeDict.TableInfo.StructName}}.AutoID = {{$CodeDict.TableInfo.StructName}}Service.AutoID
+        err = {{$CodeDict.TableInfo.StructName}}.Get()
+        if err != nil {
+            if err.Error() != "record not found" {
+                parser.JsonDBError(c, "", err)
+                return
+            }
+        } else {
+            c.JSON(http.StatusOK, gin.H{
+                "code":    codes.DataExist,
+                "message": "数据已存在！",
+            })
+            return
+        }
+
         err = {{$CodeDict.TableInfo.StructName}}Service.Add()
         if err != nil {
             parser.JsonDBError(c, "", err)
@@ -39,7 +58,6 @@ func {{$CodeDict.TableInfo.StructName}}Api(c *gin.Context) {
             parser.JsonParameterIllegal(c, "", err)
             return
         }
-        // todo 请将AutoID修改为业务主键名
         delete(args, "AutoID")
         temp := services.{{$CodeDict.TableInfo.StructName}}Service{}
         temp.AutoID = {{$CodeDict.TableInfo.StructName}}Service.AutoID

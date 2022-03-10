@@ -3,11 +3,11 @@
 // @Date : 2022/3/6 19:01
 // @Software: GoLand
 
-package db_code
+package gen_db
 
 import (
-	"LRYGoCodeGen/core/gencode/db_code/models"
-	"LRYGoCodeGen/core/model/genmysql"
+	"LRYGoCodeGen/core/gen_mysql"
+	"LRYGoCodeGen/core/old_code/db_code/models"
 	"LRYGoCodeGen/core/utils/str"
 	"encoding/json"
 	"fmt"
@@ -19,7 +19,7 @@ type CodeDict struct {
 	Dict      map[string]string
 }
 
-func (d *CodeDict) Init(table genmysql.TableModel) error {
+func (d *CodeDict) Init(table gen_mysql.TableModel) error {
 	var typeDict models.TypeDict
 	dictTypeDict, err := ioutil.ReadFile("assert/templates/go/dict/type_dict.json")
 	if err != nil {
@@ -45,7 +45,7 @@ func (d *CodeDict) Init(table genmysql.TableModel) error {
 		column1.GoType = typeDict.GetGoType(column.Type)
 		column1.Collation = column.Collation
 		column1.Null = column.Null
-		column1.Key = column.Field
+		column1.Key = column.Key
 		column1.Default = column.Default
 		column1.Extra = column.Extra
 		column1.Privileges = column.Privileges

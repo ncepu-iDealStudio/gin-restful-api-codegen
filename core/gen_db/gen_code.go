@@ -3,10 +3,10 @@
 // @Date : 2022/3/6 14:19
 // @Software: GoLand
 
-package db_code
+package gen_db
 
 import (
-	"LRYGoCodeGen/core/model/genmysql"
+	"LRYGoCodeGen/core/gen_mysql"
 	"LRYGoCodeGen/core/utils"
 	"LRYGoCodeGen/core/utils/str"
 	"fmt"
@@ -15,7 +15,7 @@ import (
 	"text/template"
 )
 
-func GenCode(tableInfo *genmysql.DataBaseModel, tmplPath string, outPath string, divideDir bool) error {
+func GenCode(tableInfo *gen_mysql.DataBaseModel, tmplPath string, outPath string, divideDir bool) error {
 	for _, table := range tableInfo.Tables {
 		var codeTemplate CodeDict
 		err := codeTemplate.Init(table)

@@ -6,14 +6,14 @@
 package test
 
 import (
-	"LRYGoCodeGen/core/gencode/templete_code"
-	"LRYGoCodeGen/core/model/genmysql"
+	"LRYGoCodeGen/core/gen_mysql"
+	"LRYGoCodeGen/core/gen_program"
 	"fmt"
 	"testing"
 )
 
 func TestDBModel(t *testing.T) {
-	dbModel, err := genmysql.GetMysqlDBModel()
+	dbModel, err := gen_mysql.GetMysqlDBModel()
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -21,7 +21,7 @@ func TestDBModel(t *testing.T) {
 }
 
 func TestCopyCodeModel(t *testing.T) {
-	err := templete_code.CopyCodeFromTemplates()
+	err := gen_program.CopyCodeFromTemplates()
 	if err != nil {
 		fmt.Println(err)
 	}

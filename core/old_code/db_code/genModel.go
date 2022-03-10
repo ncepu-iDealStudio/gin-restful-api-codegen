@@ -6,7 +6,7 @@
 package db_code
 
 import (
-	"LRYGoCodeGen/core/model/genmysql"
+	"LRYGoCodeGen/core/gen_mysql"
 	"LRYGoCodeGen/core/utils"
 	"fmt"
 	"io/ioutil"
@@ -16,7 +16,7 @@ import (
 	"strings"
 )
 
-func GenModelsCode(tableInfo *genmysql.DataBaseModel) error {
+func GenModelsCode(tableInfo *gen_mysql.DataBaseModel) error {
 	var dbCode DBCode
 	err := dbCode.Init("models.json")
 	//构建替换字典
