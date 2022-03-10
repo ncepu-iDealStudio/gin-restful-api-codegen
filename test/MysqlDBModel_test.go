@@ -6,14 +6,14 @@
 package test
 
 import (
-	"LRYGoCodeGen/core/gen_mysql"
-	"LRYGoCodeGen/core/gen_program"
+	"LRYGoCodeGen/core/gen/gen_program"
+	"LRYGoCodeGen/core/model/mysql"
 	"fmt"
 	"testing"
 )
 
 func TestDBModel(t *testing.T) {
-	dbModel, err := gen_mysql.GetMysqlDBModel()
+	dbModel, err := mysql.GetMysqlDBModel()
 	if err != nil {
 		fmt.Println(err)
 	}

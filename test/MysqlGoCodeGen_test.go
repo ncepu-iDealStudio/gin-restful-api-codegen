@@ -6,8 +6,8 @@
 package test
 
 import (
-	"LRYGoCodeGen/core/gen_mysql"
-	"LRYGoCodeGen/core/gen_program"
+	"LRYGoCodeGen/core/gen/gen_program"
+	"LRYGoCodeGen/core/model/mysql"
 	db_code2 "LRYGoCodeGen/core/old_code/db_code"
 	"fmt"
 	"testing"
@@ -19,7 +19,7 @@ func TestGenCode(t *testing.T) {
 		fmt.Println(err)
 		t.FailNow()
 	}
-	dbModel, err := gen_mysql.GetMysqlDBModel()
+	dbModel, err := mysql.GetMysqlDBModel()
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()

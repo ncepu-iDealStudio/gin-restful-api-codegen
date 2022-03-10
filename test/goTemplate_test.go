@@ -6,9 +6,9 @@
 package test
 
 import (
-	"LRYGoCodeGen/core/gen_db"
-	"LRYGoCodeGen/core/gen_mysql"
-	"LRYGoCodeGen/core/gen_program"
+	gen_db2 "LRYGoCodeGen/core/gen/gen_db"
+	"LRYGoCodeGen/core/gen/gen_program"
+	"LRYGoCodeGen/core/model/mysql"
 	"fmt"
 	"testing"
 )
@@ -21,13 +21,12 @@ func TestGoTemplate(t *testing.T) {
 		fmt.Println(err)
 		t.FailNow()
 	}
-
-	dbModel, err := gen_mysql.GetMysqlDBModel()
+	dbModel, err := mysql.GetMysqlDBModel()
 	if err != nil {
 		fmt.Println(err)
 	}
 	//生成model层
-	err = gen_db.GenCode(dbModel,
+	err = gen_db2.GenCode(dbModel,
 		"assert/templates/go/tmpl/model.go.tpl",
 		"result/project-center-service/internal/models/mysqlModel",
 		false,
@@ -36,7 +35,7 @@ func TestGoTemplate(t *testing.T) {
 		fmt.Println(err)
 	}
 	//生成dao层
-	err = gen_db.GenCode(dbModel,
+	err = gen_db2.GenCode(dbModel,
 		"assert/templates/go/tmpl/dao.go.tpl",
 		"result/project-center-service/internal/dao",
 		false,
@@ -45,7 +44,7 @@ func TestGoTemplate(t *testing.T) {
 		fmt.Println(err)
 	}
 	//生成service层
-	err = gen_db.GenCode(dbModel,
+	err = gen_db2.GenCode(dbModel,
 		"assert/templates/go/tmpl/service.go.tpl",
 		"result/project-center-service/internal/services",
 		false,
@@ -54,7 +53,7 @@ func TestGoTemplate(t *testing.T) {
 		fmt.Println(err)
 	}
 	//生成api层
-	err = gen_db.GenCode(dbModel,
+	err = gen_db2.GenCode(dbModel,
 		"assert/templates/go/tmpl/api.go.tpl",
 		"result/project-center-service/internal/apis/api1_0",
 		true,
@@ -63,7 +62,7 @@ func TestGoTemplate(t *testing.T) {
 		fmt.Println(err)
 	}
 	//生成router层
-	err = gen_db.GenCode(dbModel,
+	err = gen_db2.GenCode(dbModel,
 		"assert/templates/go/tmpl/router.go.tpl",
 		"result/project-center-service/internal/routers/api1_0",
 		true,
@@ -72,7 +71,7 @@ func TestGoTemplate(t *testing.T) {
 		fmt.Println(err)
 	}
 	//生成url文件
-	err = gen_db.GenUrlCode(dbModel,
+	err = gen_db2.GenUrlCode(dbModel,
 		"assert/templates/go/tmpl/urls.go.tpl",
 		"result/project-center-service/internal/routers/api1_0",
 	)

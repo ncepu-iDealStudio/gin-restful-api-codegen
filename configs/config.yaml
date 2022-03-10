@@ -1,0 +1,12 @@
+database:
+  driver : "mysql"
+  host : "139.9.128.8"
+  port : "3306"
+  username : "root"
+  password : "idealwifi@2021"
+  database : "innovate-platform"
+
+genCode:
+  templates_path: "assert/templates/go/tem_go_project"
+  dict_path: "assert/templates/go/dict"
+  result_path: "result/project-center-service"

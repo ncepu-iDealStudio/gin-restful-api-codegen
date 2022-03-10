@@ -13,7 +13,6 @@ import (
     "{{$CodeDict.Dict.ProjectName}}/internal/services"
 )
 
-// todo 请将AutoID修改为业务主键名
 func {{$CodeDict.TableInfo.StructName}}Api(c *gin.Context) {
     var err error
     var {{$CodeDict.TableInfo.StructName}}Service services.{{$CodeDict.TableInfo.StructName}}Service
@@ -23,7 +22,11 @@ func {{$CodeDict.TableInfo.StructName}}Api(c *gin.Context) {
         parser.JsonParameterIllegal(c, "", err)
         return
     }
-    
+
+    var {{$CodeDict.TableInfo.StructName}} services.{{$CodeDict.TableInfo.StructName}}Service
+{{range $CodeDict.TableInfo.NaturalKey}}//针对业务主键处理
+    {{$CodeDict.TableInfo.StructName}}.{{.}} = {{$CodeDict.TableInfo.StructName}}Service.{{.}}
+{{end}}
     if c.Request.Method == "GET" {
         err = {{$CodeDict.TableInfo.StructName}}Service.Get()
         if err != nil {
@@ -31,8 +34,6 @@ func {{$CodeDict.TableInfo.StructName}}Api(c *gin.Context) {
             return
         }
     } else if c.Request.Method == "POST" {
-        var {{$CodeDict.TableInfo.StructName}} services.{{$CodeDict.TableInfo.StructName}}Service
-        {{$CodeDict.TableInfo.StructName}}.AutoID = {{$CodeDict.TableInfo.StructName}}Service.AutoID
         err = {{$CodeDict.TableInfo.StructName}}.Get()
         if err != nil {
             if err.Error() != "record not found" {
@@ -58,17 +59,17 @@ func {{$CodeDict.TableInfo.StructName}}Api(c *gin.Context) {
             parser.JsonParameterIllegal(c, "", err)
             return
         }
-        delete(args, "AutoID")
-        temp := services.{{$CodeDict.TableInfo.StructName}}Service{}
-        temp.AutoID = {{$CodeDict.TableInfo.StructName}}Service.AutoID
+    {{range $CodeDict.TableInfo.NaturalKey}}//不能修改业务主键
+        delete(args, "{{.}}")
+    {{end}}
 
-        err = temp.Update(args)
+        err = {{$CodeDict.TableInfo.StructName}}.Update(args)
         if err != nil {
             parser.JsonDBError(c, "", err)
             return
         }
     } else if c.Request.Method == "DELETE" {
-        err = {{$CodeDict.TableInfo.StructName}}Service.Delete()
+        err = {{$CodeDict.TableInfo.StructName}}.Delete()
         if err != nil {
             parser.JsonDBError(c, "", err)
             return
