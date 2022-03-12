@@ -1,0 +1,27 @@
+[
+  {
+    "tmplPath": "model.go.tpl",
+    "outPath": "internal/models/mysqlModel",
+    "divideDir": true
+  },
+  {
+    "tmplPath": "dao.go.tpl",
+    "outPath": "internal/dao",
+    "divideDir": true
+  },
+  {
+    "tmplPath": "service.go.tpl",
+    "outPath": "internal/services",
+    "divideDir": true
+  },
+  {
+    "tmplPath": "api.go.tpl",
+    "outPath": "internal/apis/api1_0",
+    "divideDir": true
+  },
+  {
+    "tmplPath": "router.go.tpl",
+    "outPath": "internal/routers/api1_0",
+    "divideDir": true
+  }
+]

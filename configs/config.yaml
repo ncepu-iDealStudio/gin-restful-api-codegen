@@ -10,3 +10,4 @@ genCode:
   templates_path: "assert/templates/go/tem_go_project"
   dict_path: "assert/templates/go/dict"
   result_path: "result/project-center-service"
+  tmplPath: "assert/templates/go/tmpl"

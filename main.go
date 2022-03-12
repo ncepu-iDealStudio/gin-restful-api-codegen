@@ -10,9 +10,18 @@ import (
 	"LRYGoCodeGen/core/gen/gen_program"
 	"LRYGoCodeGen/core/globals/vipers"
 	"LRYGoCodeGen/core/model/mysql"
+	"encoding/json"
 	"fmt"
+	"github.com/spf13/viper"
+	"io/ioutil"
 	"path/filepath"
 )
+
+type makeFileDict struct {
+	TmplPath  string `json:"tmplPath"`
+	OutPath   string `json:"outPath"`
+	DivideDir bool   `json:"divideDir"`
+}
 
 func main() {
 	var err error
@@ -30,53 +39,31 @@ func main() {
 	if err != nil {
 		fmt.Println(err)
 	}
-	//生成model层
-	tmplPath := "assert/templates/go/tmpl"
-	resultPath := "result/project-center-service"
-	err = gen_db.GenCode(dbModel,
-		filepath.Join(tmplPath, "model.go.tpl"),
-		filepath.Join(resultPath, "internal/models/mysqlModel"),
-		false,
-	)
+
+	tmplPath := viper.GetString("genCode.tmplPath")
+	resultPath := viper.GetString("genCode.result_path")
+
+	var makefiles []makeFileDict
+	dictTypeDict, err := ioutil.ReadFile(filepath.Join(viper.GetString("genCode.dict_path"), "makefile.json"))
 	if err != nil {
 		fmt.Println(err)
 	}
-	//生成dao层
-	err = gen_db.GenCode(dbModel,
-		filepath.Join(tmplPath, "dao.go.tpl"),
-		filepath.Join(resultPath, "internal/dao"),
-		false,
-	)
+	err = json.Unmarshal(dictTypeDict, &makefiles)
 	if err != nil {
 		fmt.Println(err)
 	}
-	//生成service层
-	err = gen_db.GenCode(dbModel,
-		filepath.Join(tmplPath, "service.go.tpl"),
-		filepath.Join(resultPath, "internal/services"),
-		false,
-	)
-	if err != nil {
-		fmt.Println(err)
+
+	for _, d := range makefiles {
+		err = gen_db.GenCode(dbModel,
+			filepath.Join(tmplPath, d.TmplPath),
+			filepath.Join(resultPath, d.OutPath),
+			d.DivideDir,
+		)
+		if err != nil {
+			fmt.Println(err)
+		}
 	}
-	//生成api层
-	err = gen_db.GenCode(dbModel,
-		filepath.Join(tmplPath, "api.go.tpl"),
-		filepath.Join(resultPath, "internal/apis/api1_0"),
-		true,
-	)
-	if err != nil {
-		fmt.Println(err)
-	}
-	//生成router层
-	err = gen_db.GenCode(dbModel,
-		filepath.Join(tmplPath, "router.go.tpl"),
-		filepath.Join(resultPath, "internal/routers/api1_0"),
-		true,
-	)
-	if err != nil {
-		fmt.Println(err)
-	}
+
 	//生成url文件
 	err = gen_db.GenUrlCode(dbModel,
 		filepath.Join(tmplPath, "urls.go.tpl"),
