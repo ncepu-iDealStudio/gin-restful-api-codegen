@@ -3,12 +3,12 @@
 // @Date : 2021/12/28 21:32
 // @Software: GoLand
 
-package api1_0
+package api_1_0
 
 import (
+	"LRYGoCodeGen/internal/globals/codes"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"tem_go_project/internal/globals/codes"
 )
 
 func GetVersion(c *gin.Context) {

@@ -1,8 +1,8 @@
 package routers
 
 import (
+	"LRYGoCodeGen/internal/routers/api_1_0"
 	"github.com/gin-gonic/gin"
-	"tem_go_project/internal/routers/api_1_0"
 )
 
 func InitRouter(engine *gin.Engine) {
