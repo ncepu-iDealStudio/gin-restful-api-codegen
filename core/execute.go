@@ -1,9 +1,9 @@
 // coding: utf-8
 // @Author : lryself
-// @Date : 2022/3/6 15:50
+// @Date : 2022/3/20 23:14
 // @Software: GoLand
 
-package test
+package core
 
 import (
 	"LRYGoCodeGen/core/gen/gen_db"
@@ -15,7 +15,6 @@ import (
 	"github.com/spf13/viper"
 	"io/ioutil"
 	"path/filepath"
-	"testing"
 )
 
 type makeFileDict struct {
@@ -24,7 +23,7 @@ type makeFileDict struct {
 	DivideDir bool   `json:"divideDir"`
 }
 
-func TestGoTemplate(t *testing.T) {
+func Execute() {
 	var err error
 
 	err = vipers.InitViper()

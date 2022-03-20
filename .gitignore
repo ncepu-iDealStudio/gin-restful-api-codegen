@@ -1,3 +1,4 @@
 .idea/
 result/
-go_build_main_go.exe
+tools/LRYGenCode/
+go_build_LRYGoCodeGen.exe
