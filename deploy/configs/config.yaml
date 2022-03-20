@@ -1,0 +1,39 @@
+log:
+  #  日志输出类型 File,CMD,ES
+  type: File
+  filepath: logs
+  filename: system.log
+system:
+  #  系统服务名
+  Name: LRYGoCodeGen
+  #  环境
+  Mode: release
+  #  秘钥
+  Secret: d3a5c5c29c1130bddf55b8cda7ac770b9c085f0fe0b1c1ce3c566b90c78769d4
+  #  rsa私钥
+  RSAPrivate: configs/rsa/private.pem
+  #  rsa公钥
+  RSAPublic: configs/rsa/public.pem
+  #  过期时间（秒）
+  TokenExpireTime: 3600
+  RedisExpireTime: 3600
+  SessionExpireTime: 86400
+  #  服务中心ID
+  WorkerID: 00001
+  #  数据中心ID
+  DataCenterID: 00001
+  #  fs本地文件系统路径
+  FsPath: fs
+#  部署服务器ip
+  SysIP: 0.0.0.0
+#  部署服务器端口
+  SysPort: 8000
+#  使用mysql
+  UseMysql: true
+  #  使用redis
+  UseRedis: true
+remote:
+  #  ES路由
+  ESUrl: http://192.168.41.100:9200
+user:
+  defaultPassword: 123456

@@ -1,4 +1,4 @@
-package api_1_0
+package api
 
 import (
 	"LRYGoCodeGen/internal/apis/api_1_0"
@@ -9,7 +9,7 @@ var (
 	Api *gin.RouterGroup
 )
 
-func InitAPI_1_0Router(engine *gin.Engine) {
-	Api = engine.Group("api1_0")
+func InitAPIRouter(engine *gin.Engine) {
+	Api = engine.Group("api")
 	Api.Any("version", api_1_0.GetVersion)
 }
