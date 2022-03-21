@@ -8,8 +8,8 @@ package test
 import (
 	"LRYGoCodeGen/core/gen/gen_db"
 	"LRYGoCodeGen/core/gen/gen_program"
-	"LRYGoCodeGen/core/globals/vipers"
 	"LRYGoCodeGen/core/model/mysql"
+	"LRYGoCodeGen/globals/vipers"
 	"encoding/json"
 	"fmt"
 	"github.com/spf13/viper"

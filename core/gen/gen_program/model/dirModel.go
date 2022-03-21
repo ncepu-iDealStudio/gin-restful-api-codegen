@@ -6,7 +6,7 @@
 package model
 
 import (
-	"LRYGoCodeGen/core/utils"
+	"LRYGoCodeGen/utils"
 	"errors"
 	"io/ioutil"
 	"os"

@@ -7,8 +7,8 @@ package gen_db
 
 import (
 	"LRYGoCodeGen/core/model/mysql"
-	"LRYGoCodeGen/core/utils"
-	"LRYGoCodeGen/core/utils/str"
+	"LRYGoCodeGen/utils"
+	"LRYGoCodeGen/utils/str"
 	"fmt"
 	"os"
 	"path/filepath"

@@ -7,7 +7,7 @@ package cmd
 
 import (
 	"LRYGoCodeGen/core"
-	"fmt"
+	"LRYGoCodeGen/globals/sys"
 	"github.com/spf13/cobra"
 	"os"
 )
@@ -18,7 +18,7 @@ var rootCmd = &cobra.Command{
 	Long:  `base on templates for project or database to code`,
 	Run: func(cmd *cobra.Command, args []string) {
 		// Start doing things.开始做事情
-		fmt.Fprint(os.Stderr, "开始执行默认方法！")
+		sys.Println("开始执行默认方法！")
 		core.Execute()
 	},
 }

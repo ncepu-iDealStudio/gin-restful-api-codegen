@@ -7,7 +7,7 @@ package gen_db
 
 import (
 	"LRYGoCodeGen/core/model/mysql"
-	"LRYGoCodeGen/core/utils/str"
+	"LRYGoCodeGen/utils/str"
 	"encoding/json"
 	"fmt"
 	"github.com/spf13/viper"

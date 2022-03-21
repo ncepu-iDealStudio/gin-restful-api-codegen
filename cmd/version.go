@@ -6,9 +6,8 @@
 package cmd
 
 import (
-	"fmt"
+	"LRYGoCodeGen/globals/sys"
 	"github.com/spf13/cobra"
-	"os"
 )
 
 var versionCmd = &cobra.Command{
@@ -16,12 +15,7 @@ var versionCmd = &cobra.Command{
 	Short: "version subcommand show git version info.",
 
 	Run: func(cmd *cobra.Command, args []string) {
-		output, err := ExecuteCommand("git", "version", args...)
-		if err != nil {
-			Error(cmd, args, err)
-		}
-
-		fmt.Fprintln(os.Stdout, output)
+		sys.Println("v1.0")
 	},
 }
 
