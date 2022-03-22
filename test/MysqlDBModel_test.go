@@ -21,7 +21,7 @@ func TestDBModel(t *testing.T) {
 }
 
 func TestCopyCodeModel(t *testing.T) {
-	err := gen_program.CopyCodeFromTemplates()
+	err := gen_program.GenProgramCodeFromTemplates()
 	if err != nil {
 		fmt.Println(err)
 	}

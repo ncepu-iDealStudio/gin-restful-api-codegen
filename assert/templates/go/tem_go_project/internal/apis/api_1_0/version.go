@@ -3,7 +3,7 @@
 // @Date : 2021/12/28 21:32
 // @Software: GoLand
 
-package api1_0
+package api_1_0
 
 import (
 	"github.com/gin-gonic/gin"

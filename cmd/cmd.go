@@ -15,8 +15,8 @@ import (
 
 var rootCmd = &cobra.Command{
 	Use:   "lryCG",
-	Short: "gen code with templates tools",
-	Long:  `base on templates for project or database to code`,
+	Short: "生成代码的工具",
+	Long:  `基于模板生成项目代码的工具`,
 	Run: func(cmd *cobra.Command, args []string) {
 		// Start doing things.开始做事情
 		sys.Println("开始生成代码！")

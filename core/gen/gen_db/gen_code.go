@@ -1,50 +1,50 @@
 // coding: utf-8
 // @Author : lryself
-// @Date : 2022/3/6 14:19
+// @Date : 2022/3/22 23:24
 // @Software: GoLand
 
 package gen_db
 
 import (
+	"LRYGoCodeGen/core/gen/gen_db/model"
 	"LRYGoCodeGen/core/model/mysql"
-	"LRYGoCodeGen/utils"
-	"LRYGoCodeGen/utils/str"
-	"fmt"
-	"os"
+	"LRYGoCodeGen/utils/errHelper"
+	"encoding/json"
+	"github.com/spf13/viper"
+	"io/ioutil"
 	"path/filepath"
-	"text/template"
 )
 
-func GenCode(tableInfo *mysql.DataBaseModel, tmplPath string, outPath string, divideDir bool) error {
-	for _, table := range tableInfo.Tables {
-		var codeTemplate CodeDict
-		err := codeTemplate.Init(table)
-		if err != nil {
-			return err
-		}
-		tmpl, err := template.ParseFiles(tmplPath)
-		if err != nil {
-			return err
-		}
-		var file *os.File
-		if divideDir {
-			if !utils.PathExists(filepath.Join(outPath, str.LineToLowCamel(table.TableName))) {
-				err = os.Mkdir(filepath.Join(outPath, str.LineToLowCamel(table.TableName)), os.ModePerm)
-				if err != nil {
-					return err
-				}
-			}
-			file, err = os.Create(filepath.Join(outPath, str.LineToLowCamel(table.TableName), fmt.Sprintf("%s.go", str.LineToUpCamel(table.TableName))))
+type makeFileDict struct {
+	TmplPath  string `json:"tmplPath"`
+	OutPath   string `json:"outPath"`
+	DivideDir bool   `json:"divideDir"`
+	IsTables  bool   `json:"isTables"`
+}
+
+func GenDBCodeFromTemplate() {
+	dbModel, err := mysql.GetMysqlDBModel()
+	errHelper.ErrExit(err)
+
+	tmplPath := viper.GetString("genCode.tmplPath")
+	resultPath := viper.GetString("genCode.result_path")
+
+	var makefiles []makeFileDict
+	dictTypeDict, err := ioutil.ReadFile(filepath.Join(viper.GetString("genCode.dict_path"), "makefile.json"))
+	errHelper.ErrExit(err)
+	errHelper.Error(json.Unmarshal(dictTypeDict, &makefiles))
+	for _, d := range makefiles {
+		if d.IsTables {
+			errHelper.Error(model.GenTablesCode(dbModel,
+				filepath.Join(tmplPath, d.TmplPath),
+				filepath.Join(resultPath, d.OutPath),
+			))
 		} else {
-			file, err = os.Create(filepath.Join(outPath, fmt.Sprintf("%s.go", str.LineToUpCamel(table.TableName))))
-		}
-		if err != nil {
-			return err
-		}
-		err = tmpl.Execute(file, codeTemplate)
-		if err != nil {
-			return err
+			errHelper.Error(model.GenTableCode(dbModel,
+				filepath.Join(tmplPath, d.TmplPath),
+				filepath.Join(resultPath, d.OutPath),
+				d.DivideDir,
+			))
 		}
 	}
-	return nil
 }

@@ -14,7 +14,7 @@ import (
 )
 
 func TestGenCode(t *testing.T) {
-	err := gen_program.CopyCodeFromTemplates()
+	err := gen_program.GenProgramCodeFromTemplates()
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()

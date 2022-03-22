@@ -6,7 +6,7 @@
 package test
 
 import (
-	"LRYGoCodeGen/core/gen/gen_db"
+	"LRYGoCodeGen/core/gen/gen_db/model"
 	"LRYGoCodeGen/core/gen/gen_program"
 	"LRYGoCodeGen/core/model/mysql"
 	"LRYGoCodeGen/globals/vipers"
@@ -32,7 +32,7 @@ func TestGoTemplate(t *testing.T) {
 		fmt.Println(err)
 	}
 	//生成项目代码
-	err = gen_program.CopyCodeFromTemplates()
+	err = gen_program.GenProgramCodeFromTemplates()
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -55,7 +55,7 @@ func TestGoTemplate(t *testing.T) {
 	}
 
 	for _, d := range makefiles {
-		err = gen_db.GenCode(dbModel,
+		err = model.GenTableCode(dbModel,
 			filepath.Join(tmplPath, d.TmplPath),
 			filepath.Join(resultPath, d.OutPath),
 			d.DivideDir,
@@ -66,7 +66,7 @@ func TestGoTemplate(t *testing.T) {
 	}
 
 	//生成url文件
-	err = gen_db.GenUrlCode(dbModel,
+	err = model.GenTablesCode(dbModel,
 		filepath.Join(tmplPath, "urls.go.tpl"),
 		filepath.Join(resultPath, "internal/routers/api1_0"),
 	)

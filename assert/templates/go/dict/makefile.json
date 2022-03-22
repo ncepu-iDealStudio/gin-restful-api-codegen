@@ -23,5 +23,10 @@
     "tmplPath": "router.go.tpl",
     "outPath": "internal/routers/api1_0",
     "divideDir": true
+  },
+  {
+    "tmplPath": "urls.go.tpl",
+    "outPath": "internal/routers/api1_0/urls.go",
+    "isTables": true
   }
 ]

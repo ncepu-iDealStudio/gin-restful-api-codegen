@@ -12,7 +12,7 @@ import (
 
 var versionCmd = &cobra.Command{
 	Use:   "version",
-	Short: "version subcommand show git version info.",
+	Short: "显示版本信息",
 
 	Run: func(cmd *cobra.Command, args []string) {
 		sys.Println("v1.0")
