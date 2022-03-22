@@ -5,6 +5,8 @@
 
 package sys
 
+import "fmt"
+
 var outputChan chan message
 
 type message struct {
@@ -12,17 +14,24 @@ type message struct {
 	Type    string
 }
 
-func Println(s string) {
+func Println(a ...interface{}) {
 	outputChan <- message{
-		Context: s,
-		Type:    "ln",
+		Context: fmt.Sprintln(a...),
+		Type:    "msg",
 	}
 }
 
-func PrintErr(s string) {
+func PrintErr(a ...interface{}) {
 	outputChan <- message{
-		Context: s,
+		Context: fmt.Sprintln(a...),
 		Type:    "err",
+	}
+}
+
+func Printf(format string, a ...interface{}) {
+	outputChan <- message{
+		Context: fmt.Sprintf(format, a...),
+		Type:    "msg",
 	}
 }
 

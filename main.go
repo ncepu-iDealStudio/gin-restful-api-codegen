@@ -15,7 +15,9 @@ func main() {
 	var waitGroup sync.WaitGroup
 	waitGroup.Add(1)
 	go sys.InitMsg(&waitGroup)
+
 	cmd.Execute()
+
 	sys.Exit()
 	waitGroup.Wait()
 }

@@ -6,25 +6,25 @@
 package vipers
 
 import (
-	"fmt"
+	"LRYGoCodeGen/globals/sys"
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
 )
 
-func InitViper() (err error) {
-	viper.SetConfigName("config")
+func InitViper(confName string) (err error) {
+	viper.SetConfigName(confName)
 	viper.AddConfigPath("./configs") // 添加搜索路径
 	viper.SetConfigType("yaml")
 
 	err = viper.ReadInConfig()
 	if err != nil {
-		fmt.Println("Fatal error config file: ", err)
+		sys.PrintErr("Fatal error config file: ", err)
 		return
 	}
 	viper.WatchConfig()
 
 	viper.OnConfigChange(func(e fsnotify.Event) {
-		fmt.Println("Config file:", e.Name, "Op: ", e.Op)
+		sys.Println("Config file:", e.Name, "Op: ", e.Op)
 	})
 	return
 }
