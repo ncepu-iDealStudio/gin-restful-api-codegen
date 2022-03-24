@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>{{ block "title" .}}{{ end }}</title>
+    <link rel="stylesheet" href="../../static/layui/css/layui.css">
+    {{ block "head" .}}
+    {{ end }}
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header layui-bg-black">
+        <div class="layui-logo">
+            <a href="/" style="color: #F0F0F0">在线学习网站</a>
+        </div>
+
+        <ul class="layui-nav layui-layout-left">
+            <li class="layui-nav-item layui-this">
+                <a href="/" >学习</a>
+            </li>
+        </ul>
+
+        <ul class="layui-nav layui-layout-right">
+            {{ if .IsActive }}
+            <li class="layui-nav-item">
+                <a href="/">返回首页</a>
+            </li>
+            <li class="layui-nav-item">
+                <a href="/">{{ .UserName }}</a>
+                <dl class="layui-nav-child">
+                    <dd><a href="/changePassword">修改密码</a></dd>
+                    <dd><a href="/logout">退出登录</a></dd>
+                </dl>
+            </li>
+            {{ else }}
+            <li class="layui-nav-item">
+                <a href="/login">登录</a>
+            </li>
+            {{ end }}
+        </ul>
+    </div>
+    {{ block "content" .}}
+    {{ end }}
+</div>
+</body>
+<script src="../../static/layui/layui.js" charset="UTF-8"></script>
+<script>
+    function GetQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if(r != null){
+            //解决中文乱码
+            return decodeURI(r[2]);
+        }
+        return null;
+    }
+</script>
+{{ block "script" .}}
+{{ end }}
+</html>

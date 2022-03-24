@@ -6,70 +6,43 @@
 package main
 
 import (
-	"LRYGoCodeGen/core/gen/gen_db"
-	"LRYGoCodeGen/core/gen/gen_program"
-	"LRYGoCodeGen/core/globals/vipers"
-	"LRYGoCodeGen/core/model/mysql"
-	"encoding/json"
+	"LRYGoCodeGen/internal/settings"
+	"encoding/gob"
 	"fmt"
+	logs "gitee.com/lryself/go-utils/loggers"
 	"github.com/spf13/viper"
-	"io/ioutil"
-	"path/filepath"
+	"time"
 )
 
-type makeFileDict struct {
-	TmplPath  string `json:"tmplPath"`
-	OutPath   string `json:"outPath"`
-	DivideDir bool   `json:"divideDir"`
-}
-
 func main() {
+	gob.Register(time.Time{})
 	var err error
+	//初始化viper
+	err = settings.InitViper()
+	if err != nil {
+		fmt.Println("配置文件加载出错！", err)
+		return
+	}
+	logs.InitLogger(viper.GetString("log.type"))
+	var log = logs.GetLogger()
 
-	err = vipers.InitViper()
+	//初始化数据库（mysql、redis）
+	err = settings.InitDatabase()
 	if err != nil {
-		fmt.Println(err)
-	}
-	//生成项目代码
-	err = gen_program.CopyCodeFromTemplates()
-	if err != nil {
-		fmt.Println(err)
-	}
-	dbModel, err := mysql.GetMysqlDBModel()
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	tmplPath := viper.GetString("genCode.tmplPath")
-	resultPath := viper.GetString("genCode.result_path")
-
-	var makefiles []makeFileDict
-	dictTypeDict, err := ioutil.ReadFile(filepath.Join(viper.GetString("genCode.dict_path"), "makefile.json"))
-	if err != nil {
-		fmt.Println(err)
-	}
-	err = json.Unmarshal(dictTypeDict, &makefiles)
-	if err != nil {
-		fmt.Println(err)
+		log.Errorln(err)
+		return
 	}
 
-	for _, d := range makefiles {
-		err = gen_db.GenCode(dbModel,
-			filepath.Join(tmplPath, d.TmplPath),
-			filepath.Join(resultPath, d.OutPath),
-			d.DivideDir,
-		)
-		if err != nil {
-			fmt.Println(err)
-		}
-	}
-
-	//生成url文件
-	err = gen_db.GenUrlCode(dbModel,
-		filepath.Join(tmplPath, "urls.go.tpl"),
-		filepath.Join(resultPath, "internal/routers/api1_0"),
-	)
+	//初始化gin引擎
+	engine, err := settings.InitGinEngine()
 	if err != nil {
-		fmt.Println(err)
+		log.Errorln(err)
+		return
+	}
+	//开始运行
+	err = engine.Run(fmt.Sprintf("%s:%s", viper.GetString("system.SysIP"), viper.GetString("system.SysPort")))
+	if err != nil {
+		log.Errorln(err)
+		return
 	}
 }
