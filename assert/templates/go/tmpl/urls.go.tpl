@@ -6,8 +6,8 @@ package api_1_0
 
 import (
     "github.com/gin-gonic/gin"
-    "{{$CodeDict.Dict.ProjectName}}/internal/apis/api1_0"{{range $CodeDict.TablesInfo}}
-    "{{$CodeDict.Dict.ProjectName}}/internal/routers/api1_0/{{.PackageName}}"
+    "{{$CodeDict.Dict.ProjectName}}/internal/apis/api_1_0"{{range $CodeDict.TablesInfo}}
+    "{{$CodeDict.Dict.ProjectName}}/internal/routers/api_1_0/{{.PackageName}}"
 {{end}}
 )
 
