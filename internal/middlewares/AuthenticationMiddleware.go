@@ -6,13 +6,13 @@
 package middlewares
 
 import (
-	"github.com/gin-gonic/gin"
-	"net/http"
 	"LRYGoCodeGen/internal/globals/codes"
 	"LRYGoCodeGen/internal/models/ginModels"
+	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
-func AuthenticationMiddleware() gin.HandlerFunc {
+func AuthMiddleware(allowRole []string) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		//查询账号信息
 		temp, ok := c.Get("user")
@@ -26,7 +26,14 @@ func AuthenticationMiddleware() gin.HandlerFunc {
 		}
 		user := temp.(ginModels.UserModel)
 		// 验证权限
-		if ok := user.VerifyAdminRole(); !ok {
+		var f bool
+		for _, role := range allowRole {
+			if user.UserType == role {
+				f = true
+				break
+			}
+		}
+		if !f {
 			c.JSON(http.StatusOK, gin.H{
 				"code":    codes.AccessDenied,
 				"message": "您无权访问！",

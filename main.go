@@ -6,6 +6,7 @@
 package main
 
 import (
+	"LRYGoCodeGen/internal/models/ginModels"
 	"LRYGoCodeGen/internal/settings"
 	"encoding/gob"
 	"fmt"
@@ -16,6 +17,7 @@ import (
 
 func main() {
 	gob.Register(time.Time{})
+	gob.Register(ginModels.UserModel{})
 	var err error
 	//初始化viper
 	err = settings.InitViper()

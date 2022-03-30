@@ -5,6 +5,7 @@
 package mysqlModel
 
 import (
+    "gitee.com/lryself/go-utils/structs"
     "time"
 )
 
@@ -94,4 +95,9 @@ func (m *SsoUserModel) GetIsDeleted() bool {
 
 func (m *SsoUserModel) SetIsDeleted(IsDeleted bool) {
     m.IsDeleted = IsDeleted
+}
+
+
+func (m *SsoUserModel) GetModelMap() (map[string]interface{}, error) {
+    return structs.StructToMap(m, "json")
 }

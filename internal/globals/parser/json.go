@@ -6,10 +6,10 @@
 package parser
 
 import (
+	"LRYGoCodeGen/internal/globals/codes"
 	"errors"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"LRYGoCodeGen/internal/globals/codes"
 )
 
 func JsonOK(c *gin.Context, msg string, data interface{}) {
@@ -102,14 +102,14 @@ func JsonDBError(c *gin.Context, msg string, err error) {
 //		"message":msg,
 //	})
 //}
-//
-//func JsonAccessDenied(c *gin.Context, msg string) {
-//	c.JSON(http.StatusOK, gin.H{
-//		"code":    codes.AccessDenied,
-//		"message": msg,
-//	})
-//}
-//
+
+func JsonAccessDenied(c *gin.Context, msg string) {
+	c.JSON(http.StatusOK, gin.H{
+		"code":    codes.AccessDenied,
+		"message": msg,
+	})
+}
+
 //func JsonLoginError(c *gin.Context, msg string, err error) {
 //	if err == nil {
 //		c.JSON(http.StatusOK, gin.H{
