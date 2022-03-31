@@ -7,19 +7,20 @@ package gen_program
 
 import (
 	"LRYGoCodeGen/core/gen/gen_program/model"
+	"LRYGoCodeGen/globals/vipers"
 	"LRYGoCodeGen/utils/errHelper"
 	"encoding/json"
-	"github.com/spf13/viper"
 	"io/ioutil"
 	"path/filepath"
 )
 
 func GenProgramCodeFromTemplates() {
-	dirModel, err := model.GetDirModel(viper.GetString("genCode.templates_path"))
+	genViper := vipers.GetGenViper()
+	dirModel, err := model.GetDirModel(genViper.GetString("genCode.templates_path"))
 	errHelper.ErrExit(err)
-	dictKeywordFile, err := ioutil.ReadFile(filepath.Join(viper.GetString("genCode.dict_path"), "keyword.json"))
+	dictKeywordFile, err := ioutil.ReadFile(filepath.Join(genViper.GetString("genCode.dict_path"), "keyword.json"))
 	errHelper.ErrExit(err)
 	var replaceDict model.KeyWord
 	errHelper.ErrExit(json.Unmarshal(dictKeywordFile, &replaceDict))
-	errHelper.ErrExit(dirModel.MakeDir(viper.GetString("genCode.result_path"), replaceDict))
+	errHelper.ErrExit(dirModel.MakeDir(genViper.GetString("genCode.result_path"), replaceDict))
 }

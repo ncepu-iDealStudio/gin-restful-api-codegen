@@ -6,8 +6,8 @@
 package mysql
 
 import (
+	"LRYGoCodeGen/globals/vipers"
 	"fmt"
-	"github.com/spf13/viper"
 	"sort"
 	"strings"
 )
@@ -83,20 +83,21 @@ func (m *TableModel) GetColumns(orm *MySQLOrm) {
 }
 
 func GetMysqlDBModel() (*DataBaseModel, error) {
+	var genViper = vipers.GetGenViper()
 	var DBModel DataBaseModel
 	var err error
 	orm, err := InitDBOrm(fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local&interpolateParams=True",
-		viper.GetString("database.username"),
-		viper.GetString("database.password"),
-		viper.GetString("database.host"),
-		viper.GetString("database.port"),
-		viper.GetString("database.database"),
+		genViper.GetString("database.username"),
+		genViper.GetString("database.password"),
+		genViper.GetString("database.host"),
+		genViper.GetString("database.port"),
+		genViper.GetString("database.database"),
 	))
 	if err != nil {
 		return nil, err
 	}
 	defer orm.DestroyDB()
-	DBModel.DataBaseName = viper.GetString("database.database")
+	DBModel.DataBaseName = genViper.GetString("database.database")
 	err = DBModel.GetTables(orm)
 	if err != nil {
 		return nil, err

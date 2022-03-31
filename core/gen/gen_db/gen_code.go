@@ -6,11 +6,11 @@
 package gen_db
 
 import (
+	"LRYGoCodeGen/core/database/mysql"
 	"LRYGoCodeGen/core/gen/gen_db/model"
-	"LRYGoCodeGen/core/model/mysql"
+	"LRYGoCodeGen/globals/vipers"
 	"LRYGoCodeGen/utils/errHelper"
 	"encoding/json"
-	"github.com/spf13/viper"
 	"io/ioutil"
 	"path/filepath"
 )
@@ -25,12 +25,12 @@ type makeFileDict struct {
 func GenDBCodeFromTemplate() {
 	dbModel, err := mysql.GetMysqlDBModel()
 	errHelper.ErrExit(err)
-
-	tmplPath := viper.GetString("genCode.tmplPath")
-	resultPath := viper.GetString("genCode.result_path")
+	genViper := vipers.GetGenViper()
+	tmplPath := genViper.GetString("genCode.tmplPath")
+	resultPath := genViper.GetString("genCode.result_path")
 
 	var makefiles []makeFileDict
-	dictTypeDict, err := ioutil.ReadFile(filepath.Join(viper.GetString("genCode.dict_path"), "makefile.json"))
+	dictTypeDict, err := ioutil.ReadFile(filepath.Join(genViper.GetString("genCode.dict_path"), "makefile.json"))
 	errHelper.ErrExit(err)
 	errHelper.Error(json.Unmarshal(dictTypeDict, &makefiles))
 	for _, d := range makefiles {

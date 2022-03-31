@@ -6,7 +6,7 @@
 package model
 
 import (
-	"LRYGoCodeGen/core/model/mysql"
+	"LRYGoCodeGen/core/database/mysql"
 	"LRYGoCodeGen/utils"
 	"LRYGoCodeGen/utils/str"
 	"fmt"

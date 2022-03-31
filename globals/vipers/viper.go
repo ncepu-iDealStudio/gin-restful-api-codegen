@@ -11,20 +11,29 @@ import (
 	"github.com/spf13/viper"
 )
 
-func InitViper(confName string) (err error) {
-	viper.SetConfigName(confName)
-	viper.AddConfigPath("./configs") // 添加搜索路径
-	viper.SetConfigType("yaml")
+var (
+	genViper *viper.Viper
+)
 
-	err = viper.ReadInConfig()
+func InitGenViper(confName string) (err error) {
+	genViper = viper.New()
+	genViper.SetConfigName(confName)
+	genViper.AddConfigPath("./configs") // 添加搜索路径
+	genViper.SetConfigType("yaml")
+
+	err = genViper.ReadInConfig()
 	if err != nil {
 		sys.PrintErr("Fatal error config file: ", err)
 		return
 	}
-	viper.WatchConfig()
+	genViper.WatchConfig()
 
-	viper.OnConfigChange(func(e fsnotify.Event) {
+	genViper.OnConfigChange(func(e fsnotify.Event) {
 		sys.Println("Config file:", e.Name, "Op: ", e.Op)
 	})
 	return
+}
+
+func GetGenViper() *viper.Viper {
+	return genViper
 }

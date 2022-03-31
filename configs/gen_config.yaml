@@ -1,0 +1,13 @@
+database:
+  driver : "mysql"
+  host : "47.107.75.113"
+  port : "3306"
+  username : "LryGenCode"
+  password : "lryGenCode"
+  database : "lry_gen_code"
+
+genCode:
+  templates_path: "assert/templates/go/tem_go_project"
+  dict_path: "assert/templates/go/dict"
+  tmplPath: "assert/templates/go/tmpl"
+  result_path: "result/lry_code_gen"
