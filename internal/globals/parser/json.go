@@ -96,12 +96,12 @@ func JsonDBError(c *gin.Context, msg string, err error) {
 	})
 }
 
-//func JsonDataExist(c *gin.Context, msg string){
-//	c.JSON(http.StatusOK,gin.H{
-//		"code":codes.DataExist,
-//		"message":msg,
-//	})
-//}
+func JsonDataExist(c *gin.Context, msg string) {
+	c.JSON(http.StatusOK, gin.H{
+		"code":    codes.DataExist,
+		"message": msg,
+	})
+}
 
 func JsonAccessDenied(c *gin.Context, msg string) {
 	c.JSON(http.StatusOK, gin.H{

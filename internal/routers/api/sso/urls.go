@@ -18,9 +18,7 @@ func InitSsoRouterGroup(engine *gin.RouterGroup) {
 	Api = engine.Group("sso")
 	Api.POST("register", sso.Register)
 	Api.POST("login", sso.Login)
-	Api.POST("password", sso.LoginByPassword)
 	Api.PUT("password", sso.ChangePassword)
-	Api.POST("verifyCode/email", sso.LoginByEmailVerifyCode)
 	Api.POST("makeVerifyCode/email", sso.MakeEmailVerifyCode)
 	Api.POST("logout", sso.Logout)
 }
