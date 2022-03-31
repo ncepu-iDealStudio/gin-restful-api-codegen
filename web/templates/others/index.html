@@ -1,0 +1,143 @@
+{{ template "base.html"}}
+
+{{define "title"}}技术学习平台{{end}}
+
+{{define "head"}}
+{{end}}
+
+{{define "content"}}
+    <div class="layui-card">
+        <fieldset class="layui-elem-field layui-field-title layui-card-header">
+            <legend>学习板块</legend>
+        </fieldset>
+        <div class="layui-card-body layui-bg-gray">
+            <div class="layui-fluid">
+                <div class="layui-row" id="study"></div>
+            </div>
+        </div>
+        <div id="study-page"></div>
+    </div>
+
+    <div class="layui-card">
+        <fieldset class="layui-elem-field layui-field-title layui-card-header">
+            <legend>个人中心</legend>
+        </fieldset>
+        <div class="layui-card-body layui-bg-gray">
+            <div class="layui-fluid">
+                <div class="layui-row" id="collect"></div>
+            </div>
+        </div>
+        <div id="collect-page"></div>
+    </div>
+
+    <div class="layui-card">
+        <fieldset class="layui-elem-field layui-field-title layui-card-header">
+            <legend>常用工具</legend>
+        </fieldset>
+        <div class="layui-card-body layui-bg-gray">
+            <div class="layui-fluid">
+                <div class="layui-row" id="utils"></div>
+            </div>
+        </div>
+        <div id="utils-page"></div>
+    </div>
+{{end}}
+
+{{define "script"}}
+<script>
+    var collect_data = [
+        {'url':'/collect','title':'我的收藏', 'index':0},
+        {'url':'/note','title':'我的笔记', 'index':1}
+    ];
+    var utils_data = [
+        {'url':'/','title':'工具箱', 'index':0},
+    ];
+    layui.use(['element', 'laypage'], function(){
+        var laypage=layui.laypage,
+            $=layui.jquery
+
+        var study_data = [];
+        $.ajax({
+            url:"/api/get_study_node_title",
+            type:"GET",   //请求类型
+            async:true,
+            success:function (res) {
+                if(res.code === "200"){
+                    study_data=res.data
+                    laypage.render({
+                        elem: 'study-page'
+                        ,count: study_data.length
+                        ,limit: 6
+                        ,layout: ['prev', 'page', 'next', 'skip']
+                        ,jump: function(obj){
+                            //模拟渲染
+                            document.getElementById('study').innerHTML = function(){
+                                var arr = [],thisData = study_data.concat().splice(obj.curr*obj.limit - obj.limit, obj.limit);
+                                layui.each(thisData, function(index, item){
+                                    arr.push('<div class="layui-col-md2"><button id='+item["codeID"]+' class="layui-btn-lg" style="background:#009688;color:#F0F0F0 " onclick="jumpToMaterialUrl('+item["codeID"]+')">'+ item['codeName'] +'</button></div>');
+                                });
+                                return arr.join('');
+                            }();
+                        }
+                    });
+                    return false
+                }
+                else{
+                    alert(res.msg)
+                }
+            },
+            error:function f(res) {
+                alert("请求失败！状态码：" + res.status)
+            }
+        })
+
+        laypage.render({
+            elem: 'collect-page'
+            ,count: collect_data.length
+            ,limit: 6
+            ,layout: ['prev', 'page', 'next', 'skip']
+            ,jump: function(obj){
+                //模拟渲染
+                document.getElementById('collect').innerHTML = function(){
+                    var arr = [],thisData = collect_data.concat().splice(obj.curr*obj.limit - obj.limit, obj.limit);
+                    layui.each(thisData, function(index, item) {
+                        arr.push('<div class="layui-col-md2"><button class="layui-btn-lg" style="background:#009688;color:#F0F0F0 " onclick="jumpToUrl(' + item["index"] + ')">' + item['title'] + '</button></div>');
+                    });
+                    return arr.join('');
+                }();
+            }
+        });
+
+
+        laypage.render({
+            elem: 'utils-page'
+            ,count: utils_data.length
+            ,limit: 6
+            ,layout: ['prev', 'page', 'next', 'skip']
+            ,jump: function(obj){
+                //模拟渲染
+                document.getElementById('utils').innerHTML = function(){
+                    var arr = [],thisData = utils_data.concat().splice(obj.curr*obj.limit - obj.limit, obj.limit);
+                    layui.each(thisData, function(index, item){
+                        arr.push('<div class="layui-col-md2"><button class="layui-btn-lg" style="background:#009688;color:#F0F0F0 " onclick="jumpToUrl(' + item["index"] + ')">' + item['title'] + '</button></div>');
+                    });
+                    return arr.join('');
+                }();
+            }
+        });
+    });
+</script>
+<script>
+    function jumpToMaterialUrl(data) {
+        location.href="/material?codeID="+data.toString()
+    }
+    function jumpToUrl(data) {
+        for(var i=0;i<collect_data.length;i++){
+            if(collect_data[i]['index']===data){
+                location.href=collect_data[i]['url']
+                return true
+            }
+        }
+    }
+</script>
+{{end}}

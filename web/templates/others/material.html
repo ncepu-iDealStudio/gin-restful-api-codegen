@@ -1,0 +1,129 @@
+{{ template "base.html"}}
+
+{{define "title"}}资料展示{{end}}
+
+{{define "head"}}
+    <style>
+        h{
+            position: absolute;
+            color: #8D8D8D;
+            top: 30%;
+            left: 30%;
+            font-style: italic;
+            font-size: 100px;
+        }
+        div{
+            line-height: 3;
+        }
+        #texts{
+            padding-left: 20px;
+            background-color: #E6E6E6;
+
+        }
+    </style>
+{{end}}
+
+{{define "content"}}
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <div>
+                <ul class="layui-nav layui-nav-tree " id="nav" lay-filter="test">
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div ID="texts" class="layui-body">
+
+        <h>点击左侧标题</h>
+    </div>
+
+    <div class="layui-footer">
+        © 欢迎来访
+    </div>
+{{end}}
+
+{{define "script"}}
+    <script>
+        layui.use('element',function() {
+            var $ = layui.jquery
+            var element = layui.element;
+            var layFilter = $('#nav').attr('lay-filter');
+
+            $.ajax({
+                url: "/api/get_study_code_list",
+                async: true,
+                type: "GET",
+                data: {"codeID": GetQueryString("codeID")},
+                success: function (where) {
+                    if (where.code === "200") {
+                        $("#nav").find('span.layui-nav-bar').remove();
+                        $.each(where.data, function (i, value) {
+                            var title_id = value.codeID;
+                            var what = value.codeName;
+                            var $li = "<li class='layui-nav-item'> <a href='javascript:;' data-id="+title_id+">" + what + "</a></li>";
+                            $("#nav").append($li);
+                        })
+                        element.render('nav',layFilter);
+                    } else {
+                        alert("查询失败!")
+                    }
+                },
+                error: function (res) {
+                    alert("请求失败！"+res.status)
+                }
+            })
+
+            element.on('nav',function(elem){
+                var id=elem.attr('data-id');
+                layui.use('layer', function () {
+                    var layer = layui.layer;
+                    var index = layer.load(1);
+                    $.ajax({
+                        url:"/api/get_study_information",
+                        async:true,
+                        type: "get",
+                        data: {"codeID": id},
+                        success: function (message) {
+                            if (message.code === "200") {
+                                var ss = message.data[0];
+                                var whats = eval(ss);
+                                var html = "";
+                                for (var i = 0; i < whats.length; i++) {
+                                    if (whats[i][0] === "h1") {
+                                        html += "<h1>" + whats[i][1] + "</h1>"
+                                    }
+                                    if (whats[i][0] === "h2") {
+                                        html += "<h2>" + whats[i][1] + "</h2>"
+                                    }
+                                    if (whats[i][0] === "div") {
+                                        html += "<div>" + whats[i][1] + "</div>"
+                                    }
+                                    if (whats[i][0] === "p") {
+                                        html += "<p>" + whats[i][1] + "</p>"
+                                    }
+                                    if (whats[i][0] == "pre") {
+                                        html += "<pre>" + whats[i][1] + "</pre>"
+                                    }
+                                    if (whats[i][0] == "hr") {
+                                        html += "<hr>" + whats[i][1] + "</hr>"
+                                    }
+                                    if (whats[i][0] == "ul") {
+                                        html += "<ul>" + whats[i][1] + "</ul>"
+                                    }
+                                }
+                                document.getElementById('texts').innerHTML = html;
+                            }
+                            layer.close(index);
+                        },
+                        error: function (res) {
+                            layer.close(index);
+                            alert("请求失败！"+res.status)
+                        }
+                    })
+                })
+
+            });
+        });
+    </script>
+{{end}}

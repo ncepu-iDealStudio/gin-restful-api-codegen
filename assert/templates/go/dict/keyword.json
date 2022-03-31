@@ -1,6 +1,6 @@
 {
   "include": {
-    "tem_go_project": "project-center-service"
+    "tem_go_project": "LRYGoCodeGen"
   },
   "ignore_dir": ["\\..*"]
 }

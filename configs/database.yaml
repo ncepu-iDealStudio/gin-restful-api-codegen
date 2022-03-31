@@ -1,0 +1,11 @@
+mysql:
+  host : 47.107.75.113
+  port : 3306
+  username : LryGenCode
+  password : lryGenCode
+  dbname : lry_gen_code
+
+redis:
+  addr: 47.107.75.113:6379
+  password: lpc123LPC
+  DB: 1

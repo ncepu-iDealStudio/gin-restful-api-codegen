@@ -1,0 +1,95 @@
+{{ template "base_login.html"}}
+{{define "title"}}
+    注册
+{{end}}
+
+{{define "head"}}{{end}}
+
+{{define "li"}}
+    <li class="layui-nav-item">
+        <a href="/login">登录</a>
+    </li>
+{{end}}
+
+{{define "content"}}
+    <div class="layui-body" style="padding: 15px">
+        <form class="layui-form layui-form-pane1" action="" lay-filter="first">
+            <div class="layui-form-item">
+                <label class="layui-form-label">用户昵称</label>
+                <div class="layui-input-inline" style="width: 50%">
+                    <input type="text" name="userName" lay-verify="required" lay-reqText="用户昵称不能为空" placeholder="给自己起个名字吧！" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux" style="color: #FF5722">*</div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">邮箱</label>
+                <div class="layui-input-inline" style="width: 50%">
+                    <input type="email" name="mail" lay-verify="required|email" lay-reqText="邮箱不能为空" placeholder="请输入邮箱" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux" style="color: #FF5722">*</div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">密码</label>
+                <div class="layui-input-inline" style="width: 50%">
+                    <input type="Password" name="password" lay-verify="required|pass|pass1" lay-reqText="密码不能为空" placeholder="请输入密码" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux" style="color: #FF5722">*</div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">重复密码</label>
+                <div class="layui-input-inline" style="width: 50%">
+                    <input id="repassword" type="Password" placeholder="请重复密码" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux" style="color: #FF5722">*</div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit type="button">注册</button>
+                </div>
+            </div>
+        </form>
+    </div>
+{{end}}
+
+{{define "script"}}
+    <script>
+        layui.use(['form', 'element', 'jquery'], function(rewq){
+            var form = layui.form,
+                $ = layui.jquery;
+
+            form.verify({
+                pass:function (data) {
+                    if(data !== $('#repassword').val()){
+                        return "两次密码不一致！"
+                    }
+                },
+                pass1:[/^[0-9A-Za-z]{6,15}$/, '密码必须6到15位且由字母和数字组成！']
+            });
+            //监听提交
+            form.on('submit', function(data){
+                form_data = data.field;
+                $.ajax({
+                    url:"/api/register",
+                    type:"POST",   //请求类型 ,
+                    async:false,
+                    data: form_data,
+                    success:function (res) {
+                        if(res.code === "200"){
+                            alert("注册成功！");
+                            location.href = "/login"
+                            return false
+                        }
+                        else{
+                            alert(res.msg);
+                        }
+                    },
+                    error:function f(res) {
+                        alert("请求失败！状态码：" + res.status);
+                    },
+                })
+                return false;
+            });
+
+        });
+    </script>
+{{ end }}

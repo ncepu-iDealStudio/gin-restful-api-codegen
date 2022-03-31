@@ -1,0 +1,17 @@
+version: "3"
+services:
+  LRYGoCodeGen:
+    privileged: true
+    stdin_open: true
+    tty: true
+    build: .
+    image: LRYGoCodeGen
+#    container_name: LRYGoCodeGen
+    restart: always
+    volumes:
+      - /docker/deploy/LRYGoCodeGen/configs:/apps/configs
+      - /docker/deploy/LRYGoCodeGen/logs:/apps/logs
+    ports:
+      - "8000:8000"
+    command:
+      - /apps/golang_app
