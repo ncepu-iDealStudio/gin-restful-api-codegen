@@ -12,10 +12,13 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 	"text/template"
 )
 
 func GenTableCode(tableInfo *mysql.DataBaseModel, tmplPath string, outPath string, divideDir bool) error {
+	exts := strings.Split(tmplPath, ".")
+	ext := exts[len(exts)-2]
 	for _, table := range tableInfo.Tables {
 		var codeTemplate tableCodeDict
 		err := codeTemplate.Init(&table)
@@ -34,9 +37,9 @@ func GenTableCode(tableInfo *mysql.DataBaseModel, tmplPath string, outPath strin
 					return err
 				}
 			}
-			file, err = os.Create(filepath.Join(outPath, str.LineToLowCamel(table.TableName), fmt.Sprintf("%s.go", str.LineToUpCamel(table.TableName))))
+			file, err = os.Create(filepath.Join(outPath, str.LineToLowCamel(table.TableName), fmt.Sprintf("%s.%s", str.LineToUpCamel(table.TableName), ext)))
 		} else {
-			file, err = os.Create(filepath.Join(outPath, fmt.Sprintf("%s.go", str.LineToUpCamel(table.TableName))))
+			file, err = os.Create(filepath.Join(outPath, fmt.Sprintf("%s.%s", str.LineToUpCamel(table.TableName), ext)))
 		}
 		if err != nil {
 			return err

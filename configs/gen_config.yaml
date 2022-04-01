@@ -10,4 +10,4 @@ genCode:
   templates_path: "assert/templates/go/tem_go_project"
   dict_path: "assert/templates/go/dict"
   tmplPath: "assert/templates/go/tmpl"
-  result_path: "result/lry_code_gen"
+  result_path: "result"
