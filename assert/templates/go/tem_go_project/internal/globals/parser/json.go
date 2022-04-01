@@ -96,45 +96,22 @@ func JsonDBError(c *gin.Context, msg string, err error) {
 	})
 }
 
-//func JsonDataExist(c *gin.Context, msg string){
-//	c.JSON(http.StatusOK,gin.H{
-//		"code":codes.DataExist,
-//		"message":msg,
-//	})
-//}
-//
-//func JsonAccessDenied(c *gin.Context, msg string) {
-//	c.JSON(http.StatusOK, gin.H{
-//		"code":    codes.AccessDenied,
-//		"message": msg,
-//	})
-//}
-//
-//func JsonLoginError(c *gin.Context, msg string, err error) {
-//	if err == nil {
-//		c.JSON(http.StatusOK, gin.H{
-//			"code":    codes.LoginError,
-//			"message": msg,
-//		})
-//	}else {
-//		c.JSON(http.StatusOK, gin.H{
-//			"code":    codes.LoginError,
-//			"message": msg,
-//			"err":     err,
-//		})
-//	}
-//}
-//
-//func JsonUnauthorizedUserId(c *gin.Context, msg string) {
-//	c.JSON(http.StatusOK, gin.H{
-//		"code":    codes.UnauthorizedUserId,
-//		"message": msg,
-//	})
-//}
-//
-//func JsonIncompleteRequest(c *gin.Context,msg string){
-//	c.JSON(http.StatusOK,gin.H{
-//		"code":		codes.ParameterIllegal,
-//		"message":	msg,
-//	})
-//}
+func JsonDataExist(c *gin.Context, msg string) {
+	if msg == "" {
+		msg = "数据已存在!"
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"code":    codes.DataExist,
+		"message": msg,
+	})
+}
+
+func JsonAccessDenied(c *gin.Context, msg string) {
+	if msg == "" {
+		msg = "无权限!"
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"code":    codes.AccessDenied,
+		"message": msg,
+	})
+}

@@ -21,6 +21,7 @@ func InitGinEngine() (*gin.Engine, error) {
 	// 加载全局中间件
 	engine.Use(middlewares.CorsMiddleware())
 	engine.Use(middlewares.LogMiddleware())
+	engine.Use(middlewares.LoadUser())
 
 	// 初始化Session
 	// 将session存在redis

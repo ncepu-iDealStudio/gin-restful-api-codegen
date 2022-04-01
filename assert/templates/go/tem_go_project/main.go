@@ -5,12 +5,14 @@ import (
 	"fmt"
 	logs "gitee.com/lryself/go-utils/loggers"
 	"github.com/spf13/viper"
+	"tem_go_project/internal/models/ginModels"
 	"tem_go_project/internal/settings"
 	"time"
 )
 
 func main() {
 	gob.Register(time.Time{})
+	gob.Register(ginModels.UserModel{})
 	var err error
 	//初始化viper
 	err = settings.InitViper()

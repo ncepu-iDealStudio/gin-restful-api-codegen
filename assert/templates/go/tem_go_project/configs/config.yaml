@@ -29,11 +29,11 @@ system:
   #  部署服务器端口
   SysPort: 8000
   #  使用mysql
-  UseMysql: true
+  UseMysql: false
   #  使用redis
   UseRedis: false
 remote:
   #  ES路由
-  ESUrl: http://192.168.41.100:9200
+  ESUrl: http://www.myES.com
 user:
   defaultPassword: 123456

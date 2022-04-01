@@ -34,6 +34,6 @@ system:
   UseRedis: true
 remote:
   #  ES路由
-  ESUrl: http://192.168.41.100:9200
+  ESUrl: http://www.myES.com
 user:
   defaultPassword: 123456

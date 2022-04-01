@@ -7,30 +7,57 @@ package middlewares
 
 import (
 	"github.com/gin-gonic/gin"
-	"net/http"
-	"tem_go_project/internal/globals/codes"
+	"tem_go_project/internal/globals/parser"
 	"tem_go_project/internal/models/ginModels"
 )
 
-func AuthenticationMiddleware() gin.HandlerFunc {
+// AuthUserType 垂直鉴权
+func AuthUserType(allowRole ...string) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		//查询账号信息
-		temp, ok := c.Get("user")
-		if !ok {
-			c.JSON(http.StatusOK, gin.H{
-				"code":    codes.InternalError,
-				"message": "用户信息获取错误！",
-			})
+
+		user, err := ginModels.GetUser(c)
+		if err != nil {
+			parser.JsonAccessDenied(c, "请重新登录！")
+			return
+		}
+		// 验证权限
+		var f bool
+		for _, role := range allowRole {
+			if user.UserType == role {
+				f = true
+				break
+			}
+		}
+		if !f {
+			parser.JsonAccessDenied(c, "您无权访问！")
 			c.Abort()
 			return
 		}
-		user := temp.(ginModels.UserModel)
+		c.Next()
+		return
+	}
+}
+
+// AuthUserID todo 水平鉴权
+func AuthUserID(allowRole ...string) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		//查询账号信息
+		user, err := ginModels.GetUser(c)
+		if err != nil {
+			parser.JsonAccessDenied(c, "请重新登录！")
+			return
+		}
 		// 验证权限
-		if ok := user.VerifyAdminRole(); !ok {
-			c.JSON(http.StatusOK, gin.H{
-				"code":    codes.AccessDenied,
-				"message": "您无权访问！",
-			})
+		var f bool
+		for _, role := range allowRole {
+			if user.UserType == role {
+				f = true
+				break
+			}
+		}
+		if !f {
+			parser.JsonAccessDenied(c, "您无权访问！")
 			c.Abort()
 			return
 		}
