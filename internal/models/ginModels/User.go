@@ -14,14 +14,12 @@ import (
 type UserModel struct {
 	UserID    string                 `json:"user_id"`
 	UserType  string                 `json:"user_type"`
-	RoleID    bool                   `json:"role_id"`
 	OtherInfo map[string]interface{} `json:"other_info"`
 }
 
 const (
-	Platform   = "0"
-	StuffAdmin = "1"
-	StuffUser  = "2"
+	Platform = "0"
+	User     = "1"
 )
 
 type userTempService interface {
@@ -39,10 +37,8 @@ func NewUser(userID string, userType string) (UserModel, error) {
 	switch userType {
 	case Platform:
 		userService = &services.UserPlatformAdminService{}
-	case StuffUser:
-		userService = &services.UserStuffUserService{}
-	case StuffAdmin:
-		userService = &services.UserStuffAdminService{}
+	case User:
+		userService = &services.UserUserService{}
 	}
 	userService.SetUserID(userID)
 	err := userService.Get()
@@ -63,4 +59,13 @@ func GetUser(c *gin.Context) (UserModel, error) {
 	}
 	user := temp.(UserModel)
 	return user, nil
+}
+
+func (m UserModel) Auth(allowRole ...string) bool {
+	for _, s := range allowRole {
+		if s == m.UserType {
+			return true
+		}
+	}
+	return false
 }

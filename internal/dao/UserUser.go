@@ -9,18 +9,18 @@ import (
     "LRYGoCodeGen/internal/models/mysqlModel"
 )
 
-type UserStuffAdminDao struct {
-    mysqlModel.UserStuffAdminModel
+type UserUserDao struct {
+    mysqlModel.UserUserModel
 }
 
-func (m *UserStuffAdminDao) Get() error {
+func (m *UserUserDao) Get() error {
     mysqlManager := database.GetMysqlClient()
     return mysqlManager.Where(map[string]interface{}{
         "IsDeleted": 0,
     }).Where(m).Take(m).Error
 }
 
-func (m *UserStuffAdminDao) Add() error {
+func (m *UserUserDao) Add() error {
     mysqlManager := database.GetMysqlClient()
     err := m.Get()
     if err == nil {
@@ -29,7 +29,7 @@ func (m *UserStuffAdminDao) Add() error {
     return mysqlManager.Create(&m).Error
 }
 
-func (m *UserStuffAdminDao) Update(args map[string]interface{}) error {
+func (m *UserUserDao) Update(args map[string]interface{}) error {
     mysqlManager := database.GetMysqlClient()
     err := m.Get()
     if err != nil {
@@ -38,7 +38,7 @@ func (m *UserStuffAdminDao) Update(args map[string]interface{}) error {
     return mysqlManager.Model(&m).Updates(args).Error
 }
 
-func (m *UserStuffAdminDao) Delete() error {
+func (m *UserUserDao) Delete() error {
     mysqlManager := database.GetMysqlClient()
     err := m.Get()
     if err != nil {

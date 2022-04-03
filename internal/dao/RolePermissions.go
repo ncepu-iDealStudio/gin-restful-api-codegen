@@ -9,18 +9,18 @@ import (
     "LRYGoCodeGen/internal/models/mysqlModel"
 )
 
-type RolePremissionsDao struct {
-    mysqlModel.RolePremissionsModel
+type RolePermissionsDao struct {
+    mysqlModel.RolePermissionsModel
 }
 
-func (m *RolePremissionsDao) Get() error {
+func (m *RolePermissionsDao) Get() error {
     mysqlManager := database.GetMysqlClient()
     return mysqlManager.Where(map[string]interface{}{
         "IsDeleted": 0,
     }).Where(m).Take(m).Error
 }
 
-func (m *RolePremissionsDao) Add() error {
+func (m *RolePermissionsDao) Add() error {
     mysqlManager := database.GetMysqlClient()
     err := m.Get()
     if err == nil {
@@ -29,7 +29,7 @@ func (m *RolePremissionsDao) Add() error {
     return mysqlManager.Create(&m).Error
 }
 
-func (m *RolePremissionsDao) Update(args map[string]interface{}) error {
+func (m *RolePermissionsDao) Update(args map[string]interface{}) error {
     mysqlManager := database.GetMysqlClient()
     err := m.Get()
     if err != nil {
@@ -38,7 +38,7 @@ func (m *RolePremissionsDao) Update(args map[string]interface{}) error {
     return mysqlManager.Model(&m).Updates(args).Error
 }
 
-func (m *RolePremissionsDao) Delete() error {
+func (m *RolePermissionsDao) Delete() error {
     mysqlManager := database.GetMysqlClient()
     err := m.Get()
     if err != nil {

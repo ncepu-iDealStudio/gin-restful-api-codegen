@@ -14,8 +14,7 @@ type ProjectPoolModel struct {
     ProjectID string `gorm:"column:ProjectID;primaryKey;type:varchar(20);not null;" json:"ProjectID" form:"ProjectID"`
     UserID string `gorm:"column:UserID;primaryKey;type:varchar(20);not null;" json:"UserID" form:"UserID"`
     ProjectName string `gorm:"column:ProjectName;type:varchar(255);not null;" json:"ProjectName" form:"ProjectName"`
-    ProjectType string `gorm:"column:ProjectType;type:varchar(20);not null;" json:"ProjectType" form:"ProjectType"`
-    ProjectContext string `gorm:"column:ProjectContext;type:text;" json:"ProjectContext" form:"ProjectContext"`
+    ProjectContext string `gorm:"column:ProjectContext;type:text;not null;" json:"ProjectContext" form:"ProjectContext"`
     OtherInfo string `gorm:"column:OtherInfo;type:text;" json:"OtherInfo" form:"OtherInfo"`
     Createtime time.Time `gorm:"column:Createtime;type:timestamp;not null;default:CURRENT_TIMESTAMP;" json:"Createtime" form:"Createtime"`
     Updatetime time.Time `gorm:"column:Updatetime;type:timestamp;not null;default:CURRENT_TIMESTAMP;" json:"Updatetime" form:"Updatetime"`
@@ -56,14 +55,6 @@ func (m *ProjectPoolModel) GetProjectName() string {
 
 func (m *ProjectPoolModel) SetProjectName(ProjectName string) {
     m.ProjectName = ProjectName
-}
-
-func (m *ProjectPoolModel) GetProjectType() string {
-    return m.ProjectType
-}
-
-func (m *ProjectPoolModel) SetProjectType(ProjectType string) {
-    m.ProjectType = ProjectType
 }
 
 func (m *ProjectPoolModel) GetProjectContext() string {

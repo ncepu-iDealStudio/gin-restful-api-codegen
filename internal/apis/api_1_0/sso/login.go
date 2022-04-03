@@ -139,10 +139,8 @@ func Login(c *gin.Context) {
 	switch LoginParser.LoginType {
 	case ginModels.Platform:
 		userService = &services.UserPlatformAdminService{}
-	case ginModels.StuffUser:
-		userService = &services.UserStuffUserService{}
-	case ginModels.StuffAdmin:
-		userService = &services.UserStuffAdminService{}
+	case ginModels.User:
+		userService = &services.UserUserService{}
 	default:
 		parser.JsonParameterIllegal(c, "登录的用户类型不合法！", errors.New("登录的用户类型不合法！"))
 		return

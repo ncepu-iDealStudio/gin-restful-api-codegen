@@ -9,7 +9,7 @@ import (
     "time"
 )
 
-type UserStuffAdminModel struct { 
+type UserUserModel struct { 
     AutoID int64 `gorm:"column:AutoID;primaryKey;type:bigint(20);not null;" json:"AutoID" form:"AutoID"`
     UserID string `gorm:"column:UserID;primaryKey;type:varchar(20);not null;" json:"UserID" form:"UserID"`
     Name string `gorm:"column:Name;type:varchar(255);not null;" json:"Name" form:"Name"`
@@ -21,83 +21,83 @@ type UserStuffAdminModel struct {
     IsDeleted bool `gorm:"column:IsDeleted;type:tinyint(1);not null;default:0;" json:"IsDeleted" form:"IsDeleted"`
 }
 
-func (m *UserStuffAdminModel) TableName() string {
-    return "user_stuffAdmin"
+func (m *UserUserModel) TableName() string {
+    return "user_User"
 }
 
-func (m *UserStuffAdminModel) GetAutoID() int64 {
+func (m *UserUserModel) GetAutoID() int64 {
     return m.AutoID
 }
 
-func (m *UserStuffAdminModel) SetAutoID(AutoID int64) {
+func (m *UserUserModel) SetAutoID(AutoID int64) {
     m.AutoID = AutoID
 }
 
-func (m *UserStuffAdminModel) GetUserID() string {
+func (m *UserUserModel) GetUserID() string {
     return m.UserID
 }
 
-func (m *UserStuffAdminModel) SetUserID(UserID string) {
+func (m *UserUserModel) SetUserID(UserID string) {
     m.UserID = UserID
 }
 
-func (m *UserStuffAdminModel) GetName() string {
+func (m *UserUserModel) GetName() string {
     return m.Name
 }
 
-func (m *UserStuffAdminModel) SetName(Name string) {
+func (m *UserUserModel) SetName(Name string) {
     m.Name = Name
 }
 
-func (m *UserStuffAdminModel) GetPhone() string {
+func (m *UserUserModel) GetPhone() string {
     return m.Phone
 }
 
-func (m *UserStuffAdminModel) SetPhone(Phone string) {
+func (m *UserUserModel) SetPhone(Phone string) {
     m.Phone = Phone
 }
 
-func (m *UserStuffAdminModel) GetEmail() string {
+func (m *UserUserModel) GetEmail() string {
     return m.Email
 }
 
-func (m *UserStuffAdminModel) SetEmail(Email string) {
+func (m *UserUserModel) SetEmail(Email string) {
     m.Email = Email
 }
 
-func (m *UserStuffAdminModel) GetOtherInfo() string {
+func (m *UserUserModel) GetOtherInfo() string {
     return m.OtherInfo
 }
 
-func (m *UserStuffAdminModel) SetOtherInfo(OtherInfo string) {
+func (m *UserUserModel) SetOtherInfo(OtherInfo string) {
     m.OtherInfo = OtherInfo
 }
 
-func (m *UserStuffAdminModel) GetCreatetime() time.Time {
+func (m *UserUserModel) GetCreatetime() time.Time {
     return m.Createtime
 }
 
-func (m *UserStuffAdminModel) SetCreatetime(Createtime time.Time) {
+func (m *UserUserModel) SetCreatetime(Createtime time.Time) {
     m.Createtime = Createtime
 }
 
-func (m *UserStuffAdminModel) GetUpdatetime() time.Time {
+func (m *UserUserModel) GetUpdatetime() time.Time {
     return m.Updatetime
 }
 
-func (m *UserStuffAdminModel) SetUpdatetime(Updatetime time.Time) {
+func (m *UserUserModel) SetUpdatetime(Updatetime time.Time) {
     m.Updatetime = Updatetime
 }
 
-func (m *UserStuffAdminModel) GetIsDeleted() bool {
+func (m *UserUserModel) GetIsDeleted() bool {
     return m.IsDeleted
 }
 
-func (m *UserStuffAdminModel) SetIsDeleted(IsDeleted bool) {
+func (m *UserUserModel) SetIsDeleted(IsDeleted bool) {
     m.IsDeleted = IsDeleted
 }
 
 
-func (m *UserStuffAdminModel) GetModelMap() (map[string]interface{}, error) {
+func (m *UserUserModel) GetModelMap() (map[string]interface{}, error) {
     return structs.StructToMap(m, "json")
 }

@@ -81,25 +81,16 @@ func Register(c *gin.Context) {
 	}
 
 	//验证是否有权限注册该用户
-	if Parser.LoginType != ginModels.StuffUser {
+	if Parser.LoginType != ginModels.User {
 		temp, ok := c.Get("user")
 		if !ok {
 			parser.JsonAccessDenied(c, "您无权注册此用户！")
 			return
 		}
 		user := temp.(ginModels.UserModel)
-		switch user.UserType {
-		case ginModels.StuffUser:
+		if !user.Auth(ginModels.Platform) {
 			parser.JsonAccessDenied(c, "您无权注册此用户！")
 			return
-		case ginModels.StuffAdmin:
-			if Parser.LoginType == ginModels.StuffUser {
-				break
-			}
-			parser.JsonAccessDenied(c, "您无权注册此用户！")
-			return
-		case ginModels.Platform:
-			break
 		}
 	}
 
@@ -135,10 +126,8 @@ func Register(c *gin.Context) {
 	switch Parser.LoginType {
 	case ginModels.Platform:
 		userService = &services.UserPlatformAdminService{}
-	case ginModels.StuffUser:
-		userService = &services.UserStuffUserService{}
-	case ginModels.StuffAdmin:
-		userService = &services.UserStuffAdminService{}
+	case ginModels.User:
+		userService = &services.UserUserService{}
 	default:
 		parser.JsonParameterIllegal(c, "登录的用户类型不合法！", errors.New("注册的用户类型不合法！"))
 		return
@@ -162,16 +151,8 @@ func Register(c *gin.Context) {
 			return
 		}
 		userService = &userInfoService
-	case ginModels.StuffUser:
-		var userInfoService services.UserStuffUserService
-		err = c.ShouldBind(&userInfoService)
-		if err != nil {
-			parser.JsonParameterIllegal(c, "", err)
-			return
-		}
-		userService = &userInfoService
-	case ginModels.StuffAdmin:
-		var userInfoService services.UserStuffAdminService
+	case ginModels.User:
+		var userInfoService services.UserUserService
 		err = c.ShouldBind(&userInfoService)
 		if err != nil {
 			parser.JsonParameterIllegal(c, "", err)

@@ -2,6 +2,8 @@ package api
 
 import (
 	"LRYGoCodeGen/internal/apis/api_1_0"
+	"LRYGoCodeGen/internal/routers/api/project"
+	"LRYGoCodeGen/internal/routers/api/role"
 	"LRYGoCodeGen/internal/routers/api/sso"
 	"github.com/gin-gonic/gin"
 )
@@ -14,4 +16,6 @@ func InitAPIRouter(engine *gin.Engine) {
 	Api = engine.Group("api")
 	Api.Any("version", api_1_0.GetVersion)
 	sso.InitSsoRouterGroup(Api)
+	project.InitProjectRouterGroup(Api)
+	role.InitRoleRouterGroup(Api)
 }

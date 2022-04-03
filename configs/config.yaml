@@ -35,5 +35,12 @@ system:
 remote:
   #  ES路由
   ESUrl: http://www.myES.com
+#  minio秘钥
+  minio:
+    Endpoint: 47.107.75.113:11112
+    AccessKey: 5D3288UJBH0OW0MDFL0N
+    SecretKey: Nh2rJvuZPvVlgqumcypG9OxodE2yZoJ+pkBlldRG
+    UseSSL: false
+    BucketName: lrycodegen
 user:
   defaultPassword: 123456

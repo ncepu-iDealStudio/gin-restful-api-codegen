@@ -9,11 +9,11 @@ import (
     "LRYGoCodeGen/internal/globals/database"
 )
 
-type UserStuffUserService struct {
-    dao.UserStuffUserDao
+type RolePermissionsService struct {
+    dao.RolePermissionsDao
 }
 
-func (m *UserStuffUserService) GetList() ([]UserStuffUserService, error) {
+func (m *RolePermissionsService) GetList() ([]RolePermissionsService, error) {
     mysqlManager := database.GetMysqlClient()
 
     rows, err := mysqlManager.Table(m.TableName()).Where(map[string]interface{}{
@@ -23,9 +23,9 @@ func (m *UserStuffUserService) GetList() ([]UserStuffUserService, error) {
     if err != nil {
         return nil, err
     }
-    results := []UserStuffUserService{}
+    results := []RolePermissionsService{}
     for rows.Next() {
-        var result UserStuffUserService
+        var result RolePermissionsService
         err = mysqlManager.ScanRows(rows, &result)
         if err != nil {
             return results, err

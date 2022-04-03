@@ -12,7 +12,7 @@ import (
 	"net/http"
 )
 
-func AuthMiddleware(allowRole []string) gin.HandlerFunc {
+func AuthMiddleware(allowRole ...string) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		//查询账号信息
 		temp, ok := c.Get("user")
