@@ -27,20 +27,6 @@ import (
 	"time"
 )
 
-type loginParser struct {
-	LoginMethod string `form:"LoginMethod" json:"LoginMethod" binding:"required"`
-	Account     string `form:"Account" json:"Account" binding:"required"`
-	LoginType   string `form:"LoginType" json:"LoginType" binding:"required"`
-}
-type loginByPasswordParser struct {
-	Account  string `form:"Account" json:"Account" binding:"required"`
-	Password string `form:"Password" json:"Password" binding:"required"`
-}
-type loginByEmailVerifyCode struct {
-	Account      string `form:"Account" json:"Account" binding:"required,email"`
-	VerifyCodeID string `form:"VerifyCodeID" json:"VerifyCodeID" binding:"required"`
-	VerifyCode   string `form:"VerifyCode" json:"VerifyCode" binding:"required"`
-}
 type userInterface interface {
 	Add() error
 	Get() error
@@ -51,7 +37,11 @@ type userInterface interface {
 
 func Login(c *gin.Context) {
 	var err error
-	var LoginParser loginParser
+	var LoginParser struct {
+		LoginMethod string `form:"LoginMethod" json:"LoginMethod" binding:"required"`
+		Account     string `form:"Account" json:"Account" binding:"required"`
+		LoginType   string `form:"LoginType" json:"LoginType" binding:"required"`
+	}
 	err = c.ShouldBind(&LoginParser)
 	if err != nil {
 		parser.JsonParameterIllegal(c, "", err)
@@ -68,7 +58,10 @@ func Login(c *gin.Context) {
 	//校验密码
 	switch LoginParser.LoginMethod {
 	case "password":
-		var Parser loginByPasswordParser
+		var Parser struct {
+			Account  string `form:"Account" json:"Account" binding:"required"`
+			Password string `form:"Password" json:"Password" binding:"required"`
+		}
 		//解析参数
 		err = c.ShouldBind(&Parser)
 		if err != nil {
@@ -110,7 +103,11 @@ func Login(c *gin.Context) {
 			return
 		}
 	case "email":
-		var Parser loginByEmailVerifyCode
+		var Parser struct {
+			Account      string `form:"Account" json:"Account" binding:"required,email"`
+			VerifyCodeID string `form:"VerifyCodeID" json:"VerifyCodeID" binding:"required"`
+			VerifyCode   string `form:"VerifyCode" json:"VerifyCode" binding:"required"`
+		}
 		//解析参数
 		err = c.ShouldBind(&Parser)
 		if err != nil {
@@ -172,12 +169,10 @@ func Login(c *gin.Context) {
 	})
 }
 
-type logoutParser struct {
-	UserID string `form:"UserID" json:"UserID" binding:"required"`
-}
-
 func Logout(c *gin.Context) {
-	var Parser logoutParser
+	var Parser struct {
+		UserID string `form:"UserID" json:"UserID" binding:"required"`
+	}
 	var err error
 	//解析参数
 	err = c.ShouldBind(&Parser)
@@ -196,12 +191,10 @@ func Logout(c *gin.Context) {
 	return
 }
 
-type makeVerifyCodeParser struct {
-	Account string `form:"Account" json:"Account" binding:"required,email"`
-}
-
 func MakeEmailVerifyCode(c *gin.Context) {
-	var Parser makeVerifyCodeParser
+	var Parser struct {
+		Account string `form:"Account" json:"Account" binding:"required,email"`
+	}
 	var err error
 	err = c.ShouldBind(&Parser)
 	if err != nil {

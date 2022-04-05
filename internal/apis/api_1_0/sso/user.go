@@ -15,14 +15,12 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-type changePasswordParser struct {
-	Account     string `form:"Account" json:"Account" binding:"required"`
-	Password    string `form:"Password" json:"Password" binding:"required"`
-	NewPassword string `form:"NewPassword" json:"NewPassword" binding:"required"`
-}
-
 func ChangePassword(c *gin.Context) {
-	var Parser changePasswordParser
+	var Parser struct {
+		Account     string `form:"Account" json:"Account" binding:"required"`
+		Password    string `form:"Password" json:"Password" binding:"required"`
+		NewPassword string `form:"NewPassword" json:"NewPassword" binding:"required"`
+	}
 	var err error
 	//解析参数
 	err = c.ShouldBind(&Parser)
@@ -61,17 +59,15 @@ func ChangePassword(c *gin.Context) {
 	parser.JsonOK(c, "", nil)
 }
 
-type registerParser struct {
-	UserID    string `form:"UserID" json:"UserID"`
-	Account   string `form:"Account" json:"Account" binding:"required"`
-	Password  string `form:"Password" json:"Password" binding:"required"`
-	LoginType string `form:"LoginType" json:"LoginType" binding:"required"`
-	UserType  string `form:"UserType" json:"UserType" binding:"required"`
-	OtherInfo string `form:"OtherInfo" json:"OtherInfo"`
-}
-
 func Register(c *gin.Context) {
-	var Parser registerParser
+	var Parser struct {
+		UserID    string `form:"UserID" json:"UserID"`
+		Account   string `form:"Account" json:"Account" binding:"required"`
+		Password  string `form:"Password" json:"Password" binding:"required"`
+		LoginType string `form:"LoginType" json:"LoginType" binding:"required"`
+		UserType  string `form:"UserType" json:"UserType" binding:"required"`
+		OtherInfo string `form:"OtherInfo" json:"OtherInfo"`
+	}
 	var err error
 	//解析参数
 	err = c.ShouldBind(&Parser)

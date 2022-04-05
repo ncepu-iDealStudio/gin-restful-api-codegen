@@ -86,7 +86,7 @@ func DeCompress(zipFile, dest string) error {
 			return err
 		}
 		defer rc.Close()
-		filename := dest + file.Name
+		filename := filepath.Join(dest, file.Name)
 		err = os.MkdirAll(getDir(filename), 0755)
 		if err != nil {
 			return err

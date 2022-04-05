@@ -17,4 +17,5 @@ func InitMemberRouterGroup(engine *gin.RouterGroup) {
 	Api = engine.Group("member")
 	Api.Any("", members.ProjectMemberApi)
 	Api.GET("list", members.GetListHandler)
+	Api.GET("list/page", members.GetListByPage)
 }

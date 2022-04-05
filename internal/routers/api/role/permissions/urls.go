@@ -17,4 +17,5 @@ func InitPermissionsRouterGroup(engine *gin.RouterGroup) {
 	Api = engine.Group("permissions")
 	Api.Any("", permissions.RolePermissionsApi)
 	Api.GET("list", permissions.GetListHandler)
+	Api.GET("list/page", permissions.GetListByPage)
 }

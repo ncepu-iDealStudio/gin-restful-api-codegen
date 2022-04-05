@@ -19,6 +19,7 @@ var (
 func InitRoleRouterGroup(engine *gin.RouterGroup) {
 	Api = engine.Group("role")
 	Api.GET("list", roles.GetListHandler)
+	Api.GET("list/page", roles.GetListByPage)
 
 	Api.Use(middlewares.AuthMiddleware(ginModels.Platform))
 	Api.Any("", roles.RolePoolApi)

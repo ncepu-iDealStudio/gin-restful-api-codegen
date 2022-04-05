@@ -79,6 +79,8 @@ func RolePermissionsApi(c *gin.Context) {
 	parser.JsonOK(c, "", RolePermissionsService)
 }
 
+// 获取列表
+
 func GetListHandler(c *gin.Context) {
 	var err error
 	var RolePermissionsService services.RolePermissionsService
@@ -90,6 +92,31 @@ func GetListHandler(c *gin.Context) {
 	}
 
 	results, err := RolePermissionsService.GetList()
+	if err != nil {
+		parser.JsonDBError(c, "", err)
+		return
+	}
+
+	parser.JsonOK(c, "", results)
+}
+
+// 获取列表（分页）
+
+func GetListByPage(c *gin.Context) {
+	var err error
+
+	var Parser struct {
+		services.RolePermissionsService
+		parser.ListParser
+	}
+
+	err = c.ShouldBind(&Parser)
+	if err != nil {
+		parser.JsonParameterIllegal(c, "", err)
+		return
+	}
+
+	results, err := Parser.GetListByPage(Parser.ListParser)
 	if err != nil {
 		parser.JsonDBError(c, "", err)
 		return

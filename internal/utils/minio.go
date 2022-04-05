@@ -35,18 +35,21 @@ func (c MinioClient) initMinioClient() (*minio.Client, error) {
 	return minio.New(c.endpoint, c.accessKeyID, c.secretAccessKey, c.useSSL)
 }
 
-func (c MinioClient) PutObject(objectName string, object io.Reader, objectSize int64) error {
+func (c MinioClient) PutObject(objectName, contentType string, object io.Reader, objectSize int64) error {
 	minioClient, err := c.initMinioClient()
 	if err != nil {
 		return err
 	}
-	contentType, err := GetFileContentType(object)
-	if err != nil {
-		return err
+	if contentType == "" {
+		contentType, err = GetFileContentType(object)
+		if err != nil {
+			return err
+		}
 	}
 	_, err = minioClient.PutObject(c.bucketName, objectName, object, objectSize, minio.PutObjectOptions{ContentType: contentType})
 	return err
 }
+
 func GetFileContentType(out io.Reader) (string, error) {
 
 	// Only the first 512 bytes are used to sniff the content type.

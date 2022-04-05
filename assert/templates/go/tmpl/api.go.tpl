@@ -79,7 +79,7 @@ func {{$CodeDict.TableInfo.StructName}}Api(c *gin.Context) {
         
     parser.JsonOK(c, "", {{$CodeDict.TableInfo.StructName}}Service)
 }
-
+// 获取列表
 func GetListHandler(c *gin.Context) {
     var err error
     var {{$CodeDict.TableInfo.StructName}}Service services.{{$CodeDict.TableInfo.StructName}}Service
@@ -96,5 +96,29 @@ func GetListHandler(c *gin.Context) {
         return
     }
     
+    parser.JsonOK(c, "", results)
+}
+
+// 获取列表（分页）
+func GetListByPage(c *gin.Context) {
+    var err error
+
+    var Parser struct {
+        services.{{$CodeDict.TableInfo.StructName}}Service
+        parser.ListParser
+    }
+
+    err = c.ShouldBind(&Parser)
+    if err != nil {
+        parser.JsonParameterIllegal(c, "", err)
+        return
+    }
+
+    results, err := Parser.GetListByPage(Parser.ListParser)
+    if err != nil {
+        parser.JsonDBError(c, "", err)
+        return
+    }
+
     parser.JsonOK(c, "", results)
 }

@@ -15,23 +15,6 @@ import (
 	"net/http"
 )
 
-type projectMemberPostParser struct {
-	ProjectID string `json:"ProjectID" form:"ProjectID" binding:"required"`
-	UserID    string `json:"UserID" form:"UserID" binding:"required"`
-	RoleID    string `json:"RoleID" form:"RoleID" binding:"required"`
-	OtherInfo string `json:"OtherInfo" form:"OtherInfo"`
-}
-type projectMemberPutParser struct {
-	ProjectID string `json:"ProjectID" form:"ProjectID" binding:"required"`
-	UserID    string `json:"UserID" form:"UserID" binding:"required"`
-	RoleID    string `json:"RoleID" form:"RoleID"`
-	OtherInfo string `json:"OtherInfo" form:"OtherInfo"`
-}
-type projectMemberDeleteParser struct {
-	ProjectID string `json:"ProjectID" form:"ProjectID" binding:"required"`
-	UserID    string `json:"UserID" form:"UserID" binding:"required"`
-}
-
 func ProjectMemberApi(c *gin.Context) {
 	var err error
 
@@ -49,7 +32,12 @@ func ProjectMemberApi(c *gin.Context) {
 			return
 		}
 	} else if c.Request.Method == "POST" {
-		var Parser projectMemberPostParser
+		var Parser struct {
+			ProjectID string `json:"ProjectID" form:"ProjectID" binding:"required"`
+			UserID    string `json:"UserID" form:"UserID" binding:"required"`
+			RoleID    string `json:"RoleID" form:"RoleID" binding:"required"`
+			OtherInfo string `json:"OtherInfo" form:"OtherInfo"`
+		}
 		err = c.ShouldBind(&Parser)
 		if err != nil {
 			parser.JsonParameterIllegal(c, "", err)
@@ -78,7 +66,12 @@ func ProjectMemberApi(c *gin.Context) {
 			return
 		}
 	} else if c.Request.Method == "PUT" {
-		var Parser projectMemberPutParser
+		var Parser struct {
+			ProjectID string `json:"ProjectID" form:"ProjectID" binding:"required"`
+			UserID    string `json:"UserID" form:"UserID" binding:"required"`
+			RoleID    string `json:"RoleID" form:"RoleID"`
+			OtherInfo string `json:"OtherInfo" form:"OtherInfo"`
+		}
 		err = c.ShouldBind(&Parser)
 		if err != nil {
 			parser.JsonParameterIllegal(c, "", err)
@@ -102,7 +95,10 @@ func ProjectMemberApi(c *gin.Context) {
 			return
 		}
 	} else if c.Request.Method == "DELETE" {
-		var Parser projectMemberDeleteParser
+		var Parser struct {
+			ProjectID string `json:"ProjectID" form:"ProjectID" binding:"required"`
+			UserID    string `json:"UserID" form:"UserID" binding:"required"`
+		}
 		err = c.ShouldBind(&Parser)
 		if err != nil {
 			parser.JsonParameterIllegal(c, "", err)
@@ -120,17 +116,15 @@ func ProjectMemberApi(c *gin.Context) {
 	parser.JsonOK(c, "", ProjectMember)
 }
 
-type projectMemberGetListParser struct {
-	ProjectID string `json:"ProjectID" form:"ProjectID" binding:"required"`
-	UserID    string `json:"UserID" form:"UserID"`
-	RoleID    string `json:"RoleID" form:"RoleID"`
-	OtherInfo string `json:"OtherInfo" form:"OtherInfo"`
-}
-
 func GetListHandler(c *gin.Context) {
 	var err error
 	var ProjectMemberService services.ProjectMemberService
-	var Parser projectMemberGetListParser
+	var Parser struct {
+		ProjectID string `json:"ProjectID" form:"ProjectID" binding:"required"`
+		UserID    string `json:"UserID" form:"UserID"`
+		RoleID    string `json:"RoleID" form:"RoleID"`
+		OtherInfo string `json:"OtherInfo" form:"OtherInfo"`
+	}
 
 	err = c.ShouldBind(&Parser)
 	if err != nil {
@@ -140,6 +134,32 @@ func GetListHandler(c *gin.Context) {
 	utils.StructAssign(ProjectMemberService, Parser, "json")
 
 	results, err := ProjectMemberService.GetList()
+	if err != nil {
+		parser.JsonDBError(c, "", err)
+		return
+	}
+
+	parser.JsonOK(c, "", results)
+}
+func GetListByPage(c *gin.Context) {
+	var err error
+	var ProjectMemberService services.ProjectMemberService
+	var Parser struct {
+		ProjectID string `json:"ProjectID" form:"ProjectID" binding:"required"`
+		UserID    string `json:"UserID" form:"UserID"`
+		RoleID    string `json:"RoleID" form:"RoleID"`
+		OtherInfo string `json:"OtherInfo" form:"OtherInfo"`
+		parser.ListParser
+	}
+
+	err = c.ShouldBind(&Parser)
+	if err != nil {
+		parser.JsonParameterIllegal(c, "", err)
+		return
+	}
+	utils.StructAssign(ProjectMemberService, Parser, "json")
+
+	results, err := ProjectMemberService.GetListByPage(Parser.ListParser)
 	if err != nil {
 		parser.JsonDBError(c, "", err)
 		return

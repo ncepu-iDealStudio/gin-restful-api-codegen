@@ -14,33 +14,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type projectPoolGetParser struct {
-	ProjectID string `json:"ProjectID" form:"ProjectID" binding:"required"`
-	UserID    string `json:"UserID" form:"UserID"`
-}
-type projectPoolPostParser struct {
-	UserID         string `json:"UserID" form:"UserID" binding:"required"`
-	ProjectName    string `json:"ProjectName" form:"ProjectName" binding:"required"`
-	ProjectContext string `json:"ProjectContext" form:"ProjectContext" binding:"required"`
-	OtherInfo      string `json:"OtherInfo" form:"OtherInfo" binding:"required"`
-}
-type projectPoolPutParser struct {
-	ProjectID      string `json:"ProjectID" form:"ProjectID" binding:"required"`
-	UserID         string `json:"UserID" form:"UserID"`
-	ProjectName    string `json:"ProjectName" form:"ProjectName"`
-	ProjectContext string `json:"ProjectContext" form:"ProjectContext"`
-	OtherInfo      string `json:"OtherInfo" form:"OtherInfo"`
-}
-type projectPoolDeleteParser struct {
-	ProjectID string `json:"ProjectID" form:"ProjectID" binding:"required"`
-}
-
 func ProjectPoolApi(c *gin.Context) {
 	var err error
 	var ProjectPool services.ProjectPoolService
 
 	if c.Request.Method == "GET" {
-		var Parser projectPoolGetParser
+		var Parser struct {
+			ProjectID string `json:"ProjectID" form:"ProjectID" binding:"required"`
+			UserID    string `json:"UserID" form:"UserID"`
+		}
 		err = c.ShouldBind(&Parser)
 		if err != nil {
 			parser.JsonParameterIllegal(c, "", err)
@@ -53,7 +35,12 @@ func ProjectPoolApi(c *gin.Context) {
 			return
 		}
 	} else if c.Request.Method == "POST" {
-		var Parser projectPoolPostParser
+		var Parser struct {
+			UserID         string `json:"UserID" form:"UserID" binding:"required"`
+			ProjectName    string `json:"ProjectName" form:"ProjectName" binding:"required"`
+			ProjectContext string `json:"ProjectContext" form:"ProjectContext" binding:"required"`
+			OtherInfo      string `json:"OtherInfo" form:"OtherInfo" binding:"required"`
+		}
 		err = c.ShouldBind(&Parser)
 		if err != nil {
 			parser.JsonParameterIllegal(c, "", err)
@@ -68,7 +55,13 @@ func ProjectPoolApi(c *gin.Context) {
 			return
 		}
 	} else if c.Request.Method == "PUT" {
-		var Parser projectPoolPutParser
+		var Parser struct {
+			ProjectID      string `json:"ProjectID" form:"ProjectID" binding:"required"`
+			UserID         string `json:"UserID" form:"UserID"`
+			ProjectName    string `json:"ProjectName" form:"ProjectName"`
+			ProjectContext string `json:"ProjectContext" form:"ProjectContext"`
+			OtherInfo      string `json:"OtherInfo" form:"OtherInfo"`
+		}
 		err = c.ShouldBind(&Parser)
 		if err != nil {
 			parser.JsonParameterIllegal(c, "", err)
@@ -88,7 +81,9 @@ func ProjectPoolApi(c *gin.Context) {
 			return
 		}
 	} else if c.Request.Method == "DELETE" {
-		var Parser projectPoolDeleteParser
+		var Parser struct {
+			ProjectID string `json:"ProjectID" form:"ProjectID" binding:"required"`
+		}
 		err = c.ShouldBind(&Parser)
 		if err != nil {
 			parser.JsonParameterIllegal(c, "", err)
@@ -117,6 +112,29 @@ func GetListHandler(c *gin.Context) {
 	}
 
 	results, err := ProjectPoolService.GetList()
+	if err != nil {
+		parser.JsonDBError(c, "", err)
+		return
+	}
+
+	parser.JsonOK(c, "", results)
+}
+
+func GetListByPage(c *gin.Context) {
+	var err error
+
+	var Parser struct {
+		services.ProjectPoolService
+		parser.ListParser
+	}
+
+	err = c.ShouldBind(&Parser)
+	if err != nil {
+		parser.JsonParameterIllegal(c, "", err)
+		return
+	}
+
+	results, err := Parser.GetListByPage(Parser.ListParser)
 	if err != nil {
 		parser.JsonDBError(c, "", err)
 		return

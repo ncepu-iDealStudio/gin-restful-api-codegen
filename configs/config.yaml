@@ -44,3 +44,8 @@ remote:
     BucketName: lrycodegen
 user:
   defaultPassword: 123456
+template:
+  # 1-web服务器本地存储 2-oss对象存储 3-dfs分布式文件存储
+  StoreType: 2
+  # 存储路径前缀
+  StorePath: /template/%s/%s # 1为模板类型（项目模板，数据库模板）2为文件名

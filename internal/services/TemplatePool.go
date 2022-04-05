@@ -10,11 +10,11 @@ import (
 	"LRYGoCodeGen/internal/globals/parser"
 )
 
-type RolePoolService struct {
-	dao.RolePoolDao
+type TemplatePoolService struct {
+	dao.TemplatePoolDao
 }
 
-func (m *RolePoolService) GetList() ([]RolePoolService, error) {
+func (m *TemplatePoolService) GetList() ([]TemplatePoolService, error) {
 	mysqlManager := database.GetMysqlClient()
 
 	rows, err := mysqlManager.Table(m.TableName()).Where(map[string]interface{}{
@@ -24,9 +24,9 @@ func (m *RolePoolService) GetList() ([]RolePoolService, error) {
 	if err != nil {
 		return nil, err
 	}
-	results := []RolePoolService{}
+	results := []TemplatePoolService{}
 	for rows.Next() {
-		var result RolePoolService
+		var result TemplatePoolService
 		err = mysqlManager.ScanRows(rows, &result)
 		if err != nil {
 			return results, err
@@ -36,7 +36,7 @@ func (m *RolePoolService) GetList() ([]RolePoolService, error) {
 	return results, nil
 }
 
-func (m *RolePoolService) GetListByPage(p parser.ListParser) ([]RolePoolService, error) {
+func (m *TemplatePoolService) GetListByPage(p parser.ListParser) ([]TemplatePoolService, error) {
 	mysqlManager := database.GetMysqlClient()
 
 	rows, err := mysqlManager.Table(m.TableName()).Where(map[string]interface{}{
@@ -46,9 +46,9 @@ func (m *RolePoolService) GetListByPage(p parser.ListParser) ([]RolePoolService,
 	if err != nil {
 		return nil, err
 	}
-	results := []RolePoolService{}
+	results := []TemplatePoolService{}
 	for rows.Next() {
-		var result RolePoolService
+		var result TemplatePoolService
 		err = mysqlManager.ScanRows(rows, &result)
 		if err != nil {
 			return results, err

@@ -17,4 +17,5 @@ func Init{{$CodeDict.TableInfo.StructName}}RouterGroup(engine *gin.RouterGroup) 
     Api = engine.Group("{{$CodeDict.TableInfo.PackageName}}")
     Api.Any("", {{$CodeDict.TableInfo.PackageName}}.{{$CodeDict.TableInfo.StructName}}Api)
     Api.GET("list", {{$CodeDict.TableInfo.PackageName}}.GetListHandler)
+    Api.GET("list/page", {{$CodeDict.TableInfo.PackageName}}.GetListByPage)
 }
