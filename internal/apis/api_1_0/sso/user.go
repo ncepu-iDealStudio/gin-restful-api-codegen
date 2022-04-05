@@ -36,11 +36,22 @@ func ChangePassword(c *gin.Context) {
 		parser.JsonDBError(c, "", err)
 		return
 	}
-	//验证密码
-	err = bcrypt.CompareHashAndPassword([]byte(loginInfo.Password), []byte(Parser.Password))
+	user, err := ginModels.GetUser(c)
 	if err != nil {
-		parser.JsonDataError(c, "密码错误", nil)
+		parser.JsonGinUserError(c, nil)
 		return
+	}
+	if !user.AuthSelf(loginInfo.UserID) {
+		parser.JsonAccessDenied(c, "只能修改自己的密码")
+		return
+	}
+	if !user.IsAdmin() {
+		//验证密码
+		err = bcrypt.CompareHashAndPassword([]byte(loginInfo.Password), []byte(Parser.Password))
+		if err != nil {
+			parser.JsonDataError(c, "密码错误", nil)
+			return
+		}
 	}
 	hash, err := bcrypt.GenerateFromPassword([]byte(Parser.NewPassword), bcrypt.DefaultCost)
 	if err != nil {
@@ -78,13 +89,12 @@ func Register(c *gin.Context) {
 
 	//验证是否有权限注册该用户
 	if Parser.LoginType != ginModels.User {
-		temp, ok := c.Get("user")
-		if !ok {
-			parser.JsonAccessDenied(c, "您无权注册此用户！")
+		user, err := ginModels.GetUser(c)
+		if err != nil {
+			parser.JsonGinUserError(c, err)
 			return
 		}
-		user := temp.(ginModels.UserModel)
-		if !user.Auth(ginModels.Platform) {
+		if !user.IsAdmin() {
 			parser.JsonAccessDenied(c, "您无权注册此用户！")
 			return
 		}

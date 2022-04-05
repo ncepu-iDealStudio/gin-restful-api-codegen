@@ -60,12 +60,33 @@ func GetUser(c *gin.Context) (UserModel, error) {
 	user := temp.(UserModel)
 	return user, nil
 }
+func (m UserModel) IsAdmin() bool {
+	if m.UserType == Platform {
+		return true
+	}
+	return false
+}
 
+// Auth 验证允许的身份
 func (m UserModel) Auth(allowRole ...string) bool {
+	if m.UserType == Platform {
+		return true
+	}
 	for _, s := range allowRole {
 		if s == m.UserType {
 			return true
 		}
+	}
+	return false
+}
+
+// AuthSelf 只允许自己
+func (m UserModel) AuthSelf(UserID string) bool {
+	if m.UserType == Platform {
+		return true
+	}
+	if m.UserID == UserID {
+		return true
 	}
 	return false
 }

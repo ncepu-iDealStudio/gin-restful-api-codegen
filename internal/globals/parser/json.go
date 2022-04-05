@@ -138,3 +138,14 @@ func JsonAccessDenied(c *gin.Context, msg string) {
 //		"message":	msg,
 //	})
 //}
+
+func JsonGinUserError(c *gin.Context, err error) {
+	if err == nil {
+		err = errors.New("用户信息获取错误")
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"code": codes.NotLoggedIn,
+		"msg":  "未获取到已登录用户信息",
+		"err":  err.Error(),
+	})
+}

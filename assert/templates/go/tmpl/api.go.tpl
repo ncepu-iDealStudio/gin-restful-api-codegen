@@ -6,7 +6,6 @@ package {{$CodeDict.TableInfo.PackageName}}
 
 import (
     "github.com/gin-gonic/gin"
-    "gitee.com/lryself/go-utils/structs"
     "net/http"
     "{{$CodeDict.Dict.ProjectName}}/internal/globals/codes"
     "{{$CodeDict.Dict.ProjectName}}/internal/globals/parser"

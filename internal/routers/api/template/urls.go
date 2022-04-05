@@ -17,6 +17,7 @@ var (
 
 func InitTemplateRouterGroup(engine *gin.RouterGroup) {
 	Api = engine.Group("template")
+	Api.POST("", templates.TemplatePoolApi)
 	Api.POST("update", templates.UpdateTemplateZip)
 	Api.GET("list/private", templates.GetPrivateList)
 	Api.GET("list/public", templates.GetPublicList)

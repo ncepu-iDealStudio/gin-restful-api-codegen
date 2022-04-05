@@ -7,6 +7,7 @@ package sso
 
 import (
 	"LRYGoCodeGen/internal/apis/api_1_0/sso"
+	"LRYGoCodeGen/internal/middlewares"
 	"github.com/gin-gonic/gin"
 )
 
@@ -18,7 +19,8 @@ func InitSsoRouterGroup(engine *gin.RouterGroup) {
 	Api = engine.Group("sso")
 	Api.POST("register", sso.Register)
 	Api.POST("login", sso.Login)
-	Api.PUT("password", sso.ChangePassword)
 	Api.POST("makeVerifyCode/email", sso.MakeEmailVerifyCode)
+	Api.Use(middlewares.TokenRequire())
+	Api.PUT("password", sso.ChangePassword)
 	Api.POST("logout", sso.Logout)
 }
