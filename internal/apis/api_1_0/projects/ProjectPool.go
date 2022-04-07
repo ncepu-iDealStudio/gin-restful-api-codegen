@@ -9,7 +9,6 @@ import (
 	"LRYGoCodeGen/internal/globals/parser"
 	"LRYGoCodeGen/internal/globals/snowflake"
 	"LRYGoCodeGen/internal/services"
-	"LRYGoCodeGen/internal/utils"
 	"gitee.com/lryself/go-utils/structs"
 	"github.com/gin-gonic/gin"
 )
@@ -28,7 +27,7 @@ func ProjectPoolApi(c *gin.Context) {
 			parser.JsonParameterIllegal(c, "", err)
 			return
 		}
-		utils.StructAssign(ProjectPool, Parser, "json")
+		ProjectPool.Assign(Parser)
 		err = ProjectPool.Get()
 		if err != nil {
 			parser.JsonDBError(c, "", err)
@@ -46,7 +45,7 @@ func ProjectPoolApi(c *gin.Context) {
 			parser.JsonParameterIllegal(c, "", err)
 			return
 		}
-		utils.StructAssign(ProjectPool, Parser, "json")
+		ProjectPool.Assign(Parser)
 
 		ProjectPool.ProjectID = snowflake.GetSnowflakeID()
 		err = ProjectPool.Add()
@@ -89,7 +88,7 @@ func ProjectPoolApi(c *gin.Context) {
 			parser.JsonParameterIllegal(c, "", err)
 			return
 		}
-		utils.StructAssign(ProjectPool, Parser, "json")
+		ProjectPool.Assign(Parser)
 
 		err = ProjectPool.Delete()
 		if err != nil {

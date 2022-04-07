@@ -5,6 +5,7 @@
 package mysqlModel
 
 import (
+    "LRYGoCodeGen/internal/utils"
     "gitee.com/lryself/go-utils/structs"
     "time"
 )
@@ -12,7 +13,7 @@ import (
 type RolePoolModel struct { 
     AutoID int64 `gorm:"column:AutoID;primaryKey;type:bigint(20);not null;" json:"AutoID" form:"AutoID"`
     RoleID string `gorm:"column:RoleID;primaryKey;type:varchar(20);not null;" json:"RoleID" form:"RoleID"`
-    RoleName string `gorm:"column:RoleName;type:varchar(255);" json:"RoleName" form:"RoleName"`
+    RoleName string `gorm:"column:RoleName;type:varchar(255);not null;" json:"RoleName" form:"RoleName"`
     PermissionList string `gorm:"column:PermissionList;type:text;" json:"PermissionList" form:"PermissionList"`
     OtherInfo string `gorm:"column:OtherInfo;type:text;" json:"OtherInfo" form:"OtherInfo"`
     Createtime time.Time `gorm:"column:Createtime;type:timestamp;not null;default:CURRENT_TIMESTAMP;" json:"Createtime" form:"Createtime"`
@@ -91,4 +92,8 @@ func (m *RolePoolModel) SetIsDeleted(IsDeleted bool) {
 
 func (m *RolePoolModel) GetModelMap() (map[string]interface{}, error) {
     return structs.StructToMap(m, "json")
+}
+
+func (m *RolePoolModel) Assign(in interface{}) {
+    utils.StructAssign(m, in, "json")
 }

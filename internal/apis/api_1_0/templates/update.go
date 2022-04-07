@@ -63,7 +63,7 @@ func UpdateTemplateZip(c *gin.Context) {
 	//添加数据库中信息
 	user, err := ginModels.GetUser(c)
 	var templateModel services.TemplatePoolService
-	utils.StructAssign(templateModel, Parser, "json")
+	templateModel.Assign(Parser)
 	templateModel.UserID = user.UserID
 	templateModel.StoreType = int8(viper.GetInt("template.StoreType"))
 	err = templateModel.Add()

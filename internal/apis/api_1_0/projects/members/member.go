@@ -9,7 +9,6 @@ import (
 	"LRYGoCodeGen/internal/globals/codes"
 	"LRYGoCodeGen/internal/globals/parser"
 	"LRYGoCodeGen/internal/services"
-	"LRYGoCodeGen/internal/utils"
 	"gitee.com/lryself/go-utils/structs"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -131,7 +130,7 @@ func GetListHandler(c *gin.Context) {
 		parser.JsonParameterIllegal(c, "", err)
 		return
 	}
-	utils.StructAssign(ProjectMemberService, Parser, "json")
+	ProjectMemberService.Assign(Parser)
 
 	results, err := ProjectMemberService.GetList()
 	if err != nil {
@@ -157,7 +156,7 @@ func GetListByPage(c *gin.Context) {
 		parser.JsonParameterIllegal(c, "", err)
 		return
 	}
-	utils.StructAssign(ProjectMemberService, Parser, "json")
+	ProjectMemberService.Assign(Parser)
 
 	results, err := ProjectMemberService.GetListByPage(Parser.ListParser)
 	if err != nil {

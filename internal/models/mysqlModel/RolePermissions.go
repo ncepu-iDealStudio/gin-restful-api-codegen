@@ -5,6 +5,7 @@
 package mysqlModel
 
 import (
+    "LRYGoCodeGen/internal/utils"
     "gitee.com/lryself/go-utils/structs"
     "time"
 )
@@ -91,4 +92,8 @@ func (m *RolePermissionsModel) SetIsDeleted(IsDeleted bool) {
 
 func (m *RolePermissionsModel) GetModelMap() (map[string]interface{}, error) {
     return structs.StructToMap(m, "json")
+}
+
+func (m *RolePermissionsModel) Assign(in interface{}) {
+    utils.StructAssign(m, in, "json")
 }

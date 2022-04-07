@@ -5,6 +5,7 @@
 package mysqlModel
 
 import (
+    "LRYGoCodeGen/internal/utils"
     "gitee.com/lryself/go-utils/structs"
     "time"
 )
@@ -18,7 +19,7 @@ type VMemberRoleModel struct {
     Createtime time.Time `gorm:"column:Createtime;type:timestamp;not null;default:0000-00-00 00:00:00;" json:"Createtime" form:"Createtime"`
     Updatetime time.Time `gorm:"column:Updatetime;type:timestamp;not null;default:0000-00-00 00:00:00;" json:"Updatetime" form:"Updatetime"`
     IsDeleted bool `gorm:"column:IsDeleted;type:tinyint(1);not null;default:0;" json:"IsDeleted" form:"IsDeleted"`
-    RoleName string `gorm:"column:RoleName;type:varchar(255);" json:"RoleName" form:"RoleName"`
+    RoleName string `gorm:"column:RoleName;type:varchar(255);not null;" json:"RoleName" form:"RoleName"`
     PermissionList string `gorm:"column:PermissionList;type:text;" json:"PermissionList" form:"PermissionList"`
     Name string `gorm:"column:Name;type:varchar(255);not null;" json:"Name" form:"Name"`
     Phone string `gorm:"column:Phone;type:varchar(20);" json:"Phone" form:"Phone"`
@@ -136,4 +137,8 @@ func (m *VMemberRoleModel) SetEmail(Email string) {
 
 func (m *VMemberRoleModel) GetModelMap() (map[string]interface{}, error) {
     return structs.StructToMap(m, "json")
+}
+
+func (m *VMemberRoleModel) Assign(in interface{}) {
+    utils.StructAssign(m, in, "json")
 }

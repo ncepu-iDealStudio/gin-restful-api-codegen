@@ -9,7 +9,6 @@ import (
 	"LRYGoCodeGen/internal/globals/parser"
 	"LRYGoCodeGen/internal/models/ginModels"
 	"LRYGoCodeGen/internal/services"
-	"LRYGoCodeGen/internal/utils"
 	"github.com/gin-gonic/gin"
 )
 
@@ -31,7 +30,7 @@ func GetPublicList(c *gin.Context) {
 		return
 	}
 	var TemplatePoolService services.TemplatePoolService
-	utils.StructAssign(TemplatePoolService, Parser, "json")
+	TemplatePoolService.Assign(Parser)
 	TemplatePoolService.IsPublic = true
 	results, err := TemplatePoolService.GetListByPage(Parser.ListParser)
 	if err != nil {
@@ -57,7 +56,7 @@ func GetPrivateList(c *gin.Context) {
 	}
 
 	var TemplatePoolService services.TemplatePoolService
-	utils.StructAssign(TemplatePoolService, Parser, "json")
+	TemplatePoolService.Assign(Parser)
 	TemplatePoolService.IsPublic = false
 	TemplatePoolService.UserID = user.UserID
 	results, err := TemplatePoolService.GetListByPage(Parser.ListParser)

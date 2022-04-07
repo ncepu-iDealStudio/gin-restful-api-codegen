@@ -5,6 +5,7 @@
 package mysqlModel
 
 import (
+    "LRYGoCodeGen/internal/utils"
     "gitee.com/lryself/go-utils/structs"
     "time"
 )
@@ -154,4 +155,8 @@ func (m *VProjectInfoModel) SetMakeFile(MakeFile string) {
 
 func (m *VProjectInfoModel) GetModelMap() (map[string]interface{}, error) {
     return structs.StructToMap(m, "json")
+}
+
+func (m *VProjectInfoModel) Assign(in interface{}) {
+    utils.StructAssign(m, in, "json")
 }

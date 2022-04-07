@@ -5,6 +5,7 @@
 package mysqlModel
 
 import (
+    "{{$CodeDict.Dict.ProjectName}}/internal/utils"
     "gitee.com/lryself/go-utils/structs"
     "time"
 )
@@ -28,4 +29,8 @@ func (m *{{$CodeDict.TableInfo.StructName}}Model) Set{{.Field}}({{.Field}} {{.Go
 
 func (m *{{$CodeDict.TableInfo.StructName}}Model) GetModelMap() (map[string]interface{}, error) {
     return structs.StructToMap(m, "json")
+}
+
+func (m *{{$CodeDict.TableInfo.StructName}}Model) Assign(in interface{}) {
+    utils.StructAssign(m, in, "json")
 }
