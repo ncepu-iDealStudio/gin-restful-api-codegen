@@ -75,7 +75,6 @@ func Register(c *gin.Context) {
 		UserID    string `form:"UserID" json:"UserID"`
 		Account   string `form:"Account" json:"Account" binding:"required"`
 		Password  string `form:"Password" json:"Password" binding:"required"`
-		LoginType string `form:"LoginType" json:"LoginType" binding:"required"`
 		UserType  string `form:"UserType" json:"UserType" binding:"required"`
 		OtherInfo string `form:"OtherInfo" json:"OtherInfo"`
 	}
@@ -88,7 +87,7 @@ func Register(c *gin.Context) {
 	}
 
 	//验证是否有权限注册该用户
-	if Parser.LoginType != ginModels.User {
+	if Parser.UserType != ginModels.User {
 		user, err := ginModels.GetUser(c)
 		if err != nil {
 			parser.JsonGinUserError(c, err)
@@ -129,7 +128,7 @@ func Register(c *gin.Context) {
 	}
 
 	var userService userInterface
-	switch Parser.LoginType {
+	switch Parser.UserType {
 	case ginModels.Platform:
 		userService = &services.UserPlatformAdminService{}
 	case ginModels.User:

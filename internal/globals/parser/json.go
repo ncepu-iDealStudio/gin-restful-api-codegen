@@ -145,7 +145,7 @@ func JsonGinUserError(c *gin.Context, err error) {
 	}
 	c.JSON(http.StatusOK, gin.H{
 		"code": codes.NotLoggedIn,
-		"msg":  "未获取到已登录用户信息",
+		"msg":  "您需要登录！",
 		"err":  err.Error(),
 	})
 }

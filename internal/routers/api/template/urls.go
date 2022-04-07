@@ -7,7 +7,6 @@ package template
 
 import (
 	"LRYGoCodeGen/internal/apis/api_1_0/templates"
-	"LRYGoCodeGen/internal/routers/api/project/member"
 	"github.com/gin-gonic/gin"
 )
 
@@ -22,5 +21,4 @@ func InitTemplateRouterGroup(engine *gin.RouterGroup) {
 	Api.GET("list/private", templates.GetPrivateList)
 	Api.GET("list/public", templates.GetPublicList)
 	Api.GET("list/page", templates.GetListByPage)
-	member.InitMemberRouterGroup(Api)
 }

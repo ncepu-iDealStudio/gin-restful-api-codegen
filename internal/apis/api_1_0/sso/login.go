@@ -104,9 +104,8 @@ func Login(c *gin.Context) {
 		}
 	case "email":
 		var Parser struct {
-			Account      string `form:"Account" json:"Account" binding:"required,email"`
-			VerifyCodeID string `form:"VerifyCodeID" json:"VerifyCodeID" binding:"required"`
-			VerifyCode   string `form:"VerifyCode" json:"VerifyCode" binding:"required"`
+			Account    string `form:"Account" json:"Account" binding:"required,email"`
+			VerifyCode string `form:"VerifyCode" json:"VerifyCode" binding:"required"`
 		}
 		//解析参数
 		err = c.ShouldBind(&Parser)
@@ -118,7 +117,7 @@ func Login(c *gin.Context) {
 		redisManager := database.GetRedisManager()
 		stringCmd := redisManager.Get("verify_" + Parser.Account)
 		if stringCmd.Err() != nil {
-			parser.JsonDBError(c, "", stringCmd.Err())
+			parser.JsonDBError(c, "未找到该账号验证码！", stringCmd.Err())
 			return
 		}
 
@@ -170,19 +169,13 @@ func Login(c *gin.Context) {
 }
 
 func Logout(c *gin.Context) {
-	var Parser struct {
-		UserID string `form:"UserID" json:"UserID" binding:"required"`
-	}
 	var err error
-	//解析参数
-	err = c.ShouldBind(&Parser)
+	user, err := ginModels.GetUser(c)
 	if err != nil {
-		parser.JsonParameterIllegal(c, "", err)
-		return
+		parser.JsonGinUserError(c, err)
 	}
-
 	redisManager := database.GetRedisManager()
-	err = redisManager.Del("Token_" + Parser.UserID).Err()
+	err = redisManager.Del("Token_" + user.UserID).Err()
 	if err != nil {
 		parser.JsonInternalError(c, "", err)
 		return
