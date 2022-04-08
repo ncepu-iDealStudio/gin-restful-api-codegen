@@ -19,7 +19,7 @@ func TemplatePoolApi(c *gin.Context) {
 		TemplateID   string `json:"TemplateID" form:"TemplateID" binding:"required"`
 		TemplateName string `json:"TemplateName" form:"TemplateName"`
 		TemplateType int8   `json:"TemplateType" form:"TemplateType"`
-		IsPublic     bool   `json:"IsPublic" form:"IsPublic"`
+		IsPublic     string `json:"IsPublic" form:"IsPublic"`
 	}
 	err = c.ShouldBind(&Parser)
 	if err != nil {
@@ -36,29 +36,37 @@ func TemplatePoolApi(c *gin.Context) {
 	}
 	user, err := ginModels.GetUser(c)
 	if !user.AuthSelf(TemplatePool.UserID) {
-		if TemplatePool.IsPublic && c.Request.Method == "GET" {
-			parser.JsonOK(c, "", TemplatePool)
+		if !TemplatePool.IsPublic && c.Request.Method == "GET" {
+			parser.JsonAccessDenied(c, "您没有权限获取此项目")
+			return
 		}
-		parser.JsonAccessDenied(c, "您没有权限获取此项目")
+	}
+	if c.Request.Method == "GET" {
+		parser.JsonOK(c, "", TemplatePool)
 		return
 	}
-
 	if c.Request.Method == "PUT" {
 		args, err := structs.StructToMap(Parser, "json")
 		delete(args, "TemplateID")
+		delete(args, "IsPublic")
+		if Parser.IsPublic == "0" {
+			args["IsPublic"] = false
+		} else if Parser.IsPublic == "1" {
+			args["IsPublic"] = true
+		}
 
 		err = TemplatePool.Update(args)
 		if err != nil {
 			parser.JsonDBError(c, "", err)
 			return
 		}
+		parser.JsonOK(c, "", TemplatePool)
 	} else if c.Request.Method == "DELETE" {
 		err = TemplatePool.Delete()
 		if err != nil {
 			parser.JsonDBError(c, "", err)
 			return
 		}
+		parser.JsonOK(c, "", nil)
 	}
-
-	parser.JsonOK(c, "", TemplatePool)
 }

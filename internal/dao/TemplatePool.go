@@ -15,9 +15,7 @@ type TemplatePoolDao struct {
 
 func (m *TemplatePoolDao) Get() error {
     mysqlManager := database.GetMysqlClient()
-    return mysqlManager.Where(map[string]interface{}{
-        "IsDeleted": 0,
-    }).Where(m).Take(m).Error
+    return mysqlManager.Where("IsDeleted", false).Where(m).Take(m).Error
 }
 
 func (m *TemplatePoolDao) Add() error {
@@ -44,7 +42,5 @@ func (m *TemplatePoolDao) Delete() error {
     if err != nil {
         return err
     }
-    return mysqlManager.Model(&m).Updates(map[string]interface{}{
-        "IsDeleted": 1,
-    }).Error
+    return mysqlManager.Model(&m).Update("IsDeleted", true).Error
 }

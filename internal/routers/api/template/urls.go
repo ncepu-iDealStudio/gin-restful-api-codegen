@@ -7,6 +7,8 @@ package template
 
 import (
 	"LRYGoCodeGen/internal/apis/api_1_0/templates"
+	"LRYGoCodeGen/internal/middlewares"
+	"LRYGoCodeGen/internal/models/ginModels"
 	"github.com/gin-gonic/gin"
 )
 
@@ -16,9 +18,12 @@ var (
 
 func InitTemplateRouterGroup(engine *gin.RouterGroup) {
 	Api = engine.Group("template")
-	Api.POST("", templates.TemplatePoolApi)
-	Api.POST("update", templates.UpdateTemplateZip)
-	Api.GET("list/private", templates.GetPrivateList)
 	Api.GET("list/public", templates.GetPublicList)
-	Api.GET("list/page", templates.GetListByPage)
+	Api.Use(middlewares.TokenRequire())
+	Api.GET("", templates.TemplatePoolApi)
+	Api.PUT("", templates.TemplatePoolApi)
+	Api.DELETE("", templates.TemplatePoolApi)
+	Api.POST("upload", templates.UploadTemplateZip)
+	Api.GET("list/private", templates.GetPrivateList)
+	Api.GET("list/page", middlewares.AuthMiddleware(ginModels.Platform), templates.GetListByPage)
 }

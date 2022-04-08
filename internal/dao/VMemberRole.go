@@ -15,9 +15,7 @@ type VMemberRoleDao struct {
 
 func (m *VMemberRoleDao) Get() error {
     mysqlManager := database.GetMysqlClient()
-    return mysqlManager.Where(map[string]interface{}{
-        "IsDeleted": 0,
-    }).Where(m).Take(m).Error
+    return mysqlManager.Where("IsDeleted", false).Where(m).Take(m).Error
 }
 
 func (m *VMemberRoleDao) Add() error {
@@ -44,7 +42,5 @@ func (m *VMemberRoleDao) Delete() error {
     if err != nil {
         return err
     }
-    return mysqlManager.Model(&m).Updates(map[string]interface{}{
-        "IsDeleted": 1,
-    }).Error
+    return mysqlManager.Model(&m).Update("IsDeleted", true).Error
 }

@@ -18,12 +18,12 @@ import (
 	"path/filepath"
 )
 
-func UpdateTemplateZip(c *gin.Context) {
+func UploadTemplateZip(c *gin.Context) {
 	var err error
 	var Parser struct {
-		TemplateName string                `form:"TemplateName" binding:"required"`
-		TemplateType string                `form:"TemplateType" binding:"required"`
-		IsPublic     string                `form:"IsPublic" binding:"required"`
+		TemplateName string                `form:"TemplateName" json:"TemplateName" binding:"required"`
+		TemplateType int8                  `form:"TemplateType" json:"TemplateType" binding:"required"`
+		IsPublic     bool                  `form:"IsPublic" json:"IsPublic"`
 		File         *multipart.FileHeader `form:"File" binding:"required"`
 	}
 	err = c.ShouldBind(&Parser)
@@ -43,7 +43,8 @@ func UpdateTemplateZip(c *gin.Context) {
 		return
 	}
 	//上传文件
-	FileName := snowflake.GetSnowflakeID() + ext
+	TemplateID := snowflake.GetSnowflakeID()
+	FileName := TemplateID + ext
 	StoreType := viper.GetString("template.StoreType")
 	StorePath := fmt.Sprintf(viper.GetString("template.StorePath"), viper.GetString("template.StoreType"), FileName)
 	switch StoreType {
@@ -64,13 +65,14 @@ func UpdateTemplateZip(c *gin.Context) {
 	user, err := ginModels.GetUser(c)
 	var templateModel services.TemplatePoolService
 	templateModel.Assign(Parser)
+	templateModel.TemplateID = TemplateID
 	templateModel.UserID = user.UserID
 	templateModel.StoreType = int8(viper.GetInt("template.StoreType"))
-	err = templateModel.Add()
 	templateModel.StorePath = StorePath
+	err = templateModel.Add()
 	if err != nil {
 		parser.JsonDBError(c, "", err)
 	}
-
+	parser.JsonOK(c, "", templateModel)
 	return
 }
