@@ -83,14 +83,19 @@ func RolePoolApi(c *gin.Context) {
 
 func GetListHandler(c *gin.Context) {
 	var err error
-	var RolePoolService services.RolePoolService
+	var Parser struct {
+		RoleID   string `json:"RoleID" form:"RoleID"`
+		RoleName string `json:"RoleName" form:"RoleName"`
+	}
 
-	err = c.ShouldBind(&RolePoolService)
+	err = c.ShouldBind(&Parser)
 	if err != nil {
 		parser.JsonParameterIllegal(c, "", err)
 		return
 	}
-
+	
+	var RolePoolService services.RolePoolService
+	RolePoolService.Assign(Parser)
 	results, err := RolePoolService.GetList()
 	if err != nil {
 		parser.JsonDBError(c, "", err)

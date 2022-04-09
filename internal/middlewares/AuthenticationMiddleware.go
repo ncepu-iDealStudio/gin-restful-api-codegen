@@ -6,12 +6,10 @@
 package middlewares
 
 import (
-	"LRYGoCodeGen/internal/globals/codes"
 	"LRYGoCodeGen/internal/globals/parser"
 	"LRYGoCodeGen/internal/models/ginModels"
 	"errors"
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
 func AuthMiddleware(allowRole ...string) gin.HandlerFunc {
@@ -26,10 +24,7 @@ func AuthMiddleware(allowRole ...string) gin.HandlerFunc {
 		user := temp.(ginModels.UserModel)
 		// 验证权限
 		if !user.Auth(allowRole...) {
-			c.JSON(http.StatusOK, gin.H{
-				"code":    codes.AccessDenied,
-				"message": "您无权访问！",
-			})
+			parser.JsonAccessDenied(c, "您无权访问！")
 			c.Abort()
 			return
 		}

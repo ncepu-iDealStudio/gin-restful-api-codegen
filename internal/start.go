@@ -11,7 +11,7 @@ import (
 	"LRYGoCodeGen/internal/settings"
 	"encoding/gob"
 	"fmt"
-	logs "gitee.com/lryself/go-utils/loggers"
+	"gitee.com/lryself/go-utils/loggers"
 	"github.com/spf13/viper"
 	"time"
 )
@@ -26,8 +26,8 @@ func StartHttp() {
 		sys.PrintErr("配置文件加载出错！", err)
 		return
 	}
-	logs.InitLogger(viper.GetString("log.type"))
-	var log = logs.GetLogger()
+	loggers.InitLogger(viper.GetString("log.type"))
+	var log = loggers.GetLogger()
 
 	//初始化数据库（mysql、redis）
 	err = settings.InitDatabase()

@@ -6,17 +6,13 @@
 package middlewares
 
 import (
-	"LRYGoCodeGen/internal/globals/codes"
 	"LRYGoCodeGen/internal/globals/database"
 	"LRYGoCodeGen/internal/globals/jwt"
-	logs "gitee.com/lryself/go-utils/loggers"
+	"LRYGoCodeGen/internal/globals/parser"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
-	"net/http"
 	"time"
 )
-
-var log = logs.GetLogger()
 
 func TokenRequire() gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -24,11 +20,7 @@ func TokenRequire() gin.HandlerFunc {
 		token := c.Request.Header.Get("Token")
 		jwtChaim, err := jwt.VerifyToken(token, []byte(viper.GetString("system.Secret")))
 		if err != nil {
-			log.Errorln(err)
-			c.JSON(http.StatusOK, gin.H{
-				"code":    codes.AccessDenied,
-				"message": "您的Token已过期！",
-			})
+			parser.JsonAccessDenied(c, "请重新登录！")
 			c.Abort()
 			return
 		}
@@ -37,11 +29,7 @@ func TokenRequire() gin.HandlerFunc {
 		redisManager := database.GetRedisManager()
 		result, err := redisManager.Get("Token_" + jwtChaim.UserID).Result()
 		if err != nil || result != token {
-			log.Errorln(err)
-			c.JSON(http.StatusOK, gin.H{
-				"code":    codes.AccessDenied,
-				"message": "您的Token已失效！",
-			})
+			parser.JsonAccessDenied(c, "请重新登录！")
 			c.Abort()
 			return
 		}
@@ -49,11 +37,7 @@ func TokenRequire() gin.HandlerFunc {
 		//刷新token有效期
 		err = redisManager.Expire("Token_"+jwtChaim.UserID, time.Duration(viper.GetInt("system.RedisExpireTime"))*time.Second).Err()
 		if err != nil {
-			c.JSON(http.StatusOK, gin.H{
-				"code":    codes.InternalError,
-				"message": "刷新token错误！",
-				"err":     err,
-			})
+			parser.JsonInternalError(c, "刷新token错误！", err)
 			c.Abort()
 			return
 		}

@@ -107,6 +107,7 @@ func JsonAccessDenied(c *gin.Context, msg string) {
 	c.JSON(http.StatusOK, gin.H{
 		"code":    codes.AccessDenied,
 		"message": msg,
+		"err":     "您的Token有误！",
 	})
 }
 
