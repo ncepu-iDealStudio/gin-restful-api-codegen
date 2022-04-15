@@ -9,7 +9,7 @@ system:
   #  环境
   Mode: debug
   #  秘钥
-  Secret: d3a5c5c29c1130bddf55b8cda7ac770b9c085f0fe0b1c1ce3c566b90c78769d4
+  Secret: xxx
   #  rsa私钥
   RSAPrivate: configs/rsa/private.pem
   #  rsa公钥
@@ -37,11 +37,11 @@ remote:
   ESUrl: http://www.myES.com
 #  minio秘钥
   minio:
-    Endpoint: 47.107.75.113:11113
-    AccessKey: 5D3288UJBH0OW0MDFL0N
-    SecretKey: Nh2rJvuZPvVlgqumcypG9OxodE2yZoJ+pkBlldRG
+    Endpoint: xx.xx.xx.xx:xx
+    AccessKey: xxx
+    SecretKey: xxx
     UseSSL: false
-    BucketName: lrycodegen
+    BucketName: xxx
 user:
   defaultPassword: 123456
 template:
@@ -52,5 +52,5 @@ template:
 smtp:
   Host: "smtp.qq.com"
   Port: ":587"
-  User: "3142499264@qq.com"
-  Pass: "jagtcuknpwqvdgba"
+  User: "xxx"
+  Pass: "xxx"

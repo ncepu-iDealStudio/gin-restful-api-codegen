@@ -1,11 +1,11 @@
 mysql:
-  host : 47.107.75.113
-  port : 3306
-  username : LryGenCode
-  password : lryGenCode
-  dbname : lry_gen_code
+  host : xx.xx.xx.xx
+  port : xxx
+  username : xxx
+  password : xxx
+  dbname : xxx
 
 redis:
-  addr: 47.107.75.113:6379
-  password: lpc123LPC
+  addr: xxx:xxx
+  password: xxx
   DB: 1
