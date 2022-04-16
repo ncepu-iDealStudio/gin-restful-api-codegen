@@ -8,6 +8,7 @@ import (
 	"LRYGoCodeGen/internal/dao"
 	"LRYGoCodeGen/internal/globals/database"
 	"LRYGoCodeGen/internal/globals/parser"
+	"gorm.io/gorm"
 )
 
 type ProjectPoolService struct {
@@ -56,4 +57,25 @@ func (m *ProjectPoolService) GetListByPage(p parser.ListParser) ([]ProjectPoolSe
 		results = append(results, result)
 	}
 	return results, nil
+}
+
+func (m *ProjectPoolService) Add() error {
+	var err error
+	mysqlManager := database.GetMysqlClient()
+	err = mysqlManager.Transaction(func(tx *gorm.DB) error {
+		err = mysqlManager.Create(&m).Error
+		if err != nil {
+			return err
+		}
+		var projectMember ProjectMemberService
+		projectMember.ProjectID = m.ProjectID
+		projectMember.UserID = m.UserID
+		projectMember.RoleID = "1"
+		err = mysqlManager.Create(&projectMember).Error
+		if err != nil {
+			return err
+		}
+		return err
+	})
+	return err
 }

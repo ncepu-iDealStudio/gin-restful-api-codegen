@@ -175,6 +175,7 @@ type columnModel struct {
 	Extra      string
 	Privileges []string
 	Comment    string
+	NaturalKey bool
 }
 ```
 

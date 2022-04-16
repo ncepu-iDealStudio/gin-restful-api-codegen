@@ -9,16 +9,16 @@ import (
     "LRYGoCodeGen/internal/models/mysqlModel"
 )
 
-type SsoUserDao struct {
-    mysqlModel.SsoUserModel
+type VProjectMemberDao struct {
+    mysqlModel.VProjectMemberModel
 }
 
-func (m *SsoUserDao) Get() error {
+func (m *VProjectMemberDao) Get() error {
     mysqlManager := database.GetMysqlClient()
     return mysqlManager.Where("IsDeleted", false).Where(m).Take(m).Error
 }
 
-func (m *SsoUserDao) Add() error {
+func (m *VProjectMemberDao) Add() error {
     mysqlManager := database.GetMysqlClient()
     err := m.Get()
     if err == nil {
@@ -27,7 +27,7 @@ func (m *SsoUserDao) Add() error {
     return mysqlManager.Create(&m).Error
 }
 
-func (m *SsoUserDao) Update(args map[string]interface{}) error {
+func (m *VProjectMemberDao) Update(args map[string]interface{}) error {
     mysqlManager := database.GetMysqlClient()
     err := m.Get()
     if err != nil {
@@ -36,7 +36,7 @@ func (m *SsoUserDao) Update(args map[string]interface{}) error {
     return mysqlManager.Model(&m).Updates(args).Error
 }
 
-func (m *SsoUserDao) Delete() error {
+func (m *VProjectMemberDao) Delete() error {
     mysqlManager := database.GetMysqlClient()
     err := m.Get()
     if err != nil {

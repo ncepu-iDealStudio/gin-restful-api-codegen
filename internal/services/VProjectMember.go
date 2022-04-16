@@ -10,13 +10,13 @@ import (
 	"LRYGoCodeGen/internal/globals/parser"
 )
 
-type VMemberRoleService struct {
-	dao.VMemberRoleDao
+type VProjectMemberService struct {
+	dao.VProjectMemberDao
 }
 
-func (m *VMemberRoleService) GetList() ([]VMemberRoleService, error) {
+func (m *VProjectMemberService) GetList() ([]VProjectMemberService, error) {
 	mysqlManager := database.GetMysqlClient()
-	results := []VMemberRoleService{}
+	results := []VProjectMemberService{}
 
 	rows, err := mysqlManager.Table(m.TableName()).Where(m).Rows()
 	defer rows.Close()
@@ -24,7 +24,7 @@ func (m *VMemberRoleService) GetList() ([]VMemberRoleService, error) {
 		return results, err
 	}
 	for rows.Next() {
-		var result VMemberRoleService
+		var result VProjectMemberService
 		err = mysqlManager.ScanRows(rows, &result)
 		if err != nil {
 			return results, err
@@ -34,17 +34,17 @@ func (m *VMemberRoleService) GetList() ([]VMemberRoleService, error) {
 	return results, nil
 }
 
-func (m *VMemberRoleService) GetListByPage(p parser.ListParser) ([]VMemberRoleService, error) {
+func (m *VProjectMemberService) GetListByPage(p parser.ListParser) ([]VProjectMemberService, error) {
 	mysqlManager := database.GetMysqlClient()
-	results := []VMemberRoleService{}
 
 	rows, err := mysqlManager.Table(m.TableName()).Where(m).Limit(p.Limit).Offset(p.Offset).Order(p.Order).Rows()
 	defer rows.Close()
 	if err != nil {
-		return results, err
+		return nil, err
 	}
+	results := []VProjectMemberService{}
 	for rows.Next() {
-		var result VMemberRoleService
+		var result VProjectMemberService
 		err = mysqlManager.ScanRows(rows, &result)
 		if err != nil {
 			return results, err

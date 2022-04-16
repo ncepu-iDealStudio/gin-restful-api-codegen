@@ -5,14 +5,123 @@
 package roles
 
 import (
-	"LRYGoCodeGen/internal/globals/codes"
 	"LRYGoCodeGen/internal/globals/parser"
+	"LRYGoCodeGen/internal/globals/snowflake"
 	"LRYGoCodeGen/internal/services"
+	"gitee.com/lryself/go-utils/structs"
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
-func RolePoolApi(c *gin.Context) {
+func RolePoolPostHandler(c *gin.Context) {
+	var err error
+
+	var Parser struct {
+		RoleName       string `json:"RoleName" form:"RoleName" binding:"required"`
+		PermissionList string `json:"PermissionList" form:"PermissionList" binding:"required"`
+		OtherInfo      string `json:"OtherInfo" form:"OtherInfo"`
+	}
+	err = c.ShouldBind(&Parser)
+	if err != nil {
+		parser.JsonParameterIllegal(c, "", err)
+		return
+	}
+
+	var RolePoolService services.RolePoolService
+	RolePoolService.Assign(Parser)
+	
+	RolePoolService.RoleID = snowflake.GetSnowflakeID()
+	err = RolePoolService.Add()
+	if err != nil {
+		parser.JsonDBError(c, "", err)
+		return
+	}
+	parser.JsonOK(c, "", RolePoolService)
+}
+
+func RolePoolGetHandler(c *gin.Context) {
+	var err error
+
+	var Parser struct {
+		RoleID         string `json:"RoleID" form:"RoleID" binding:"required"`
+		RoleName       string `json:"RoleName" form:"RoleName"`
+		PermissionList string `json:"PermissionList" form:"PermissionList"`
+		OtherInfo      string `json:"OtherInfo" form:"OtherInfo"`
+		IsDeleted      bool   `json:"IsDeleted" form:"IsDeleted"`
+	}
+	err = c.ShouldBind(&Parser)
+	if err != nil {
+		parser.JsonParameterIllegal(c, "", err)
+		return
+	}
+
+	var RolePoolService services.RolePoolService
+	RolePoolService.Assign(Parser)
+	err = RolePoolService.Get()
+	if err != nil {
+		parser.JsonDBError(c, "", err)
+		return
+	}
+	parser.JsonOK(c, "", RolePoolService)
+}
+
+func RolePoolPutHandler(c *gin.Context) {
+	var err error
+
+	var Parser struct {
+		RoleID         string `json:"RoleID" form:"RoleID" binding:"required"`
+		RoleName       string `json:"RoleName" form:"RoleName"`
+		PermissionList string `json:"PermissionList" form:"PermissionList"`
+		OtherInfo      string `json:"OtherInfo" form:"OtherInfo"`
+	}
+	err = c.ShouldBind(&Parser)
+	if err != nil {
+		parser.JsonParameterIllegal(c, "", err)
+		return
+	}
+
+	var RolePoolService services.RolePoolService
+
+	args, err := structs.StructToMap(Parser, "json")
+	if err != nil {
+		parser.JsonParameterIllegal(c, "", err)
+		return
+	}
+	//不能修改业务主键
+	delete(args, "RoleID")
+
+	err = RolePoolService.Update(args)
+	if err != nil {
+		parser.JsonDBError(c, "", err)
+		return
+	}
+	parser.JsonOK(c, "", RolePoolService)
+}
+
+func RolePoolDeleteHandler(c *gin.Context) {
+	var err error
+
+	var Parser struct {
+		RoleID string `json:"RoleID" form:"RoleID" binding:"required"`
+	}
+	err = c.ShouldBind(&Parser)
+	if err != nil {
+		parser.JsonParameterIllegal(c, "", err)
+		return
+	}
+
+	var RolePoolService services.RolePoolService
+	RolePoolService.Assign(Parser)
+
+	err = RolePoolService.Delete()
+	if err != nil {
+		parser.JsonDBError(c, "", err)
+		return
+	}
+	parser.JsonOK(c, "", RolePoolService)
+}
+
+// 获取列表
+func GetListHandler(c *gin.Context) {
 	var err error
 	var RolePoolService services.RolePoolService
 
@@ -22,80 +131,6 @@ func RolePoolApi(c *gin.Context) {
 		return
 	}
 
-	var RolePool services.RolePoolService
-	//针对业务主键处理
-	RolePool.RoleID = RolePoolService.RoleID
-
-	if c.Request.Method == "GET" {
-		err = RolePoolService.Get()
-		if err != nil {
-			parser.JsonDBError(c, "", err)
-			return
-		}
-	} else if c.Request.Method == "POST" {
-		err = RolePool.Get()
-		if err != nil {
-			if err.Error() != "record not found" {
-				parser.JsonDBError(c, "", err)
-				return
-			}
-		} else {
-			c.JSON(http.StatusOK, gin.H{
-				"code":    codes.DataExist,
-				"message": "数据已存在！",
-			})
-			return
-		}
-
-		err = RolePoolService.Add()
-		if err != nil {
-			parser.JsonDBError(c, "", err)
-			return
-		}
-	} else if c.Request.Method == "PUT" {
-		args, err := RolePoolService.GetModelMap()
-		if err != nil {
-			parser.JsonParameterIllegal(c, "", err)
-			return
-		}
-		//不能修改业务主键
-		delete(args, "RoleID")
-
-		err = RolePool.Update(args)
-		if err != nil {
-			parser.JsonDBError(c, "", err)
-			return
-		}
-		RolePoolService = RolePool
-	} else if c.Request.Method == "DELETE" {
-		err = RolePool.Delete()
-		if err != nil {
-			parser.JsonDBError(c, "", err)
-			return
-		}
-		RolePoolService.IsDeleted = true
-	}
-
-	parser.JsonOK(c, "", RolePoolService)
-}
-
-// 获取列表
-
-func GetListHandler(c *gin.Context) {
-	var err error
-	var Parser struct {
-		RoleID   string `json:"RoleID" form:"RoleID"`
-		RoleName string `json:"RoleName" form:"RoleName"`
-	}
-
-	err = c.ShouldBind(&Parser)
-	if err != nil {
-		parser.JsonParameterIllegal(c, "", err)
-		return
-	}
-	
-	var RolePoolService services.RolePoolService
-	RolePoolService.Assign(Parser)
 	results, err := RolePoolService.GetList()
 	if err != nil {
 		parser.JsonDBError(c, "", err)
@@ -106,7 +141,6 @@ func GetListHandler(c *gin.Context) {
 }
 
 // 获取列表（分页）
-
 func GetListByPage(c *gin.Context) {
 	var err error
 

@@ -11,14 +11,12 @@ import (
 )
 
 type VMemberRoleModel struct { 
-    AutoID int64 `gorm:"column:AutoID;type:bigint(20);not null;default:0;" json:"AutoID" form:"AutoID"`
     ProjectID string `gorm:"column:ProjectID;type:varchar(20);not null;" json:"ProjectID" form:"ProjectID"`
     UserID string `gorm:"column:UserID;type:varchar(20);not null;" json:"UserID" form:"UserID"`
     RoleID string `gorm:"column:RoleID;type:varchar(20);not null;" json:"RoleID" form:"RoleID"`
     OtherInfo string `gorm:"column:OtherInfo;type:text;" json:"OtherInfo" form:"OtherInfo"`
     Createtime time.Time `gorm:"column:Createtime;type:timestamp;not null;default:0000-00-00 00:00:00;" json:"Createtime" form:"Createtime"`
     Updatetime time.Time `gorm:"column:Updatetime;type:timestamp;not null;default:0000-00-00 00:00:00;" json:"Updatetime" form:"Updatetime"`
-    IsDeleted bool `gorm:"column:IsDeleted;type:tinyint(1);not null;default:0;" json:"IsDeleted" form:"IsDeleted"`
     RoleName string `gorm:"column:RoleName;type:varchar(255);not null;" json:"RoleName" form:"RoleName"`
     PermissionList string `gorm:"column:PermissionList;type:text;" json:"PermissionList" form:"PermissionList"`
     Name string `gorm:"column:Name;type:varchar(255);not null;" json:"Name" form:"Name"`
@@ -28,14 +26,6 @@ type VMemberRoleModel struct {
 
 func (m *VMemberRoleModel) TableName() string {
     return "v_member_role"
-}
-
-func (m *VMemberRoleModel) GetAutoID() int64 {
-    return m.AutoID
-}
-
-func (m *VMemberRoleModel) SetAutoID(AutoID int64) {
-    m.AutoID = AutoID
 }
 
 func (m *VMemberRoleModel) GetProjectID() string {
@@ -84,14 +74,6 @@ func (m *VMemberRoleModel) GetUpdatetime() time.Time {
 
 func (m *VMemberRoleModel) SetUpdatetime(Updatetime time.Time) {
     m.Updatetime = Updatetime
-}
-
-func (m *VMemberRoleModel) GetIsDeleted() bool {
-    return m.IsDeleted
-}
-
-func (m *VMemberRoleModel) SetIsDeleted(IsDeleted bool) {
-    m.IsDeleted = IsDeleted
 }
 
 func (m *VMemberRoleModel) GetRoleName() string {

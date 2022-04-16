@@ -15,7 +15,10 @@ var (
 
 func Init{{$CodeDict.TableInfo.StructName}}RouterGroup(engine *gin.RouterGroup) {
     Api = engine.Group("{{$CodeDict.TableInfo.PackageName}}")
-    Api.Any("", {{$CodeDict.TableInfo.PackageName}}.{{$CodeDict.TableInfo.StructName}}Api)
+    Api.GET("", {{$CodeDict.TableInfo.PackageName}}.{{$CodeDict.TableInfo.StructName}}GetHandler)
+    Api.POST("", {{$CodeDict.TableInfo.PackageName}}.{{$CodeDict.TableInfo.StructName}}PostHandler)
+    Api.PUT("", {{$CodeDict.TableInfo.PackageName}}.{{$CodeDict.TableInfo.StructName}}PutHandler)
+    Api.DELETE("", {{$CodeDict.TableInfo.PackageName}}.{{$CodeDict.TableInfo.StructName}}DeleteHandler)
     Api.GET("list", {{$CodeDict.TableInfo.PackageName}}.GetListHandler)
     Api.GET("list/page", {{$CodeDict.TableInfo.PackageName}}.GetListByPage)
 }

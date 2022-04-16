@@ -57,6 +57,7 @@ type columnModel struct {
 	Extra      string
 	Privileges []string
 	Comment    string
+	NaturalKey bool
 }
 
 func (c columnModel) TagNull() string {
@@ -128,6 +129,7 @@ func (d *tableCodeDict) Init(table *mysql.TableModel) error {
 		column1.Privileges = column.Privileges
 		column1.Comment = column.Comment
 		if strings.ToLower(column.Field) != "autoid" && column.Key == "PRI" {
+			column1.NaturalKey = true
 			d.TableInfo.NaturalKey = append(d.TableInfo.NaturalKey, column.Field)
 		}
 		d.TableInfo.Columns = append(d.TableInfo.Columns, column1)

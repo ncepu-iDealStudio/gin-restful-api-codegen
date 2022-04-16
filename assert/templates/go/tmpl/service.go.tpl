@@ -16,15 +16,13 @@ type {{$CodeDict.TableInfo.StructName}}Service struct {
 
 func (m *{{$CodeDict.TableInfo.StructName}}Service) GetList() ([]{{$CodeDict.TableInfo.StructName}}Service, error) {
     mysqlManager := database.GetMysqlClient()
+    results := []{{$CodeDict.TableInfo.StructName}}Service{}
 
-    rows, err := mysqlManager.Table(m.TableName()).Where(map[string]interface{}{
-        "IsDeleted": 0,
-    }).Where(m).Rows()
+    rows, err := mysqlManager.Table(m.TableName()).Where("IsDeleted", false).Where(m).Rows()
     defer rows.Close()
     if err != nil {
-        return nil, err
+        return results, err
     }
-    results := []{{$CodeDict.TableInfo.StructName}}Service{}
     for rows.Next() {
         var result {{$CodeDict.TableInfo.StructName}}Service
         err = mysqlManager.ScanRows(rows, &result)
@@ -39,15 +37,14 @@ func (m *{{$CodeDict.TableInfo.StructName}}Service) GetList() ([]{{$CodeDict.Tab
 
 func (m *{{$CodeDict.TableInfo.StructName}}Service) GetListByPage(p parser.ListParser) ([]{{$CodeDict.TableInfo.StructName}}Service, error) {
     mysqlManager := database.GetMysqlClient()
+    results := []{{$CodeDict.TableInfo.StructName}}Service{}
 
-    rows, err := mysqlManager.Table(m.TableName()).Where(map[string]interface{}{
-        "IsDeleted": 0,
-    }).Where(m).Limit(p.Limit).Offset(p.Offset).Order(p.Order).Rows()
+    rows, err := mysqlManager.Table(m.TableName()).Where("IsDeleted", false).Where(m)
+        .Limit(p.Limit).Offset(p.Offset).Order(p.Order).Rows()
     defer rows.Close()
     if err != nil {
-        return nil, err
+        return results, err
     }
-    results := []{{$CodeDict.TableInfo.StructName}}Service{}
     for rows.Next() {
         var result {{$CodeDict.TableInfo.StructName}}Service
         err = mysqlManager.ScanRows(rows, &result)

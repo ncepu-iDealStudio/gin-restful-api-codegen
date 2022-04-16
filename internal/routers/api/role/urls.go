@@ -23,7 +23,10 @@ func InitRoleRouterGroup(engine *gin.RouterGroup) {
 	Api.Use(middlewares.TokenRequire())
 	Api.Use(middlewares.AuthMiddleware(ginModels.Platform))
 
-	Api.Any("", roles.RolePoolApi)
+	Api.GET("", roles.RolePoolGetHandler)
+	Api.POST("", roles.RolePoolPostHandler)
+	Api.PUT("", roles.RolePoolPutHandler)
+	Api.DELETE("", roles.RolePoolDeleteHandler)
 	Api.GET("list/page", roles.GetListByPage)
 
 	permissions.InitPermissionsRouterGroup(Api)

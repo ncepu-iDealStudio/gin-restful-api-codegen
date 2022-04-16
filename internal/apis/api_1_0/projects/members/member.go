@@ -58,7 +58,8 @@ func ProjectMemberApi(c *gin.Context) {
 			})
 			return
 		}
-
+		ProjectMember.RoleID = Parser.RoleID
+		ProjectMember.OtherInfo = Parser.OtherInfo
 		err = ProjectMember.Add()
 		if err != nil {
 			parser.JsonDBError(c, "", err)
@@ -117,7 +118,7 @@ func ProjectMemberApi(c *gin.Context) {
 
 func GetListHandler(c *gin.Context) {
 	var err error
-	var ProjectMemberService services.ProjectMemberService
+	var member services.VMemberRoleService
 	var Parser struct {
 		ProjectID string `json:"ProjectID" form:"ProjectID" binding:"required"`
 		UserID    string `json:"UserID" form:"UserID"`
@@ -130,9 +131,9 @@ func GetListHandler(c *gin.Context) {
 		parser.JsonParameterIllegal(c, "", err)
 		return
 	}
-	ProjectMemberService.Assign(Parser)
+	member.Assign(Parser)
 
-	results, err := ProjectMemberService.GetList()
+	results, err := member.GetList()
 	if err != nil {
 		parser.JsonDBError(c, "", err)
 		return
