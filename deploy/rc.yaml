@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: lry-go-code-gen #调度对象的全称，全局唯一
+spec:
+  replicas: 1    #表示创建1个pod副本数量
+  selector:
+    app: lry-go-code-gen
+  template:
+    metadata:
+      labels:
+        app: lry-go-code-gen # pod拥有的标签
+    spec:
+      containers:
+        - name: lry-go-code-gen-demo
+          image: lry_go_code_gen  # 对应的从docker拉取的镜像名称
+          imagePullPolicy: Never # Always, Never, IfNotPresent
+          ports:
+            - containerPort: 8000   #容器暴露的端口号

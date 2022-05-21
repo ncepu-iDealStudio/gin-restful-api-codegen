@@ -1,7 +1,7 @@
 [
   {
     "tmplPath": "model.go.tpl",
-    "outPath": "internal/models/mysqlModel"
+    "outPath": "internal/models"
   },
   {
     "tmplPath": "dao.go.tpl",
@@ -18,12 +18,12 @@
   },
   {
     "tmplPath": "router.go.tpl",
-    "outPath": "internal/routers/api_1_0",
+    "outPath": "internal/routers/api",
     "divideDir": true
   },
   {
     "tmplPath": "urls.go.tpl",
-    "outPath": "internal/routers/api_1_0/urls.go",
+    "outPath": "internal/routers/api/urls.go",
     "isTables": true
   }
 ]

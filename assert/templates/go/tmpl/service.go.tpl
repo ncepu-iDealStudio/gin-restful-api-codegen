@@ -39,8 +39,7 @@ func (m *{{$CodeDict.TableInfo.StructName}}Service) GetListByPage(p parser.ListP
     mysqlManager := database.GetMysqlClient()
     results := []{{$CodeDict.TableInfo.StructName}}Service{}
 
-    rows, err := mysqlManager.Table(m.TableName()).Where("IsDeleted", false).Where(m)
-        .Limit(p.Limit).Offset(p.Offset).Order(p.Order).Rows()
+    rows, err := mysqlManager.Table(m.TableName()).Where("IsDeleted", false).Where(m).Limit(p.Limit).Offset(p.Offset).Order(p.Order).Rows()
     defer rows.Close()
     if err != nil {
         return results, err

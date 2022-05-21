@@ -13,7 +13,7 @@ import (
 
 func InitViper() (err error) {
 	viper.SetConfigName("config")
-	viper.AddConfigPath("./configs") // 添加搜索路径
+	viper.AddConfigPath("./configs/internal") // 添加搜索路径
 	viper.SetConfigType("yaml")
 
 	err = viper.ReadInConfig()

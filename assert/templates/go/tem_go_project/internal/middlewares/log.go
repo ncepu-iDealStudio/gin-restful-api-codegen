@@ -7,6 +7,7 @@ package middlewares
 
 import (
 	"bytes"
+	logs "gitee.com/lryself/go-utils/loggers"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 	"time"
@@ -22,9 +23,9 @@ func (r responseJsonWriter) Write(b []byte) (int, error) {
 	return r.ResponseWriter.Write(b)
 }
 
-
 func LogMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		var log = logs.GetLogger()
 		w := &responseJsonWriter{body: &bytes.Buffer{}, ResponseWriter: c.Writer}
 		c.Writer = w
 		// 开始时间
@@ -53,12 +54,12 @@ func LogMiddleware() gin.HandlerFunc {
 
 		// 日志格式
 		log.WithFields(logrus.Fields{
-			"client_ip"    : clientIP,
-			"req_uri"      : reqUri,
-			"req_method"   : reqMethod,
-			"status_code"  : statusCode,
-			"return_json"  : returnJson,
-			"latency_time" : latencyTime,
+			"client_ip":    clientIP,
+			"req_uri":      reqUri,
+			"req_method":   reqMethod,
+			"status_code":  statusCode,
+			"return_json":  returnJson,
+			"latency_time": latencyTime,
 		}).Info()
 	}
 }

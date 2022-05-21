@@ -90,7 +90,7 @@ func (d *DirModel) MakeDir(p string, replaceDict KeyWord) error {
 	for _, fi := range d.Files {
 		//todo 添加字符串替换逻辑
 		s := string(fi.Content)
-		for k, v := range replaceDict.Include {
+		for k, v := range replaceDict.Replace {
 			s = strings.ReplaceAll(s, k, v)
 		}
 		fi.Content = []byte(s)

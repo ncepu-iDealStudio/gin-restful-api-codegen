@@ -1,45 +1,34 @@
 package main
 
 import (
-	"encoding/gob"
-	"fmt"
-	logs "gitee.com/lryself/go-utils/loggers"
+	"gitee.com/lryself/go-utils/loggers"
 	"github.com/spf13/viper"
-	"tem_go_project/internal/models/ginModels"
-	"tem_go_project/internal/settings"
-	"time"
+	"tem_go_project/cmd"
+	"tem_go_project/globals"
+	"tem_go_project/globals/errHelper"
+	"tem_go_project/globals/sys"
+	"tem_go_project/globals/vipers"
 )
 
 func main() {
-	gob.Register(time.Time{})
-	gob.Register(ginModels.UserModel{})
-	var err error
+	waitGroup := globals.GetWatGroup()
+	waitGroup.Add(1)
+	go sys.InitMsg()
+
 	//初始化viper
-	err = settings.InitViper()
-	if err != nil {
-		fmt.Println("配置文件加载出错！", err)
-		return
-	}
-	logs.InitLogger(viper.GetString("log.type"))
-	var log = logs.GetLogger()
+	err := vipers.InitViper()
+	errHelper.ErrExit(err)
+	sys.Println("配置文件加载完成")
 
-	//初始化数据库（mysql、redis）
-	err = settings.InitDatabase()
-	if err != nil {
-		log.Errorln(err)
-		return
-	}
+	//初始化日志
+	loggers.InitLogger(viper.GetString("log.type"))
+	sys.Println("日志组件初始化完成")
 
-	//初始化gin引擎
-	engine, err := settings.InitGinEngine()
-	if err != nil {
-		log.Errorln(err)
-		return
-	}
-	//开始运行
-	err = engine.Run(fmt.Sprintf("%s:%s", viper.GetString("system.SysIP"), viper.GetString("system.SysPort")))
-	if err != nil {
-		log.Errorln(err)
-		return
-	}
+	//执行cmd
+	cmd.Execute()
+
+	sys.Println("系统已全部初始化完成！")
+	//退出系统
+	waitGroup.Wait()
+	sys.Exit()
 }

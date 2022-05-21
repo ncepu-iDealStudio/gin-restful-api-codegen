@@ -9,13 +9,13 @@ system:
   #  环境
   Mode: debug
   #  秘钥
-  Secret: d3a5c5c29c1130bddf55b8cda7ac770b9c085f0fe0b1c1ce3c566b90c78769d4
+  Secret: XXX
   #  rsa私钥
   RSAPrivate: configs/rsa/private.pem
   #  rsa公钥
   RSAPublic: configs/rsa/public.pem
   #  过期时间（秒）
-  TokenExpireTime: 3600
+  TokenExpireTime: 86400
   RedisExpireTime: 3600
   SessionExpireTime: 86400
   #  服务中心ID
@@ -28,12 +28,21 @@ system:
   SysIP: 0.0.0.0
   #  部署服务器端口
   SysPort: 8000
+  #  rpc服务端口
+  RpcPort: 8002
   #  使用mysql
-  UseMysql: false
+  UseMysql: true
   #  使用redis
-  UseRedis: false
+  UseRedis: true
 remote:
   #  ES路由
-  ESUrl: http://www.myES.com
+  ESUrl: http://localhost:9200
+  #  用户中心路由
+  SsoCenter: localhost:8002
+smtp:
+  Host: "smtp.qq.com"
+  Port: ":587"
+  User: "*"
+  Pass: "*"
 user:
   defaultPassword: 123456

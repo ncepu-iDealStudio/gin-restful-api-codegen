@@ -14,6 +14,7 @@ ADD ./main /apps/golang_app
 
 # 拷贝配置文件到容器中
 ADD ./configs /apps/configs
+#ADD ./logs /apps/logs
 
 # 设置时区为上海
 RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
@@ -28,4 +29,4 @@ RUN chmod 777 /apps/golang_app
 EXPOSE 8000
 
 # 运行golang程序的命令
-# ENTRYPOINT ["/apps/golang_app"]
+ENTRYPOINT ["/apps/golang_app"]

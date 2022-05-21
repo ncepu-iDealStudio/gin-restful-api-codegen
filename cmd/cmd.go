@@ -32,7 +32,7 @@ func Execute() {
 }
 func init() {
 	cobra.OnInitialize(initConfig)
-	rootCmd.PersistentFlags().StringP("Config", "C", "gen_config", "配置文件名(注意-C为大写)")
+	rootCmd.PersistentFlags().StringP("Config", "C", "config", "配置文件名(注意-C为大写)")
 }
 
 func initConfig() {

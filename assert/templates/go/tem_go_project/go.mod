@@ -1,18 +1,24 @@
 module tem_go_project
 
-go 1.17
+go 1.18
 
 require (
-	gitee.com/lryself/go-utils v0.0.4-0.20220306132317-bcba865c1c40
+	gitee.com/lryself/go-utils v0.0.5
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/fsnotify/fsnotify v1.5.1
-	github.com/gin-contrib/sessions v0.0.4
+	github.com/fufuok/chanx v1.0.0
+	github.com/gin-contrib/multitemplate v0.0.0-20220501090820-6d07ad6cd631
+	github.com/gin-contrib/sessions v0.0.5
 	github.com/gin-gonic/gin v1.7.7
 	github.com/go-redis/redis v6.15.9+incompatible
-	github.com/sirupsen/logrus v1.8.1
+	github.com/grpc-ecosystem/go-grpc-middleware v1.3.0
+	github.com/sirupsen/logrus v1.4.2
+	github.com/spf13/cobra v1.4.0
 	github.com/spf13/viper v1.10.1
-	gorm.io/driver/mysql v1.2.3
-	gorm.io/gorm v1.22.4
+	google.golang.org/grpc v1.43.0
+	google.golang.org/protobuf v1.27.1
+	gorm.io/driver/mysql v1.3.3
+	gorm.io/gorm v1.23.5
 )
 
 require (
@@ -24,12 +30,14 @@ require (
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/gorilla/context v1.1.1 // indirect
 	github.com/gorilla/securecookie v1.1.1 // indirect
-	github.com/gorilla/sessions v1.2.0 // indirect
+	github.com/gorilla/sessions v1.2.1 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
+	github.com/inconshreveable/mousetrap v1.0.0 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
-	github.com/jinzhu/now v1.1.3 // indirect
+	github.com/jinzhu/now v1.1.4 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
+	github.com/konsorten/go-windows-terminal-sequences v1.0.1 // indirect
 	github.com/leodido/go-urn v1.2.0 // indirect
 	github.com/lestrrat-go/file-rotatelogs v2.4.0+incompatible // indirect
 	github.com/lestrrat-go/strftime v1.0.5 // indirect
@@ -40,8 +48,6 @@ require (
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/olivere/elastic/v7 v7.0.31 // indirect
-	github.com/onsi/ginkgo v1.16.5 // indirect
-	github.com/onsi/gomega v1.17.0 // indirect
 	github.com/pelletier/go-toml v1.9.4 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/rifflock/lfshook v0.0.0-20180920164130-b9218ef580f5 // indirect
@@ -52,9 +58,10 @@ require (
 	github.com/subosito/gotenv v1.2.0 // indirect
 	github.com/ugorji/go/codec v1.1.7 // indirect
 	golang.org/x/crypto v0.0.0-20210817164053-32db794688a5 // indirect
-	golang.org/x/sys v0.0.0-20211210111614-af8b64212486 // indirect
+	golang.org/x/net v0.0.0-20211209124913-491a49abca63 // indirect
+	golang.org/x/sys v0.0.0-20220408201424-a24fb2fb8a0f // indirect
 	golang.org/x/text v0.3.7 // indirect
-	google.golang.org/protobuf v1.27.1 // indirect
+	google.golang.org/genproto v0.0.0-20211208223120-3a66f561d7aa // indirect
 	gopkg.in/ini.v1 v1.66.2 // indirect
 	gopkg.in/sohlich/elogrus.v7 v7.0.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
