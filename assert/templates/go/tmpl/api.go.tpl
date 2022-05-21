@@ -5,17 +5,18 @@
 package {{$CodeDict.TableInfo.PackageName}}
 
 import (
+    "gitee.com/lryself/go-utils/structs"
     "github.com/gin-gonic/gin"
-    "{{$CodeDict.Dict.ProjectName}}/internal/globals/codes"
     "{{$CodeDict.Dict.ProjectName}}/internal/globals/parser"
     "{{$CodeDict.Dict.ProjectName}}/internal/services"
+    "time"
 )
 
 func {{$CodeDict.TableInfo.StructName}}PostHandler(c *gin.Context) {
     var err error
 
     var Parser struct { {{range .TableInfo.Columns}}
-        {{.Field}} {{.GoType}} `json:"{{.Field}}" form:"{{.Field}}"{{if .NaturalKey}} binding:"required"{{end}}`{{end}}
+        {{.Field}} {{.DataType}} `json:"{{.Field}}" form:"{{.Field}}"{{if .NaturalKey}} binding:"required"{{end}}`{{end}}
     }
     err = c.ShouldBind(&Parser)
     if err != nil {
@@ -31,14 +32,14 @@ func {{$CodeDict.TableInfo.StructName}}PostHandler(c *gin.Context) {
         parser.JsonDBError(c, "", err)
         return
     }
-    parser.JsonOK(c, "", RolePoolService)
+    parser.JsonOK(c, "", {{$CodeDict.TableInfo.StructName}}Service)
 }
 
 func {{$CodeDict.TableInfo.StructName}}GetHandler(c *gin.Context) {
     var err error
 
     var Parser struct { {{range .TableInfo.Columns}}
-        {{.Field}} {{.GoType}} `json:"{{.Field}}" form:"{{.Field}}"{{if .NaturalKey}} binding:"required"{{end}}`{{end}}
+        {{.Field}} {{.DataType}} `json:"{{.Field}}" form:"{{.Field}}"{{if .NaturalKey}} binding:"required"{{end}}`{{end}}
     }
     err = c.ShouldBind(&Parser)
     if err != nil {
@@ -53,14 +54,14 @@ func {{$CodeDict.TableInfo.StructName}}GetHandler(c *gin.Context) {
         parser.JsonDBError(c, "", err)
         return
     }
-    parser.JsonOK(c, "", RolePoolService)
+    parser.JsonOK(c, "", {{$CodeDict.TableInfo.StructName}}Service)
 }
 
 func {{$CodeDict.TableInfo.StructName}}PutHandler(c *gin.Context) {
     var err error
 
     var Parser struct { {{range .TableInfo.Columns}}
-        {{.Field}} {{.GoType}} `json:"{{.Field}}" form:"{{.Field}}"{{if .NaturalKey}} binding:"required"{{end}}`{{end}}
+        {{.Field}} {{.DataType}} `json:"{{.Field}}" form:"{{.Field}}"{{if .NaturalKey}} binding:"required"{{end}}`{{end}}
     }
     err = c.ShouldBind(&Parser)
     if err != nil {
@@ -83,14 +84,14 @@ func {{$CodeDict.TableInfo.StructName}}PutHandler(c *gin.Context) {
         parser.JsonDBError(c, "", err)
         return
     }
-    parser.JsonOK(c, "", RolePoolService)
+    parser.JsonOK(c, "", {{$CodeDict.TableInfo.StructName}}Service)
 }
 
 func {{$CodeDict.TableInfo.StructName}}DeleteHandler(c *gin.Context) {
     var err error
 
     var Parser struct { {{range .TableInfo.Columns}}{{if .NaturalKey}}
-        {{.Field}} {{.GoType}} `json:"{{.Field}}" form:"{{.Field}}" binding:"required"`{{end}}{{end}}
+        {{.Field}} {{.DataType}} `json:"{{.Field}}" form:"{{.Field}}" binding:"required"`{{end}}{{end}}
     }
     err = c.ShouldBind(&Parser)
     if err != nil {
@@ -106,7 +107,7 @@ func {{$CodeDict.TableInfo.StructName}}DeleteHandler(c *gin.Context) {
         parser.JsonDBError(c, "", err)
         return
     }
-    parser.JsonOK(c, "", RolePoolService)
+    parser.JsonOK(c, "", {{$CodeDict.TableInfo.StructName}}Service)
 }
 // 获取列表
 func GetListHandler(c *gin.Context) {

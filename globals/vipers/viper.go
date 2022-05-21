@@ -18,7 +18,7 @@ var (
 func InitGenViper(confName string) (err error) {
 	genViper = viper.New()
 	genViper.SetConfigName(confName)
-	genViper.AddConfigPath("./configs") // 添加搜索路径
+	genViper.AddConfigPath("./configs/gen") // 添加搜索路径
 	genViper.SetConfigType("yaml")
 
 	err = genViper.ReadInConfig()

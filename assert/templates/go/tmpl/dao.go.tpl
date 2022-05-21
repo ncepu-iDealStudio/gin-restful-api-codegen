@@ -6,11 +6,11 @@ package dao
 import (
     "errors"
     "{{$CodeDict.Dict.ProjectName}}/internal/globals/database"
-    "{{$CodeDict.Dict.ProjectName}}/internal/models/mysqlModel"
+    "{{$CodeDict.Dict.ProjectName}}/internal/models"
 )
 
 type {{$CodeDict.TableInfo.StructName}}Dao struct {
-    mysqlModel.{{$CodeDict.TableInfo.StructName}}Model
+    models.{{$CodeDict.TableInfo.StructName}}Model
 }
 
 func (m *{{$CodeDict.TableInfo.StructName}}Dao) Get() error {
@@ -27,7 +27,7 @@ func (m *{{$CodeDict.TableInfo.StructName}}Dao) Add() error {
     return mysqlManager.Create(&m).Error
 }
 
-func (m *{{$CodeDict.TableInfo.StructName}}Dao) Update(args map[string]interface{}) error {
+func (m *{{$CodeDict.TableInfo.StructName}}Dao) Update(args map[string]any) error {
     mysqlManager := database.GetMysqlClient()
     err := m.Get()
     if err != nil {

@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: tem_go_project  # 服务名
+spec:
+  type: NodePort
+  ports:
+    - name: http
+      protocol: TCP
+      nodePort: 30000   # 外网访问端口
+      port: 9000  # k8s内部通讯端口
+      targetPort: 8000
+    - name: rpc
+      protocol: TCP
+      port: 9001  # k8s内部通讯端口
+      targetPort: 8002
+  selector: #对应的Pod拥有的标签
+    app: tem_go_project

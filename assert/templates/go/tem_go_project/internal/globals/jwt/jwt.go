@@ -12,8 +12,7 @@ import (
 
 type JWTClaims struct {
 	jwt.StandardClaims
-	UserID   string `json:"user_id"`
-	UserType string `json:"user_type"`
+	TokenID string `json:"token_id"`
 }
 
 func genToken(claims *JWTClaims, secret []byte) (string, error) {

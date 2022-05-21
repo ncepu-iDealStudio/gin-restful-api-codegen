@@ -22,7 +22,7 @@ type TypeDict struct {
 	Fuzzy    map[string]string `json:"fuzzy"`
 }
 
-func (t *TypeDict) GetGoType(name string) string {
+func (t *TypeDict) GetDataType(name string) string {
 	// Precise matching first.先精确匹配
 	if v, ok := t.Accurate[name]; ok {
 		return v
@@ -49,7 +49,7 @@ type tableModel struct {
 type columnModel struct {
 	Field      string
 	Type       string
-	GoType     string
+	DataType   string
 	Collation  *string
 	Null       bool
 	Key        string
@@ -120,7 +120,7 @@ func (d *tableCodeDict) Init(table *mysql.TableModel) error {
 		var column1 columnModel
 		column1.Field = column.Field
 		column1.Type = column.Type
-		column1.GoType = typeDict.GetGoType(column.Type)
+		column1.DataType = typeDict.GetDataType(column.Type)
 		column1.Collation = column.Collation
 		column1.Null = column.Null
 		column1.Key = column.Key
@@ -169,7 +169,7 @@ func (d *tablesCodeDict) Init(tables *mysql.DataBaseModel) error {
 			var column1 columnModel
 			column1.Field = column.Field
 			column1.Type = column.Type
-			column1.GoType = typeDict.GetGoType(column.Type)
+			column1.DataType = typeDict.GetDataType(column.Type)
 			column1.Collation = column.Collation
 			column1.Null = column.Null
 			column1.Key = column.Key

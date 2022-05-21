@@ -2,12 +2,12 @@
 // @Author : lryself
 // @Software: GoLand
 {{ $CodeDict := . }}
-package api_1_0
+package api
 
 import (
     "github.com/gin-gonic/gin"
     "{{$CodeDict.Dict.ProjectName}}/internal/apis/api_1_0"{{range $CodeDict.TablesInfo}}
-    "{{$CodeDict.Dict.ProjectName}}/internal/routers/api_1_0/{{.PackageName}}"
+    "{{$CodeDict.Dict.ProjectName}}/internal/routers/api/{{.PackageName}}"
 {{end}}
 )
 
@@ -15,8 +15,8 @@ var (
     Api *gin.RouterGroup
 )
 
-func InitAPI_1_0Router(engine *gin.Engine) {
-    Api = engine.Group("api_1_0")
+func InitAPIRouter(engine *gin.Engine) {
+    Api = engine.Group("api")
     Api.Any("version", api_1_0.GetVersion)
 {{range $CodeDict.TablesInfo}}
     {{.PackageName}}.Init{{.StructName}}RouterGroup(Api)

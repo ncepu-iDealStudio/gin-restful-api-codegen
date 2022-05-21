@@ -6,6 +6,6 @@
 package model
 
 type KeyWord struct {
-	Include   map[string]string `json:"include"`
+	Replace   map[string]string `json:"replace"`
 	IgnoreDir []string          `json:"ignore_dir"`
 }

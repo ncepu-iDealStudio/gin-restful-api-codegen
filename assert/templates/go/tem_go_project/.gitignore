@@ -2,3 +2,6 @@
 cmd/gormt/err/
 logs/
 
+
+# 项目排除路径
+deploy/main

@@ -3,7 +3,7 @@
 // @Date : 2021/4/6 18:44
 // @Software: GoLand
 
-package settings
+package vipers
 
 import (
 	"fmt"
