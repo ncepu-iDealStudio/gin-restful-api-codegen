@@ -152,6 +152,6 @@ func GetListByPage(c *gin.Context) {
 
     parser.JsonOK(c, "", results, map[string]any{
         "totalCount": count,
-        "totalPage":  int(count) / Parser.Size,
+        "totalPage":  int(count) / Parser.Size + 1,
     })
 }
