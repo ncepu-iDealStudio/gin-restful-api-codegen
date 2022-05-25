@@ -20,6 +20,14 @@ type makeFileDict struct {
 	OutPath   string `json:"outPath"`
 	DivideDir bool   `json:"divideDir"`
 	IsTables  bool   `json:"isTables"`
+	Filename  string `json:"filename"`
+}
+
+func (m makeFileDict) GetFileName() string {
+	if m.Filename == "" {
+		return "%s"
+	}
+	return m.Filename
 }
 
 func GenDBCodeFromTemplate() {
@@ -44,6 +52,7 @@ func GenDBCodeFromTemplate() {
 				filepath.Join(tmplPath, d.TmplPath),
 				filepath.Join(resultPath, d.OutPath),
 				d.DivideDir,
+				d.GetFileName(),
 			))
 		}
 	}

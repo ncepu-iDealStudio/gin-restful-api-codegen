@@ -6,7 +6,6 @@ package {{$CodeDict.TableInfo.PackageName}}
 
 import (
     "github.com/gin-gonic/gin"
-    "{{$CodeDict.Dict.ProjectName}}/internal/apis/api_1_0/{{$CodeDict.TableInfo.PackageName}}"
 )
 
 var (
@@ -15,10 +14,10 @@ var (
 
 func Init{{$CodeDict.TableInfo.StructName}}RouterGroup(engine *gin.RouterGroup) {
     Api = engine.Group("{{$CodeDict.TableInfo.PackageName}}")
-    Api.GET("", {{$CodeDict.TableInfo.PackageName}}.{{$CodeDict.TableInfo.StructName}}GetHandler)
-    Api.POST("", {{$CodeDict.TableInfo.PackageName}}.{{$CodeDict.TableInfo.StructName}}PostHandler)
-    Api.PUT("", {{$CodeDict.TableInfo.PackageName}}.{{$CodeDict.TableInfo.StructName}}PutHandler)
-    Api.DELETE("", {{$CodeDict.TableInfo.PackageName}}.{{$CodeDict.TableInfo.StructName}}DeleteHandler)
-    Api.GET("list", {{$CodeDict.TableInfo.PackageName}}.GetListHandler)
-    Api.GET("list/page", {{$CodeDict.TableInfo.PackageName}}.GetListByPage)
+    Api.GET("", {{$CodeDict.TableInfo.StructName}}GetHandler)
+    Api.POST("", {{$CodeDict.TableInfo.StructName}}PostHandler)
+    Api.PUT("", {{$CodeDict.TableInfo.StructName}}PutHandler)
+    Api.DELETE("", {{$CodeDict.TableInfo.StructName}}DeleteHandler)
+    Api.GET("list", {{$CodeDict.TableInfo.StructName}}GetListHandler)
+    Api.GET("list/page", {{$CodeDict.TableInfo.StructName}}GetListByPage)
 }

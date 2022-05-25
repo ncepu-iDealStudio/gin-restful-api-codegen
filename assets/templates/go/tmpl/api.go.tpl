@@ -110,7 +110,7 @@ func {{$CodeDict.TableInfo.StructName}}DeleteHandler(c *gin.Context) {
     parser.JsonOK(c, "", {{$CodeDict.TableInfo.StructName}}Service)
 }
 // 获取列表
-func GetListHandler(c *gin.Context) {
+func {{$CodeDict.TableInfo.StructName}}GetListHandler(c *gin.Context) {
     var err error
     var {{$CodeDict.TableInfo.StructName}}Service services.{{$CodeDict.TableInfo.StructName}}Service
 
@@ -130,7 +130,7 @@ func GetListHandler(c *gin.Context) {
 }
 
 // 获取列表（分页）
-func GetListByPage(c *gin.Context) {
+func {{$CodeDict.TableInfo.StructName}}GetListByPage(c *gin.Context) {
     var err error
 
     var Parser struct {

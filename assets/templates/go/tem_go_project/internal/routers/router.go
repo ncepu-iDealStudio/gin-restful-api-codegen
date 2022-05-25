@@ -6,8 +6,8 @@ import (
 	"html/template"
 	"path/filepath"
 	"strings"
+	"tem_go_project/internal/apis/api_1_0"
 	"tem_go_project/internal/middlewares"
-	"tem_go_project/internal/routers/api"
 )
 
 func InitRouter(engine *gin.Engine) {
@@ -28,7 +28,7 @@ func InitRouter(engine *gin.Engine) {
 	//engine.StaticFile("/hello/", "dist/index.html") //前端接口
 
 	//初始化路由
-	api.InitAPIRouter(engine)
+	api_1_0.InitAPIRouter(engine)
 }
 
 func loadTemplates(templatesDir string) multitemplate.Renderer {

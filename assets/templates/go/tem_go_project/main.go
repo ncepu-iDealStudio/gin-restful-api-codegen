@@ -16,8 +16,7 @@ func main() {
 	go sys.InitMsg()
 
 	//初始化viper
-	err := vipers.InitViper()
-	errHelper.ErrExit(err)
+	errHelper.ErrExit(vipers.InitViper())
 	sys.Println("配置文件加载完成")
 
 	//初始化日志
