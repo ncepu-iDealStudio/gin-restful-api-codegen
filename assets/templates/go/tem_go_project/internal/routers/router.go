@@ -6,19 +6,27 @@ import (
 	"html/template"
 	"path/filepath"
 	"strings"
+	"tem_go_project/internal/middlewares"
 	"tem_go_project/internal/routers/api"
 )
 
 func InitRouter(engine *gin.Engine) {
+	// 加载全局中间件
+	engine.Use(middlewares.CorsMiddleware())
+	engine.Use(middlewares.LogMiddleware())
+	engine.Use(middlewares.LoadUser())
+
 	//配置静态html
 	engine.Static("/web/static", "static")
 	engine.HTMLRender = loadTemplates("/web/templates")
 	engine.StaticFile("/favicon.ico", "/web/static/favicon.ico")
+
 	//部署vue
-	//engine.LoadHTMLGlob("/dist/*.html")              // 添加入口index.html
-	//engine.LoadHTMLFiles("/web/static/*/*")              // 添加资源路径
+	//engine.LoadHTMLGlob("/dist/*.html")             // 添加入口index.html
+	//engine.LoadHTMLFiles("/web/static/*/*")         // 添加资源路径
 	//engine.Static("/static", "./dist/static")       // 添加资源路径
 	//engine.StaticFile("/hello/", "dist/index.html") //前端接口
+
 	//初始化路由
 	api.InitAPIRouter(engine)
 }

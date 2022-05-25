@@ -10,18 +10,12 @@ import (
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
-	"tem_go_project/internal/middlewares"
 	"tem_go_project/internal/routers"
 )
 
 func InitGinEngine() (*gin.Engine, error) {
 	gin.SetMode(viper.GetString("system.Mode"))
 	engine := gin.Default()
-
-	// 加载全局中间件
-	engine.Use(middlewares.CorsMiddleware())
-	engine.Use(middlewares.LogMiddleware())
-	engine.Use(middlewares.LoadUser())
 
 	// 初始化Session
 	// 将session存在redis
