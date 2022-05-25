@@ -144,11 +144,14 @@ func GetListByPage(c *gin.Context) {
         return
     }
 
-    results, err := Parser.GetListByPage(Parser.ListParser)
+    results, count, err := Parser.GetListByPage(Parser.ListParser)
     if err != nil {
         parser.JsonDBError(c, "", err)
         return
     }
 
-    parser.JsonOK(c, "", results)
+    parser.JsonOK(c, "", results, map[string]any{
+        "totalCount": count,
+        "totalPage":  int(count) / Parser.Size,
+    })
 }

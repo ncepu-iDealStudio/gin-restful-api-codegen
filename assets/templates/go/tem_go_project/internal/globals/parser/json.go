@@ -12,15 +12,21 @@ import (
 	"tem_go_project/internal/globals/codes"
 )
 
-func JsonOK(c *gin.Context, msg string, data interface{}) {
+func JsonOK(c *gin.Context, msg string, data interface{}, others ...map[string]any) {
 	if msg == "" {
 		msg = "成功!"
 	}
-	c.JSON(http.StatusOK, gin.H{
+	backMap := gin.H{
 		"code":    codes.OK,
 		"message": msg,
 		"data":    data,
-	})
+	}
+	for _, other := range others {
+		for k, v := range other {
+			backMap[k] = v
+		}
+	}
+	c.JSON(http.StatusOK, backMap)
 }
 
 func JsonParameterIllegal(c *gin.Context, msg string, err error) {

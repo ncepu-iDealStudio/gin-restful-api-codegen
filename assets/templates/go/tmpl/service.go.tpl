@@ -35,22 +35,23 @@ func (m *{{$CodeDict.TableInfo.StructName}}Service) GetList() ([]{{$CodeDict.Tab
 }
 
 
-func (m *{{$CodeDict.TableInfo.StructName}}Service) GetListByPage(p parser.ListParser) ([]{{$CodeDict.TableInfo.StructName}}Service, error) {
+func (m *{{$CodeDict.TableInfo.StructName}}Service) GetListByPage(p parser.ListParser) ([]{{$CodeDict.TableInfo.StructName}}Service, int64, error) {
     mysqlManager := database.GetMysqlClient()
     results := []{{$CodeDict.TableInfo.StructName}}Service{}
+    var count int64 = 0
 
-    rows, err := mysqlManager.Table(m.TableName()).Where("IsDeleted", false).Where(m).Limit(p.Limit).Offset(p.Offset).Order(p.Order).Rows()
+    rows, err := mysqlManager.Table(m.TableName()).Where("IsDeleted", false).Where(m).Count(&count).Limit(p.Size).Offset((p.Page - 1) * p.Size).Order(p.Order).Rows()
     defer rows.Close()
     if err != nil {
-        return results, err
+        return results, 0, err
     }
     for rows.Next() {
         var result {{$CodeDict.TableInfo.StructName}}Service
         err = mysqlManager.ScanRows(rows, &result)
         if err != nil {
-            return results, err
+            return results, 0, err
         }
         results = append(results, result)
     }
-    return results, nil
+    return results, count, nil
 }
