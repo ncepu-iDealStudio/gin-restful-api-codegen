@@ -6,6 +6,7 @@
 package mysql
 
 import (
+	"LRYGoCodeGen/globals/sys"
 	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -33,6 +34,7 @@ func (orm *MySQLOrm) GetDBOrm(dataSourceName string) (err error) {
 		//		Logger:         logger.Default,
 		//	})
 		if err != nil {
+			sys.PrintErr("please check your database config")
 			return
 		}
 	}
@@ -76,9 +78,16 @@ func (orm *MySQLOrm) GetTables(dbName string) (map[string]string, error) {
 	result := map[string]string{}
 	var err error
 	rows, err := orm.Raw("SELECT TABLE_NAME,TABLE_COMMENT FROM information_schema.TABLES WHERE table_schema= '" + dbName + "'")
-	defer rows.Close()
+	defer func(rows *sql.Rows) {
+		if rows != nil {
+			err = rows.Close()
+			if err != nil {
+				sys.PrintErr(err)
+			}
+		}
+	}(rows)
 	if err != nil {
-		return nil, err
+		return map[string]string{}, err
 	}
 
 	for rows.Next() {

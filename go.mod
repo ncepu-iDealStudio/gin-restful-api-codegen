@@ -1,6 +1,6 @@
 module LRYGoCodeGen
 
-go 1.17
+go 1.18
 
 require (
 	gitee.com/lryself/go-utils v0.0.4-0.20220306132317-bcba865c1c40

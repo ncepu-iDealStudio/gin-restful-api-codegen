@@ -41,6 +41,7 @@ func GenDBCodeFromTemplate() {
 	dictTypeDict, err := ioutil.ReadFile(filepath.Join(genViper.GetString("genCode.dict_path"), "makefile.json"))
 	errHelper.ErrExit(err)
 	errHelper.Error(json.Unmarshal(dictTypeDict, &makefiles))
+
 	for _, d := range makefiles {
 		if d.IsTables {
 			errHelper.Error(model.GenTablesCode(dbModel,
