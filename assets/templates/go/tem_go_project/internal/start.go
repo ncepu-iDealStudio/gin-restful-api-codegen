@@ -18,7 +18,7 @@ import (
 )
 
 func StartHttp() {
-	defer globals.GetWatGroup().Done()
+	defer globals.GetWaitGroup().Done()
 	gob.Register(time.Time{})
 	gob.Register(currentUser.CurrentUser{})
 	var err error

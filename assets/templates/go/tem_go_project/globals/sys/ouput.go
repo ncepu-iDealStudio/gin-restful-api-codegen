@@ -10,7 +10,7 @@ import (
 )
 
 type message struct {
-	Context string
+	Context any
 	Type    string
 }
 
@@ -60,6 +60,16 @@ func Exit() {
 		outputChan.In <- message{
 			Context: "",
 			Type:    "exit",
+		}
+	}
+}
+
+func PrintRecover(a any) {
+	if rwMutex.TryRLock() {
+		defer rwMutex.RUnlock()
+		outputChan.In <- message{
+			Context: a,
+			Type:    "recover",
 		}
 	}
 }

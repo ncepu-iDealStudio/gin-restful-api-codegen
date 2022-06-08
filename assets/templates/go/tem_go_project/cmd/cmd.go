@@ -20,7 +20,7 @@ var rootCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		// Start doing things.开始做事情
 		sys.Println("开始启动服务！")
-		globals.GetWatGroup().Add(1)
+		globals.GetWaitGroup().Add(1)
 		go internal.StartHttp()
 	},
 }

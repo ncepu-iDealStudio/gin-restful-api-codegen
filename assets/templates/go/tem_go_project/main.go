@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	waitGroup := globals.GetWatGroup()
+	waitGroup := globals.GetWaitGroup()
 	waitGroup.Add(1)
 	go sys.InitMsg()
 

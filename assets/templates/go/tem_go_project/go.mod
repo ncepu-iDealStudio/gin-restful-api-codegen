@@ -3,7 +3,7 @@ module tem_go_project
 go 1.18
 
 require (
-	gitee.com/lryself/go-utils v0.0.5
+	gitee.com/lryself/go-utils v0.0.6-0.20220606071628-700656f01626
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/fsnotify/fsnotify v1.5.1
 	github.com/fufuok/chanx v1.0.0

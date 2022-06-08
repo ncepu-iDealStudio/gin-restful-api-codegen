@@ -9,6 +9,6 @@ import "sync"
 
 var waitGroup sync.WaitGroup
 
-func GetWatGroup() *sync.WaitGroup {
+func GetWaitGroup() *sync.WaitGroup {
 	return &waitGroup
 }

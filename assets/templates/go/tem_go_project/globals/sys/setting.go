@@ -10,6 +10,7 @@ import (
 	"gitee.com/lryself/go-utils/loggers"
 	"github.com/fufuok/chanx"
 	"os"
+	"runtime"
 	"sync"
 	"tem_go_project/globals"
 )
@@ -21,16 +22,23 @@ var msgMapOnce sync.Once
 
 func InitMsg() {
 	rwMutex.Lock()
-	defer globals.GetWatGroup().Done()
+	defer globals.GetWaitGroup().Done()
 	var err error
 	outputChan = chanx.NewUnboundedChan[message](10, 0)
 	initMsgHandler()
 	rwMutex.Unlock()
 	for msg := range outputChan.Out {
-		err = msgMap[msg.Type](msg.Context)
-		if err != nil {
-			panic("输出错误！")
-		}
+		go func(m message) {
+			defer func() {
+				if err := recover(); err != nil { //产生了panic异常
+					PrintRecover(err)
+				}
+			}()
+			err = msgMap[m.Type](m.Context)
+			if err != nil {
+				PrintErr(err)
+			}
+		}(msg)
 	}
 	_, _ = fmt.Fprintf(os.Stdout, "\\033[1;37;40m%s\\033[0m\\n", "系统服务已结束")
 	os.Exit(1)
@@ -82,6 +90,17 @@ func initMsgHandler() {
 			_, err = fmt.Fprintf(os.Stdout, "\\033[1;37;40m%s\\033[0m\\n", arg)
 			if err != nil {
 				return err
+			}
+		}
+		return nil
+	})
+	AddMsgHandler("recover", func(errs ...any) error {
+		for _, err := range errs {
+			switch err.(type) {
+			case runtime.Error: // 运行时错误
+				PrintErr("runtime error:", err)
+			default: // 非运行时错误
+				PrintErr("error:", err)
 			}
 		}
 		return nil
