@@ -1,0 +1,13 @@
+database:
+  driver : "mysql"
+  host : "127.0.0.1"
+  port : "3306"
+  username : "root"
+  password : "123456"
+  database : "testdb"
+
+genCode:
+  templates_path: "assert/templates/go/tem_go_project"
+  dict_path: "assert/templates/go/dict"
+  result_path: "result/study_flask_api"
+  tmplPath: "assert/templates/go/tmpl"
