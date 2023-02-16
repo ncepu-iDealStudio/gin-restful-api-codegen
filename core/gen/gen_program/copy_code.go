@@ -6,9 +6,9 @@
 package gen_program
 
 import (
-	"LRYGoCodeGen/core/gen/gen_program/model"
-	"LRYGoCodeGen/globals/vipers"
-	"LRYGoCodeGen/utils/errHelper"
+	"GinCodeGen/core/gen/gen_program/model"
+	"GinCodeGen/globals/vipers"
+	"GinCodeGen/utils/errHelper"
 	"encoding/json"
 	"io/ioutil"
 	"path/filepath"

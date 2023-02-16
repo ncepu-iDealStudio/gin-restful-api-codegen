@@ -6,9 +6,9 @@
 package model
 
 import (
-	"LRYGoCodeGen/core/database/mysql"
-	"LRYGoCodeGen/globals/vipers"
-	"LRYGoCodeGen/utils/str"
+	"GinCodeGen/core/database/mysql"
+	"GinCodeGen/globals/vipers"
+	"GinCodeGen/utils/str"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"

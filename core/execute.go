@@ -6,8 +6,8 @@
 package core
 
 import (
-	"LRYGoCodeGen/core/gen/gen_db"
-	"LRYGoCodeGen/core/gen/gen_program"
+	"GinCodeGen/core/gen/gen_db"
+	"GinCodeGen/core/gen/gen_program"
 )
 
 func Execute() {

@@ -6,7 +6,7 @@
 package mysql
 
 import (
-	"LRYGoCodeGen/globals/vipers"
+	"GinCodeGen/globals/vipers"
 	"fmt"
 	"sort"
 	"strings"

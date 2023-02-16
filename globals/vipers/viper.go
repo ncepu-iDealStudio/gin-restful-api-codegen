@@ -6,7 +6,7 @@
 package vipers
 
 import (
-	"LRYGoCodeGen/globals/sys"
+	"GinCodeGen/globals/sys"
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
 )

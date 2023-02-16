@@ -6,7 +6,7 @@
 package errHelper
 
 import (
-	"LRYGoCodeGen/globals/sys"
+	"GinCodeGen/globals/sys"
 )
 
 func Error(err error) {

@@ -6,7 +6,7 @@
 package cmd
 
 import (
-	"LRYGoCodeGen/globals/sys"
+	"GinCodeGen/globals/sys"
 	"github.com/spf13/cobra"
 )
 

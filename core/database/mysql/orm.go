@@ -6,7 +6,7 @@
 package mysql
 
 import (
-	"LRYGoCodeGen/globals/sys"
+	"GinCodeGen/globals/sys"
 	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
 )

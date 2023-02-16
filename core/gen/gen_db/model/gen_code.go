@@ -6,8 +6,8 @@
 package model
 
 import (
-	"LRYGoCodeGen/core/database/mysql"
-	"LRYGoCodeGen/utils/str"
+	"GinCodeGen/core/database/mysql"
+	"GinCodeGen/utils/str"
 	"fmt"
 	"os"
 	"path/filepath"

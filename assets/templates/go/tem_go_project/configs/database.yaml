@@ -1,0 +1,12 @@
+mysql:
+  driver : "mysql"
+  host : "mysql_host"
+  port : "mysql_port"
+  username : "mysql_username"
+  password : "mysql_password"
+  database : "mysql_database"
+
+redis:
+  addr: "redis_host"
+  password: "redis_password"
+  DB: 1

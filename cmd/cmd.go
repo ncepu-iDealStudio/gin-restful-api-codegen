@@ -6,10 +6,10 @@
 package cmd
 
 import (
-	"LRYGoCodeGen/core"
-	"LRYGoCodeGen/globals/sys"
-	"LRYGoCodeGen/globals/vipers"
-	"LRYGoCodeGen/utils/errHelper"
+	"GinCodeGen/core"
+	"GinCodeGen/globals/sys"
+	"GinCodeGen/globals/vipers"
+	"GinCodeGen/utils/errHelper"
 	"github.com/spf13/cobra"
 )
 

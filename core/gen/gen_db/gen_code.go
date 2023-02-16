@@ -6,10 +6,10 @@
 package gen_db
 
 import (
-	"LRYGoCodeGen/core/database/mysql"
-	"LRYGoCodeGen/core/gen/gen_db/model"
-	"LRYGoCodeGen/globals/vipers"
-	"LRYGoCodeGen/utils/errHelper"
+	"GinCodeGen/core/database/mysql"
+	"GinCodeGen/core/gen/gen_db/model"
+	"GinCodeGen/globals/vipers"
+	"GinCodeGen/utils/errHelper"
 	"encoding/json"
 	"io/ioutil"
 	"path/filepath"
