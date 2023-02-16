@@ -15,7 +15,7 @@ type {{$CodeDict.TableInfo.StructName}}Dao struct {
 
 func (m *{{$CodeDict.TableInfo.StructName}}Dao) Get() error {
     mysqlManager := database.GetMysqlClient()
-    return mysqlManager.Where("IsDeleted", false).Where(m).Take(m).Error
+    return mysqlManager.Where(m).Take(m).Error
 }
 
 func (m *{{$CodeDict.TableInfo.StructName}}Dao) Add() error {
@@ -36,11 +36,11 @@ func (m *{{$CodeDict.TableInfo.StructName}}Dao) Update(args map[string]any) erro
     return mysqlManager.Model(&m).Updates(args).Error
 }
 
-func (m *{{$CodeDict.TableInfo.StructName}}Dao) Delete() error {
+func (m *{{$CodeDict.TableInfo.StructName}}Dao) Delete(args map[string]any) error {
     mysqlManager := database.GetMysqlClient()
     err := m.Get()
     if err != nil {
         return err
     }
-    return mysqlManager.Model(&m).Update("IsDeleted", true).Error
+    return mysqlManager.Model(&m).Delete(args).Error
 }
