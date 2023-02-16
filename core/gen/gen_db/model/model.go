@@ -47,6 +47,7 @@ type tableModel struct {
 }
 
 type columnModel struct {
+	FieldName  string
 	Field      string
 	Type       string
 	DataType   string
@@ -118,6 +119,7 @@ func (d *tableCodeDict) Init(table *mysql.TableModel) error {
 
 	for _, column := range table.Columns {
 		var column1 columnModel
+		column1.FieldName = str.LineToUpCamel(column.Field)
 		column1.Field = column.Field
 		column1.Type = column.Type
 		column1.DataType = typeDict.GetDataType(column.Type)
