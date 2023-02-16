@@ -6,7 +6,7 @@ package models
 
 import (
     "gitee.com/lryself/go-utils/structs"
-    "time"
+    {{if .TableInfo.HasTimeField}} "time" {{end}}
 )
 
 type {{$CodeDict.TableInfo.StructName}}Model struct { {{range .TableInfo.Columns}}

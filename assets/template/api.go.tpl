@@ -24,15 +24,37 @@ func {{$CodeDict.TableInfo.StructName}}PostHandler(c *gin.Context) {
         return
     }
 
+	args, err := structs.StructToMap(Parser, "json")
+	if err != nil {
+		parser.JsonParameterIllegal(c, "", err)
+		return
+	}
+
     var {{$CodeDict.TableInfo.StructName}}Service services.{{$CodeDict.TableInfo.StructName}}Service
     {{$CodeDict.TableInfo.StructName}}Service.Assign(Parser)
 
-    err = {{$CodeDict.TableInfo.StructName}}Service.Add()
+    err = {{$CodeDict.TableInfo.StructName}}Service.Add(args)
     if err != nil {
         parser.JsonDBError(c, "", err)
         return
     }
     parser.JsonOK(c, "", {{$CodeDict.TableInfo.StructName}}Service)
+}
+
+func {{$CodeDict.TableInfo.StructName}}GetBasicHandler(c *gin.Context) {
+	var err error
+    {{ if $CodeDict.TableInfo.NaturalKey }}
+	{{ (index $CodeDict.TableInfo.NaturalKey 0) }} := c.Param("{{ (index $CodeDict.TableInfo.NaturalKey 0) }}"{{ else }}{{ (index $CodeDict.TableInfo.Columns 0).Field }} := c.Param("{{ (index $CodeDict.TableInfo.Columns 0).Field }}"{{ end }})
+
+	var {{$CodeDict.TableInfo.StructName}}Service services.{{$CodeDict.TableInfo.StructName}}Service
+
+	err = {{$CodeDict.TableInfo.StructName}}Service.Get(map[string]any{ {{ if $CodeDict.TableInfo.NaturalKey }}"{{ (index $CodeDict.TableInfo.NaturalKey 0) }}": {{ (index $CodeDict.TableInfo.NaturalKey 0) }}{{ else }}"{{ (index $CodeDict.TableInfo.Columns 0).Field }}": {{ (index $CodeDict.TableInfo.Columns 0).Field }}{{ end }} })
+
+	if err != nil {
+		parser.JsonDBError(c, "", err)
+		return
+	}
+	parser.JsonOK(c, "", {{$CodeDict.TableInfo.StructName}}Service)
 }
 
 func {{$CodeDict.TableInfo.StructName}}GetHandler(c *gin.Context) {
@@ -47,9 +69,15 @@ func {{$CodeDict.TableInfo.StructName}}GetHandler(c *gin.Context) {
         return
     }
 
+	args, err := structs.StructToMap(Parser, "json")
+	if err != nil {
+		parser.JsonParameterIllegal(c, "", err)
+		return
+	}
+
     var {{$CodeDict.TableInfo.StructName}}Service services.{{$CodeDict.TableInfo.StructName}}Service
     {{$CodeDict.TableInfo.StructName}}Service.Assign(Parser)
-    err = {{$CodeDict.TableInfo.StructName}}Service.Get()
+    err = {{$CodeDict.TableInfo.StructName}}Service.Get(args)
     if err != nil {
         parser.JsonDBError(c, "", err)
         return
@@ -59,7 +87,8 @@ func {{$CodeDict.TableInfo.StructName}}GetHandler(c *gin.Context) {
 
 func {{$CodeDict.TableInfo.StructName}}PutHandler(c *gin.Context) {
     var err error
-
+    {{ if $CodeDict.TableInfo.NaturalKey }}
+	{{ (index $CodeDict.TableInfo.NaturalKey 0) }} := c.Param("{{ (index $CodeDict.TableInfo.NaturalKey 0) }}"{{ else }}{{ (index $CodeDict.TableInfo.Columns 0).Field }} := c.Param("{{ (index $CodeDict.TableInfo.Columns 0).Field }}"{{ end }})
     var Parser struct { {{range .TableInfo.Columns}}
         {{.FieldName}} {{.DataType}} `json:"{{.Field}}" form:"{{.Field}}"{{if .NaturalKey}} binding:"required"{{end}}`{{end}}
     }
@@ -79,7 +108,7 @@ func {{$CodeDict.TableInfo.StructName}}PutHandler(c *gin.Context) {
     //不能修改业务主键{{range $CodeDict.TableInfo.NaturalKey}}
     delete(args, "{{.}}"){{end}}
 
-    err = {{$CodeDict.TableInfo.StructName}}Service.Update(args)
+	err = {{$CodeDict.TableInfo.StructName}}Service.Update(map[string]any{ {{ if $CodeDict.TableInfo.NaturalKey }}"{{ (index $CodeDict.TableInfo.NaturalKey 0) }}": {{ (index $CodeDict.TableInfo.NaturalKey 0) }}{{ else }}"{{ (index $CodeDict.TableInfo.Columns 0).Field }}": {{ (index $CodeDict.TableInfo.Columns 0).Field }}{{ end }} }, args)
     if err != nil {
         parser.JsonDBError(c, "", err)
         return

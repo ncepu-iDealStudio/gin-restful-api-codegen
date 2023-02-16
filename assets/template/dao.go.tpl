@@ -13,23 +13,23 @@ type {{$CodeDict.TableInfo.StructName}}Dao struct {
     models.{{$CodeDict.TableInfo.StructName}}Model
 }
 
-func (m *{{$CodeDict.TableInfo.StructName}}Dao) Get() error {
-    mysqlManager := database.GetMysqlClient()
-    return mysqlManager.Where(m).Take(m).Error
+func (m *{{$CodeDict.TableInfo.StructName}}Dao) Get(args map[string]any) error {
+	mysqlManager := database.GetMysqlClient()
+	return mysqlManager.Where(args).Take(m).Error
 }
 
-func (m *{{$CodeDict.TableInfo.StructName}}Dao) Add() error {
+func (m *{{$CodeDict.TableInfo.StructName}}Dao) Add(args map[string]any) error {
     mysqlManager := database.GetMysqlClient()
-    err := m.Get()
+    err := m.Get(args)
     if err == nil {
         return errors.New("数据已存在")
     }
     return mysqlManager.Create(&m).Error
 }
 
-func (m *{{$CodeDict.TableInfo.StructName}}Dao) Update(args map[string]any) error {
+func (m *{{$CodeDict.TableInfo.StructName}}Dao) Update(query map[string]any, args map[string]any) error {
     mysqlManager := database.GetMysqlClient()
-    err := m.Get()
+    err := m.Get(args)
     if err != nil {
         return err
     }
@@ -38,7 +38,7 @@ func (m *{{$CodeDict.TableInfo.StructName}}Dao) Update(args map[string]any) erro
 
 func (m *{{$CodeDict.TableInfo.StructName}}Dao) Delete(args map[string]any) error {
     mysqlManager := database.GetMysqlClient()
-    err := m.Get()
+    err := m.Get(args)
     if err != nil {
         return err
     }
