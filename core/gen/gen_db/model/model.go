@@ -165,6 +165,7 @@ func (d *tablesCodeDict) Init(tables *mysql.DataBaseModel) error {
 		return err
 	}
 	err = json.Unmarshal(staticDict, &d.Dict)
+	d.Dict["ProjectName"] = vipers.GetCodeGenViper().GetGenViper().GetString("database.database")
 	if err != nil {
 		return err
 	}
