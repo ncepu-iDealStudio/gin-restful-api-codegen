@@ -18,7 +18,7 @@ func InitRouter(engine *gin.Engine) {
 
 	//配置静态html
 	engine.Static("/web/static", "static")
-	engine.HTMLRender = loadTemplates("/web/templates")
+	engine.HTMLRender = loadTemplates("/web/template")
 	engine.StaticFile("/favicon.ico", "/web/static/favicon.ico")
 
 	//部署vue
@@ -83,7 +83,7 @@ func loadTemplates1(templatesDir string) multitemplate.Renderer {
 	if err != nil {
 		panic(err.Error())
 	}
-	// 为layouts/和includes/目录生成 templates map
+	// 为layouts/和includes/目录生成 template map
 	for _, include := range includesLogin {
 		layoutCopy := make([]string, len(basesLogin))
 		copy(layoutCopy, basesLogin)
@@ -99,7 +99,7 @@ func loadTemplates1(templatesDir string) multitemplate.Renderer {
 	if err != nil {
 		panic(err.Error())
 	}
-	// 为layouts/和includes/目录生成 templates map
+	// 为layouts/和includes/目录生成 template map
 	for _, include := range includes {
 		layoutCopy := make([]string, len(bases))
 		copy(layoutCopy, bases)
