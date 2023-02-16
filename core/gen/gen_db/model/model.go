@@ -185,6 +185,11 @@ func (d *tablesCodeDict) Init(tables *mysql.DataBaseModel) error {
 			column1.Extra = column.Extra
 			column1.Privileges = column.Privileges
 			column1.Comment = column.Comment
+
+			if column1.Type == "time.Time" {
+				table1.HasTimeField = true
+			}
+
 			if strings.ToLower(column.Field) != "autoid" && column.Key == "PRI" {
 				table1.NaturalKey = append(table1.NaturalKey, column.Field)
 			}
