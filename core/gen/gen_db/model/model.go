@@ -132,7 +132,8 @@ func (d *tableCodeDict) Init(table *mysql.TableModel) error {
 		column1.Privileges = column.Privileges
 		column1.Comment = column.Comment
 
-		if column1.Type == "time.Time" {
+		switch column1.Type {
+		case "timestamp", "time", "smalldatetime", "datetime", "date":
 			d.TableInfo.HasTimeField = true
 		}
 
@@ -186,7 +187,8 @@ func (d *tablesCodeDict) Init(tables *mysql.DataBaseModel) error {
 			column1.Privileges = column.Privileges
 			column1.Comment = column.Comment
 
-			if column1.Type == "time.Time" {
+			switch column1.Type {
+			case "timestamp", "time", "smalldatetime", "datetime", "date":
 				table1.HasTimeField = true
 			}
 

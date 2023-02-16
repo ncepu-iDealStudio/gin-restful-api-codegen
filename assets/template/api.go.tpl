@@ -9,7 +9,7 @@ import (
     "github.com/gin-gonic/gin"
     "{{$CodeDict.Dict.ProjectName}}/internal/globals/parser"
     "{{$CodeDict.Dict.ProjectName}}/internal/services"
-    {{if $CodeDict.TableInfo.HasTimeField}}"time"{{end}}
+    {{if .TableInfo.HasTimeField}} "time" {{end}}
 )
 
 func {{$CodeDict.TableInfo.StructName}}PostHandler(c *gin.Context) {
