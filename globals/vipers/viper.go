@@ -11,29 +11,69 @@ import (
 	"github.com/spf13/viper"
 )
 
-var (
+type CodeGenVipers struct {
 	genViper *viper.Viper
-)
+	sysViper *viper.Viper
+}
 
-func InitGenViper(confName string) (err error) {
-	genViper = viper.New()
-	genViper.SetConfigName(confName)
-	genViper.AddConfigPath("./configs") // 添加搜索路径
-	genViper.SetConfigType("yaml")
+var CodeGenViper CodeGenVipers
 
-	err = genViper.ReadInConfig()
+func InitViper(confName string) (_viper *viper.Viper, err error) {
+	_viper = viper.New()
+	_viper.SetConfigName(confName)
+	_viper.AddConfigPath("./configs") // 添加搜索路径
+	_viper.SetConfigType("yaml")
+
+	err = _viper.ReadInConfig()
 	if err != nil {
 		sys.PrintErr("Fatal error config file: ", err)
-		return
+		return nil, err
 	}
-	genViper.WatchConfig()
+	_viper.WatchConfig()
 
-	genViper.OnConfigChange(func(e fsnotify.Event) {
+	_viper.OnConfigChange(func(e fsnotify.Event) {
 		sys.Println("Config file:", e.Name, "Op: ", e.Op)
 	})
+	return _viper, nil
+}
+
+func (this *CodeGenVipers) InitGenViper(confName string) (err error) {
+	this.genViper, err = InitViper(confName)
+	if err != nil {
+		return
+	}
 	return
 }
 
-func GetGenViper() *viper.Viper {
-	return genViper
+func (this *CodeGenVipers) InitSysViper(confName string) (err error) {
+	this.sysViper, err = InitViper(confName)
+	if err != nil {
+		return
+	}
+	return
+}
+
+func (this *CodeGenVipers) GetGenViper() *viper.Viper {
+	return this.genViper
+}
+
+func (this *CodeGenVipers) GetSysViper() *viper.Viper {
+	return this.sysViper
+}
+
+func InitCodeGenViper(genConfigName string) (err error) {
+	CodeGenViper = CodeGenVipers{}
+	err = CodeGenViper.InitGenViper(genConfigName)
+	if err != nil {
+		return
+	}
+	err = CodeGenViper.InitSysViper("sys")
+	if err != nil {
+		return
+	}
+	return
+}
+
+func GetCodeGenViper() *CodeGenVipers {
+	return &CodeGenViper
 }

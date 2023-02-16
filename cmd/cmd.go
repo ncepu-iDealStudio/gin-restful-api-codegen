@@ -38,5 +38,5 @@ func init() {
 func initConfig() {
 	confName, err := rootCmd.Flags().GetString("Config")
 	errHelper.ErrExit(err)
-	errHelper.ErrExit(vipers.InitGenViper(confName))
+	errHelper.ErrExit(vipers.InitCodeGenViper(confName))
 }

@@ -15,12 +15,12 @@ import (
 )
 
 func GenProgramCodeFromTemplates() {
-	genViper := vipers.GetGenViper()
-	dirModel, err := model.GetDirModel(genViper.GetString("genCode.templates_path"))
+	codeGenViper := vipers.GetCodeGenViper()
+	dirModel, err := model.GetDirModel(codeGenViper.GetSysViper().GetString("genCode.templates_path"))
 	errHelper.ErrExit(err)
-	dictKeywordFile, err := ioutil.ReadFile(filepath.Join(genViper.GetString("genCode.dict_path"), "keyword.json"))
+	dictKeywordFile, err := ioutil.ReadFile(filepath.Join(codeGenViper.GetSysViper().GetString("genCode.dict_path"), "keyword.json"))
 	errHelper.ErrExit(err)
 	var replaceDict model.KeyWord
 	errHelper.ErrExit(json.Unmarshal(dictKeywordFile, &replaceDict))
-	errHelper.ErrExit(dirModel.MakeDir(genViper.GetString("genCode.result_path"), replaceDict))
+	errHelper.ErrExit(dirModel.MakeDir(codeGenViper.GetGenViper().GetString("genCode.result_path"), replaceDict))
 }

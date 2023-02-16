@@ -33,12 +33,12 @@ func (m makeFileDict) GetFileName() string {
 func GenDBCodeFromTemplate() {
 	dbModel, err := mysql.GetMysqlDBModel()
 	errHelper.ErrExit(err)
-	genViper := vipers.GetGenViper()
-	tmplPath := genViper.GetString("genCode.tmplPath")
-	resultPath := genViper.GetString("genCode.result_path")
+	codeGenViper := vipers.GetCodeGenViper()
+	tmplPath := codeGenViper.GetSysViper().GetString("genCode.tmplPath")
+	resultPath := codeGenViper.GetGenViper().GetString("genCode.result_path")
 
 	var makefiles []makeFileDict
-	dictTypeDict, err := ioutil.ReadFile(filepath.Join(genViper.GetString("genCode.dict_path"), "makefile.json"))
+	dictTypeDict, err := ioutil.ReadFile(filepath.Join(codeGenViper.GetSysViper().GetString("genCode.dict_path"), "makefile.json"))
 	errHelper.ErrExit(err)
 	errHelper.Error(json.Unmarshal(dictTypeDict, &makefiles))
 

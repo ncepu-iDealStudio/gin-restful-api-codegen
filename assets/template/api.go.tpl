@@ -9,14 +9,14 @@ import (
     "github.com/gin-gonic/gin"
     "{{$CodeDict.Dict.ProjectName}}/internal/globals/parser"
     "{{$CodeDict.Dict.ProjectName}}/internal/services"
-    "time"
+    {{if $CodeDict.TableInfo.HasTimeField}}"time"{{end}}
 )
 
 func {{$CodeDict.TableInfo.StructName}}PostHandler(c *gin.Context) {
     var err error
 
     var Parser struct { {{range .TableInfo.Columns}}
-        {{.Field}} {{.DataType}} `json:"{{.Field}}" form:"{{.Field}}"{{if .NaturalKey}} binding:"required"{{end}}`{{end}}
+        {{.FieldName}} {{.DataType}} `json:"{{.Field}}" form:"{{.Field}}"{{if .NaturalKey}} binding:"required"{{end}}`{{end}}
     }
     err = c.ShouldBind(&Parser)
     if err != nil {
@@ -39,7 +39,7 @@ func {{$CodeDict.TableInfo.StructName}}GetHandler(c *gin.Context) {
     var err error
 
     var Parser struct { {{range .TableInfo.Columns}}
-        {{.Field}} {{.DataType}} `json:"{{.Field}}" form:"{{.Field}}"{{if .NaturalKey}} binding:"required"{{end}}`{{end}}
+        {{.FieldName}} {{.DataType}} `json:"{{.Field}}" form:"{{.Field}}"{{if .NaturalKey}} binding:"required"{{end}}`{{end}}
     }
     err = c.ShouldBind(&Parser)
     if err != nil {
@@ -61,7 +61,7 @@ func {{$CodeDict.TableInfo.StructName}}PutHandler(c *gin.Context) {
     var err error
 
     var Parser struct { {{range .TableInfo.Columns}}
-        {{.Field}} {{.DataType}} `json:"{{.Field}}" form:"{{.Field}}"{{if .NaturalKey}} binding:"required"{{end}}`{{end}}
+        {{.FieldName}} {{.DataType}} `json:"{{.Field}}" form:"{{.Field}}"{{if .NaturalKey}} binding:"required"{{end}}`{{end}}
     }
     err = c.ShouldBind(&Parser)
     if err != nil {
@@ -91,7 +91,7 @@ func {{$CodeDict.TableInfo.StructName}}DeleteHandler(c *gin.Context) {
     var err error
 
     var Parser struct { {{range .TableInfo.Columns}}{{if .NaturalKey}}
-        {{.Field}} {{.DataType}} `json:"{{.Field}}" form:"{{.Field}}" binding:"required"`{{end}}{{end}}
+        {{.FieldName}} {{.DataType}} `json:"{{.Field}}" form:"{{.Field}}" binding:"required"`{{end}}{{end}}
     }
     err = c.ShouldBind(&Parser)
     if err != nil {
@@ -102,7 +102,13 @@ func {{$CodeDict.TableInfo.StructName}}DeleteHandler(c *gin.Context) {
     var {{$CodeDict.TableInfo.StructName}}Service services.{{$CodeDict.TableInfo.StructName}}Service
     {{$CodeDict.TableInfo.StructName}}Service.Assign(Parser)
 
-    err = {{$CodeDict.TableInfo.StructName}}Service.Delete()
+    args, err := structs.StructToMap(Parser, "json")
+    if err != nil {
+        parser.JsonParameterIllegal(c, "", err)
+        return
+    }
+
+    err = {{$CodeDict.TableInfo.StructName}}Service.Delete(args)
     if err != nil {
         parser.JsonDBError(c, "", err)
         return

@@ -1,13 +1,10 @@
 database:
   driver : "mysql"
-  host : "[your mysql host]"
-  port : "[your mysql post]"
-  username : "[your mysql username]"
-  password : "[your mysql password]"
-  database : "[your mysql database]"
+  host : "127.0.0.1"
+  port : "3306"
+  username : "xxx"
+  password : "xxx"
+  database : "xxx"
 
 genCode:
-  templates_path: "assets/templates/go/tem_go_project"
-  dict_path: "assets/templates/go/dict"
-  result_path: "[Add the path of your project you want to generate to examples: result/study_flask_api]"
-  tmplPath: "assets/templates/go/tmpl"
+  result_path: "result/study_flask_api"

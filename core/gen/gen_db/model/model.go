@@ -39,11 +39,12 @@ func (t *TypeDict) GetDataType(name string) string {
 }
 
 type tableModel struct {
-	TableName   string
-	StructName  string
-	PackageName string
-	Columns     []columnModel
-	NaturalKey  []string
+	TableName    string
+	StructName   string
+	PackageName  string
+	Columns      []columnModel
+	NaturalKey   []string
+	HasTimeField bool
 }
 
 type columnModel struct {
@@ -98,7 +99,7 @@ type tableCodeDict struct {
 }
 
 func (d *tableCodeDict) Init(table *mysql.TableModel) error {
-	var genViper = vipers.GetGenViper()
+	var genViper = vipers.GetCodeGenViper().GetSysViper()
 	var typeDict TypeDict
 	dictTypeDict, err := ioutil.ReadFile(filepath.Join(genViper.GetString("genCode.dict_path"), "type_dict.json"))
 	if err != nil {
@@ -130,6 +131,11 @@ func (d *tableCodeDict) Init(table *mysql.TableModel) error {
 		column1.Extra = column.Extra
 		column1.Privileges = column.Privileges
 		column1.Comment = column.Comment
+
+		if column1.Type == "time.Time" {
+			d.TableInfo.HasTimeField = true
+		}
+
 		if strings.ToLower(column.Field) != "autoid" && column.Key == "PRI" {
 			column1.NaturalKey = true
 			d.TableInfo.NaturalKey = append(d.TableInfo.NaturalKey, column.Field)
@@ -145,7 +151,7 @@ type tablesCodeDict struct {
 }
 
 func (d *tablesCodeDict) Init(tables *mysql.DataBaseModel) error {
-	var genViper = vipers.GetGenViper()
+	var genViper = vipers.GetCodeGenViper().GetSysViper()
 	var typeDict TypeDict
 	dictTypeDict, err := ioutil.ReadFile(filepath.Join(genViper.GetString("genCode.dict_path"), "type_dict.json"))
 	if err != nil {
