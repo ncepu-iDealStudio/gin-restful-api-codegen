@@ -29,7 +29,7 @@ func (m *{{$CodeDict.TableInfo.StructName}}Dao) Add(args map[string]any) error {
 
 func (m *{{$CodeDict.TableInfo.StructName}}Dao) Update(query map[string]any, args map[string]any) error {
     mysqlManager := database.GetMysqlClient()
-    err := m.Get(args)
+    err := m.Get(query)
     if err != nil {
         return err
     }
@@ -42,5 +42,5 @@ func (m *{{$CodeDict.TableInfo.StructName}}Dao) Delete(args map[string]any) erro
     if err != nil {
         return err
     }
-    return mysqlManager.Model(&m).Delete(args).Error
+    return mysqlManager.Model(&m).Delete(&m).Error
 }

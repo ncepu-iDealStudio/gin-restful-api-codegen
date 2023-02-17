@@ -138,7 +138,8 @@ func (d *tableCodeDict) Init(table *mysql.TableModel) error {
 			d.TableInfo.HasTimeField = true
 		}
 
-		if strings.ToLower(column.Field) != "autoid" && column.Key == "PRI" {
+		//if strings.ToLower(column.Field) != "autoid" && column.Key == "PRI" {
+		if column.Key == "PRI" {
 			column1.NaturalKey = true
 			d.TableInfo.NaturalKey = append(d.TableInfo.NaturalKey, column.Field)
 		}

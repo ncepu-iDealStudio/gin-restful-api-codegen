@@ -90,7 +90,7 @@ func {{$CodeDict.TableInfo.StructName}}PutHandler(c *gin.Context) {
     {{ if $CodeDict.TableInfo.NaturalKey }}
 	{{ (index $CodeDict.TableInfo.NaturalKey 0) }} := c.Param("{{ (index $CodeDict.TableInfo.NaturalKey 0) }}"{{ else }}{{ (index $CodeDict.TableInfo.Columns 0).Field }} := c.Param("{{ (index $CodeDict.TableInfo.Columns 0).Field }}"{{ end }})
     var Parser struct { {{range .TableInfo.Columns}}
-        {{.FieldName}} {{.DataType}} `json:"{{.Field}}" form:"{{.Field}}"{{if .NaturalKey}} binding:"required"{{end}}`{{end}}
+        {{.FieldName}} {{.DataType}} `json:"{{.Field}}" form:"{{.Field}}"`{{end}}
     }
     err = c.ShouldBind(&Parser)
     if err != nil {
