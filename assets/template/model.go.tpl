@@ -5,7 +5,7 @@
 package models
 
 import (
-    "gitee.com/lryself/go-utils/structs"
+    "{{$CodeDict.Dict.ProjectName}}/utils/structs"
     {{if .TableInfo.HasTimeField}} "time" {{end}}
 )
 

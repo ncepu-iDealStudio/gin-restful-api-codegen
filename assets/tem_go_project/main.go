@@ -1,13 +1,13 @@
 package main
 
 import (
-	"gitee.com/lryself/go-utils/loggers"
 	"github.com/spf13/viper"
 	"tem_go_project/cmd"
 	"tem_go_project/globals"
 	"tem_go_project/globals/errHelper"
 	"tem_go_project/globals/sys"
 	"tem_go_project/globals/vipers"
+	"tem_go_project/utils/loggers"
 )
 
 func main() {
