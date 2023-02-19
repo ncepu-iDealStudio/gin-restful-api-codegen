@@ -6,11 +6,11 @@
 package snowflake
 
 import (
-	logs "gitee.com/lryself/go-utils/loggers"
-	"gitee.com/lryself/go-utils/snowflake"
 	"github.com/spf13/viper"
 	"strconv"
 	"sync"
+	logs "tem_go_project/utils/loggers"
+	"tem_go_project/utils/snowflake"
 )
 
 var (

@@ -6,9 +6,9 @@
 package settings
 
 import (
-	logs "gitee.com/lryself/go-utils/loggers"
 	"github.com/spf13/viper"
 	"tem_go_project/internal/globals/database"
+	logs "tem_go_project/utils/loggers"
 )
 
 func InitDatabase() (err error) {

@@ -1,8 +1,3 @@
-// coding: utf-8
-// @Author : lryself
-// @Date : 2022/5/17 13:53
-// @Software: GoLand
-
 package middlewares
 
 import (

@@ -1,17 +1,12 @@
-// coding: utf-8
-// @Author : lryself
-// @Date : 2022/5/17 14:10
-// @Software: GoLand
-
 package middlewares
 
 import (
 	"context"
 	"errors"
 	"fmt"
-	"gitee.com/lryself/go-utils/loggers"
 	"google.golang.org/grpc"
 	"runtime/debug"
+	"tem_go_project/utils/loggers"
 )
 
 func GrpcRecover() grpc.UnaryServerInterceptor {

@@ -7,9 +7,9 @@ package middlewares
 
 import (
 	"bytes"
-	logs "gitee.com/lryself/go-utils/loggers"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
+	logs "tem_go_project/utils/loggers"
 	"time"
 )
 

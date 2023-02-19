@@ -7,12 +7,12 @@ package sys
 
 import (
 	"fmt"
-	"gitee.com/lryself/go-utils/loggers"
 	"github.com/fufuok/chanx"
 	"os"
 	"runtime"
 	"sync"
 	"tem_go_project/globals"
+	"tem_go_project/utils/loggers"
 )
 
 var outputChan *chanx.UnboundedChan[message]
