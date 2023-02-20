@@ -1,6 +1,6 @@
 windows:
-	SET CGO_ENABLED=0&SET GOOS=windows&SET GOARCH=amd64&go build -ldflags "-s -w" -o deploy/LRYCodeGen-win.exe LRYGoCodeGen
+	SET CGO_ENABLED=0&SET GOOS=windows&SET GOARCH=amd64&go build -ldflags "-s -w" -o ./public/LRYCodeGen-win64.exe LRYGoCodeGen
 mac:
-	CGO_ENABLED=1 GOOS=darwin GOARCH=amd64 go build -ldflags "-s -w" -o deploy/LRYCodeGen-mac LRYGoCodeGen
+	SET CGO_ENABLED=0&SET GOOS=darwin&SET GOARCH=amd64&go build -ldflags "-s -w" -o ./public/LRYCodeGen-mac LRYGoCodeGen
 linux:
-	SET CGO_ENABLED=0&SET GOOS=linux&SET GOARCH=amd64&go build -o ./deploy/LRYCodeGen-linux LRYGoCodeGen
+	SET CGO_ENABLED=0&SET GOOS=linux&SET GOARCH=amd64&go build -ldflags "-s -w" -o ./public/LRYCodeGen-linux LRYGoCodeGen

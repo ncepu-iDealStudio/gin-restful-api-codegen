@@ -6,9 +6,9 @@
 package cmd
 
 import (
-	"LRYGoCodeGen/core/gen/gen_db"
-	"LRYGoCodeGen/core/gen/gen_program"
-	"LRYGoCodeGen/globals/sys"
+	"GinCodeGen/core/gen/gen_db"
+	"GinCodeGen/core/gen/gen_program"
+	"GinCodeGen/globals/sys"
 	"errors"
 	"github.com/spf13/cobra"
 )

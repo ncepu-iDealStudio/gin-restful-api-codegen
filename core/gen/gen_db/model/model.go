@@ -6,9 +6,9 @@
 package model
 
 import (
-	"LRYGoCodeGen/core/database/mysql"
-	"LRYGoCodeGen/globals/vipers"
-	"LRYGoCodeGen/utils/str"
+	"GinCodeGen/core/database/mysql"
+	"GinCodeGen/globals/vipers"
+	"GinCodeGen/utils/str"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -39,14 +39,16 @@ func (t *TypeDict) GetDataType(name string) string {
 }
 
 type tableModel struct {
-	TableName   string
-	StructName  string
-	PackageName string
-	Columns     []columnModel
-	NaturalKey  []string
+	TableName    string
+	StructName   string
+	PackageName  string
+	Columns      []columnModel
+	NaturalKey   []string
+	HasTimeField bool
 }
 
 type columnModel struct {
+	FieldName  string
 	Field      string
 	Type       string
 	DataType   string
@@ -97,7 +99,7 @@ type tableCodeDict struct {
 }
 
 func (d *tableCodeDict) Init(table *mysql.TableModel) error {
-	var genViper = vipers.GetGenViper()
+	var genViper = vipers.GetCodeGenViper().GetSysViper()
 	var typeDict TypeDict
 	dictTypeDict, err := ioutil.ReadFile(filepath.Join(genViper.GetString("genCode.dict_path"), "type_dict.json"))
 	if err != nil {
@@ -109,6 +111,7 @@ func (d *tableCodeDict) Init(table *mysql.TableModel) error {
 		return err
 	}
 	err = json.Unmarshal(staticDict, &d.Dict)
+	d.Dict["ProjectName"] = vipers.GetCodeGenViper().GetGenViper().GetString("database.database")
 	if err != nil {
 		return err
 	}
@@ -118,6 +121,7 @@ func (d *tableCodeDict) Init(table *mysql.TableModel) error {
 
 	for _, column := range table.Columns {
 		var column1 columnModel
+		column1.FieldName = str.LineToUpCamel(column.Field)
 		column1.Field = column.Field
 		column1.Type = column.Type
 		column1.DataType = typeDict.GetDataType(column.Type)
@@ -128,7 +132,14 @@ func (d *tableCodeDict) Init(table *mysql.TableModel) error {
 		column1.Extra = column.Extra
 		column1.Privileges = column.Privileges
 		column1.Comment = column.Comment
-		if strings.ToLower(column.Field) != "autoid" && column.Key == "PRI" {
+
+		switch column1.Type {
+		case "timestamp", "time", "smalldatetime", "datetime", "date":
+			d.TableInfo.HasTimeField = true
+		}
+
+		//if strings.ToLower(column.Field) != "autoid" && column.Key == "PRI" {
+		if column.Key == "PRI" {
 			column1.NaturalKey = true
 			d.TableInfo.NaturalKey = append(d.TableInfo.NaturalKey, column.Field)
 		}
@@ -143,7 +154,7 @@ type tablesCodeDict struct {
 }
 
 func (d *tablesCodeDict) Init(tables *mysql.DataBaseModel) error {
-	var genViper = vipers.GetGenViper()
+	var genViper = vipers.GetCodeGenViper().GetSysViper()
 	var typeDict TypeDict
 	dictTypeDict, err := ioutil.ReadFile(filepath.Join(genViper.GetString("genCode.dict_path"), "type_dict.json"))
 	if err != nil {
@@ -155,6 +166,7 @@ func (d *tablesCodeDict) Init(tables *mysql.DataBaseModel) error {
 		return err
 	}
 	err = json.Unmarshal(staticDict, &d.Dict)
+	d.Dict["ProjectName"] = vipers.GetCodeGenViper().GetGenViper().GetString("database.database")
 	if err != nil {
 		return err
 	}
@@ -177,6 +189,12 @@ func (d *tablesCodeDict) Init(tables *mysql.DataBaseModel) error {
 			column1.Extra = column.Extra
 			column1.Privileges = column.Privileges
 			column1.Comment = column.Comment
+
+			switch column1.Type {
+			case "timestamp", "time", "smalldatetime", "datetime", "date":
+				table1.HasTimeField = true
+			}
+
 			if strings.ToLower(column.Field) != "autoid" && column.Key == "PRI" {
 				table1.NaturalKey = append(table1.NaturalKey, column.Field)
 			}

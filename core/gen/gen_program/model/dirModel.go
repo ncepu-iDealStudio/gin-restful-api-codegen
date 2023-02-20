@@ -6,7 +6,7 @@
 package model
 
 import (
-	"LRYGoCodeGen/utils"
+	"GinCodeGen/utils"
 	"errors"
 	"io/ioutil"
 	"os"
@@ -82,7 +82,7 @@ func (d *DirModel) ReadDir(p string) error {
 func (d *DirModel) MakeDir(p string, replaceDict KeyWord) error {
 	var err error
 	if !utils.PathExists(filepath.Join(p, d.Path)) {
-		err = os.Mkdir(filepath.Join(p, d.Path), os.ModePerm)
+		err = os.MkdirAll(filepath.Join(p, d.Path), os.ModePerm)
 		if err != nil {
 			return err
 		}

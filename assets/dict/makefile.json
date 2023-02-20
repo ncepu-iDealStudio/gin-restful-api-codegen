@@ -1,0 +1,31 @@
+[
+  {
+    "tmplPath": "model.go.tpl",
+    "outPath": "internal/models"
+  },
+  {
+    "tmplPath": "dao.go.tpl",
+    "outPath": "internal/dao"
+  },
+  {
+    "tmplPath": "service.go.tpl",
+    "outPath": "internal/services"
+  },
+  {
+    "tmplPath": "api.go.tpl",
+    "outPath": "internal/apis/api_1_0",
+    "divideDir": true,
+    "filename": "%sResource"
+  },
+  {
+    "tmplPath": "router.go.tpl",
+    "outPath": "internal/apis/api_1_0",
+    "divideDir": true,
+    "filename": "urls"
+  },
+  {
+    "tmplPath": "urls.go.tpl",
+    "outPath": "internal/apis/api_1_0/urls.go",
+    "isTables": true
+  }
+]

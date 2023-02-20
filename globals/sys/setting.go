@@ -20,13 +20,15 @@ func InitMsg(waitGroup *sync.WaitGroup) {
 		case "exit":
 			os.Exit(1)
 		case "err":
-			_, err = fmt.Fprint(os.Stderr, msg.Context)
+			_, _ = fmt.Fprint(os.Stderr, msg.Context)
 		case "msg":
-			_, err = fmt.Fprint(os.Stdout, msg.Context)
+			_, _ = fmt.Fprint(os.Stdout, msg.Context)
 		}
 		if err != nil {
-			panic("输出错误！")
+			//panic("输出错误！")
+			fmt.Printf("输出错误！")
 		}
+
 	}
 	waitGroup.Done()
 }

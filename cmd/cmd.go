@@ -6,10 +6,10 @@
 package cmd
 
 import (
-	"LRYGoCodeGen/core"
-	"LRYGoCodeGen/globals/sys"
-	"LRYGoCodeGen/globals/vipers"
-	"LRYGoCodeGen/utils/errHelper"
+	"GinCodeGen/core"
+	"GinCodeGen/globals/sys"
+	"GinCodeGen/globals/vipers"
+	"GinCodeGen/utils/errHelper"
 	"github.com/spf13/cobra"
 )
 
@@ -38,5 +38,5 @@ func init() {
 func initConfig() {
 	confName, err := rootCmd.Flags().GetString("Config")
 	errHelper.ErrExit(err)
-	errHelper.ErrExit(vipers.InitGenViper(confName))
+	errHelper.ErrExit(vipers.InitCodeGenViper(confName))
 }

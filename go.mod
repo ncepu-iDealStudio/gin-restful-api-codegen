@@ -1,9 +1,9 @@
-module LRYGoCodeGen
+module GinCodeGen
 
-go 1.17
+go 1.18
 
 require (
-	gitee.com/lryself/go-utils v0.0.4-0.20220306132317-bcba865c1c40
+	//gitee.com/lryself/go-utils v0.0.4-0.20220306132317-bcba865c1c40
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/fsnotify/fsnotify v1.5.1
 	github.com/gin-contrib/multitemplate v0.0.0-20220323084503-710510e67c20

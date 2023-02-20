@@ -6,10 +6,10 @@
 package gen_db
 
 import (
-	"LRYGoCodeGen/core/database/mysql"
-	"LRYGoCodeGen/core/gen/gen_db/model"
-	"LRYGoCodeGen/globals/vipers"
-	"LRYGoCodeGen/utils/errHelper"
+	"GinCodeGen/core/database/mysql"
+	"GinCodeGen/core/gen/gen_db/model"
+	"GinCodeGen/globals/vipers"
+	"GinCodeGen/utils/errHelper"
 	"encoding/json"
 	"io/ioutil"
 	"path/filepath"
@@ -20,19 +20,28 @@ type makeFileDict struct {
 	OutPath   string `json:"outPath"`
 	DivideDir bool   `json:"divideDir"`
 	IsTables  bool   `json:"isTables"`
+	Filename  string `json:"filename"`
+}
+
+func (m makeFileDict) GetFileName() string {
+	if m.Filename == "" {
+		return "%s"
+	}
+	return m.Filename
 }
 
 func GenDBCodeFromTemplate() {
 	dbModel, err := mysql.GetMysqlDBModel()
 	errHelper.ErrExit(err)
-	genViper := vipers.GetGenViper()
-	tmplPath := genViper.GetString("genCode.tmplPath")
-	resultPath := genViper.GetString("genCode.result_path")
+	codeGenViper := vipers.GetCodeGenViper()
+	tmplPath := codeGenViper.GetSysViper().GetString("genCode.tmplPath")
+	resultPath := codeGenViper.GetGenViper().GetString("genCode.result_path")
 
 	var makefiles []makeFileDict
-	dictTypeDict, err := ioutil.ReadFile(filepath.Join(genViper.GetString("genCode.dict_path"), "makefile.json"))
+	dictTypeDict, err := ioutil.ReadFile(filepath.Join(codeGenViper.GetSysViper().GetString("genCode.dict_path"), "makefile.json"))
 	errHelper.ErrExit(err)
 	errHelper.Error(json.Unmarshal(dictTypeDict, &makefiles))
+
 	for _, d := range makefiles {
 		if d.IsTables {
 			errHelper.Error(model.GenTablesCode(dbModel,
@@ -44,6 +53,7 @@ func GenDBCodeFromTemplate() {
 				filepath.Join(tmplPath, d.TmplPath),
 				filepath.Join(resultPath, d.OutPath),
 				d.DivideDir,
+				d.GetFileName(),
 			))
 		}
 	}

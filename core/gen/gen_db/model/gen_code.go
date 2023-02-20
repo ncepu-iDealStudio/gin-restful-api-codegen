@@ -6,8 +6,8 @@
 package model
 
 import (
-	"LRYGoCodeGen/core/database/mysql"
-	"LRYGoCodeGen/utils/str"
+	"GinCodeGen/core/database/mysql"
+	"GinCodeGen/utils/str"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -15,7 +15,7 @@ import (
 	"text/template"
 )
 
-func GenTableCode(tableInfo *mysql.DataBaseModel, tmplPath string, outPath string, divideDir bool) error {
+func GenTableCode(tableInfo *mysql.DataBaseModel, tmplPath string, outPath string, divideDir bool, filename string) error {
 	exts := strings.Split(tmplPath, ".")
 	ext := exts[len(exts)-2]
 	for _, table := range tableInfo.Tables {
@@ -29,18 +29,24 @@ func GenTableCode(tableInfo *mysql.DataBaseModel, tmplPath string, outPath strin
 			return err
 		}
 		var file *os.File
+		var codeFilename string
+		if strings.Index(filename, "%s") != -1 {
+			codeFilename = fmt.Sprintf(filename, str.LineToUpCamel(table.TableName)) + fmt.Sprintf(".%s", ext)
+		} else {
+			codeFilename = filename + fmt.Sprintf(".%s", ext)
+		}
 		if divideDir {
 			err = os.MkdirAll(filepath.Join(outPath, str.LineToLowCamel(table.TableName)), os.ModePerm)
 			if err != nil {
 				return err
 			}
-			file, err = os.Create(filepath.Join(outPath, str.LineToLowCamel(table.TableName), fmt.Sprintf("%s.%s", str.LineToUpCamel(table.TableName), ext)))
+			file, err = os.Create(filepath.Join(outPath, str.LineToLowCamel(table.TableName), codeFilename))
 		} else {
 			err = os.MkdirAll(outPath, os.ModePerm)
 			if err != nil {
 				return err
 			}
-			file, err = os.Create(filepath.Join(outPath, fmt.Sprintf("%s.%s", str.LineToUpCamel(table.TableName), ext)))
+			file, err = os.Create(filepath.Join(outPath, codeFilename))
 		}
 		if err != nil {
 			return err

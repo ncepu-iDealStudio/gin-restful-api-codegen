@@ -6,7 +6,7 @@
 package mysql
 
 import (
-	"LRYGoCodeGen/globals/vipers"
+	"GinCodeGen/globals/vipers"
 	"fmt"
 	"sort"
 	"strings"
@@ -83,7 +83,7 @@ func (m *TableModel) GetColumns(orm *MySQLOrm) {
 }
 
 func GetMysqlDBModel() (*DataBaseModel, error) {
-	var genViper = vipers.GetGenViper()
+	var genViper = vipers.GetCodeGenViper().GetGenViper()
 	var DBModel DataBaseModel
 	var err error
 	orm, err := InitDBOrm(fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local&interpolateParams=True",

@@ -6,8 +6,8 @@
 package main
 
 import (
-	"LRYGoCodeGen/cmd"
-	"LRYGoCodeGen/globals/sys"
+	"GinCodeGen/cmd"
+	"GinCodeGen/globals/sys"
 	"sync"
 )
 
