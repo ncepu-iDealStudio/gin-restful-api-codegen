@@ -2,11 +2,11 @@ package middlewares
 
 import (
 	"context"
-	"gitee.com/lryself/go-utils/loggers"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/peer"
+	"tem_go_project/utils/loggers"
 	"time"
 )
 

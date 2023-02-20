@@ -6,7 +6,6 @@
 package rpcServer
 
 import (
-	"gitee.com/lryself/go-utils/loggers"
 	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
@@ -16,6 +15,7 @@ import (
 	"tem_go_project/globals/errHelper"
 	"tem_go_project/globals/sys"
 	"tem_go_project/internal/rpcServer/middlewares"
+	"tem_go_project/utils/loggers"
 )
 
 type myLoggerV2 struct {
