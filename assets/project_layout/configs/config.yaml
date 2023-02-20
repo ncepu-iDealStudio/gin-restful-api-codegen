@@ -5,7 +5,7 @@ log:
   filename: system.log
 system:
   #  系统服务名
-  Name: tem_go_project
+  Name: project_layout
   #  环境
   Mode: debug
   #  秘钥

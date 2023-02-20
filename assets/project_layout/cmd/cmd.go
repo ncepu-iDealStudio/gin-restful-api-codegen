@@ -14,7 +14,7 @@ import (
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "tem_go_project",
+	Use:   "project_layout",
 	Short: "tem_go_project服务",
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
