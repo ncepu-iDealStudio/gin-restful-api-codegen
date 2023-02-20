@@ -6,15 +6,15 @@ import (
 	"html/template"
 	"path/filepath"
 	"strings"
-	"tem_go_project/internal/apis/api_1_0"
-	"tem_go_project/internal/middlewares"
+	"tem_go_project/apis/api_1_0"
+	middlewares2 "tem_go_project/apis/middlewares"
 )
 
 func InitRouter(engine *gin.Engine) {
 	// 加载全局中间件
-	engine.Use(middlewares.CorsMiddleware())
-	engine.Use(middlewares.LogMiddleware())
-	engine.Use(middlewares.LoadUser())
+	engine.Use(middlewares2.CorsMiddleware())
+	engine.Use(middlewares2.LogMiddleware())
+	engine.Use(middlewares2.LoadUser())
 
 	//配置静态html
 	engine.Static("/web/static", "static")

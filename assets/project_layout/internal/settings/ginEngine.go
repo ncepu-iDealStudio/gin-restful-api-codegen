@@ -10,7 +10,7 @@ import (
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
-	"tem_go_project/internal/routers"
+	"tem_go_project/apis/routers"
 )
 
 func InitGinEngine() (*gin.Engine, error) {

@@ -7,10 +7,10 @@ package cmd
 
 import (
 	"github.com/spf13/cobra"
-	"tem_go_project/globals"
-	"tem_go_project/globals/errHelper"
-	"tem_go_project/globals/sys"
-	"tem_go_project/internal"
+	"tem_go_project/apis"
+	"tem_go_project/utils"
+	"tem_go_project/utils/errHelper"
+	"tem_go_project/utils/message"
 )
 
 var rootCmd = &cobra.Command{
@@ -19,9 +19,9 @@ var rootCmd = &cobra.Command{
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
 		// Start doing things.开始做事情
-		sys.Println("开始启动服务！")
-		globals.GetWaitGroup().Add(1)
-		go internal.StartHttp()
+		message.Println("开始启动服务！")
+		utils.GetWaitGroup().Add(1)
+		go apis.StartHttp()
 	},
 }
 

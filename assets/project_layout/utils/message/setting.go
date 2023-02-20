@@ -3,7 +3,7 @@
 // @Date : 2022/3/21 22:21
 // @Software: GoLand
 
-package sys
+package message
 
 import (
 	"fmt"
@@ -11,7 +11,7 @@ import (
 	"os"
 	"runtime"
 	"sync"
-	"tem_go_project/globals"
+	"tem_go_project/utils"
 	"tem_go_project/utils/loggers"
 )
 
@@ -22,7 +22,7 @@ var msgMapOnce sync.Once
 
 func InitMsg() {
 	rwMutex.Lock()
-	defer globals.GetWaitGroup().Done()
+	defer utils.GetWaitGroup().Done()
 	var err error
 	outputChan = chanx.NewUnboundedChan[message](10, 0)
 	initMsgHandler()

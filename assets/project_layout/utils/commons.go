@@ -7,7 +7,14 @@ package utils
 
 import (
 	"os"
+	"sync"
 )
+
+var waitGroup sync.WaitGroup
+
+func GetWaitGroup() *sync.WaitGroup {
+	return &waitGroup
+}
 
 func PathExists(p string) bool {
 	_, err := os.Stat(p)
