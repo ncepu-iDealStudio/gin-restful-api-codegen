@@ -6,11 +6,11 @@ services:
     tty: true
     build: .
     image: tem_go_project
-#    container_name: tem_go_project
+#    container_name: project_layout
     restart: always
     volumes:
-      - /docker/tem_go_project/configs:/apps/configs
-      - /docker/tem_go_project/logs:/apps/logs
+      - /docker/project_layout/configs:/apps/configs
+      - /docker/project_layout/logs:/apps/logs
     ports:
       - "8000:8000"
     command:

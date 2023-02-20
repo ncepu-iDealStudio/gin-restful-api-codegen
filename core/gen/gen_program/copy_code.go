@@ -22,7 +22,7 @@ func GenProgramCodeFromTemplates() {
 	errHelper.ErrExit(err)
 	var replaceDict model.KeyWord
 	errHelper.ErrExit(json.Unmarshal(dictKeywordFile, &replaceDict))
-	replaceDict.Replace["tem_go_project"] = codeGenViper.GetGenViper().GetString("database.database")
+	replaceDict.Replace["project_layout"] = codeGenViper.GetGenViper().GetString("database.database")
 	replaceDict.Replace["mysql_host"] = codeGenViper.GetGenViper().GetString("database.host")
 	replaceDict.Replace["mysql_port"] = codeGenViper.GetGenViper().GetString("database.port")
 	replaceDict.Replace["mysql_username"] = codeGenViper.GetGenViper().GetString("database.username")
