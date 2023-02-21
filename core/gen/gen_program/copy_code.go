@@ -10,15 +10,16 @@ import (
 	initialization "GinCodeGen/init"
 	"GinCodeGen/tools/errorPack"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"path/filepath"
 )
 
 func GenProgramCodeFromTemplates() {
 	codeGenViper := initialization.GetCodeGenViper()
-	dirModel, err := model.GetDirModel(codeGenViper.GetSysViper().GetString("genCode.templates_path"))
+	dirModel, err := model.GetDirModel(initialization.TemplatesPath)
 	errorPack.ErrExit(err)
-	dictKeywordFile, err := ioutil.ReadFile(filepath.Join(codeGenViper.GetSysViper().GetString("genCode.dict_path"), "keyword.json"))
+	dictKeywordFile, err := ioutil.ReadFile(filepath.Join(initialization.DictPath, "keyword.json"))
 	errorPack.ErrExit(err)
 	var replaceDict model.KeyWord
 	errorPack.ErrExit(json.Unmarshal(dictKeywordFile, &replaceDict))
@@ -30,5 +31,5 @@ func GenProgramCodeFromTemplates() {
 	replaceDict.Replace["mysql_database"] = codeGenViper.GetGenViper().GetString("database.database")
 	replaceDict.Replace["redis_host"] = codeGenViper.GetGenViper().GetString("redis.host")
 	replaceDict.Replace["redis_password"] = codeGenViper.GetGenViper().GetString("redis.password")
-	errorPack.ErrExit(dirModel.MakeDir(codeGenViper.GetGenViper().GetString("genCode.result_path"), replaceDict))
+	errorPack.ErrExit(dirModel.MakeDir(fmt.Sprintf("dist/%s", codeGenViper.GetGenViper().GetString("database.database")), replaceDict))
 }

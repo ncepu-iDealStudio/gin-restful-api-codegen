@@ -10,6 +10,7 @@ import (
 	"GinCodeGen/core/gen/gen_db/model"
 	initialization "GinCodeGen/init"
 	"GinCodeGen/tools/errorPack"
+	"fmt"
 
 	"encoding/json"
 	"io/ioutil"
@@ -35,11 +36,11 @@ func GenDBCodeFromTemplate() {
 	dbModel, err := mysql.GetMysqlDBModel()
 	errorPack.ErrExit(err)
 	codeGenViper := initialization.GetCodeGenViper()
-	tmplPath := codeGenViper.GetSysViper().GetString("genCode.tmplPath")
-	resultPath := codeGenViper.GetGenViper().GetString("genCode.result_path")
+	tmplPath := initialization.TemplatesPath
+	resultPath := fmt.Sprintf("dist/%s", codeGenViper.GetGenViper().GetString("database.database"))
 
 	var makefiles []makeFileDict
-	dictTypeDict, err := ioutil.ReadFile(filepath.Join(codeGenViper.GetSysViper().GetString("genCode.dict_path"), "makefile.json"))
+	dictTypeDict, err := ioutil.ReadFile(filepath.Join(initialization.DictPath, "makefile.json"))
 	errorPack.ErrExit(err)
 	errorPack.Error(json.Unmarshal(dictTypeDict, &makefiles))
 

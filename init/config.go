@@ -11,9 +11,14 @@ import (
 	"github.com/spf13/viper"
 )
 
+const (
+	TemplatesPath string = "assets/project_layout"
+	DictPath      string = "assets/dict"
+	TmplPath      string = "assets/template"
+)
+
 type CodeGenVipers struct {
-	genViper     *viper.Viper
-	messageViper *viper.Viper
+	genViper *viper.Viper
 }
 
 var CodeGenViper CodeGenVipers
@@ -45,29 +50,13 @@ func (this *CodeGenVipers) InitGenViper(confName string) (err error) {
 	return
 }
 
-func (this *CodeGenVipers) InitSysViper(confName string) (err error) {
-	this.messageViper, err = InitViper(confName)
-	if err != nil {
-		return
-	}
-	return
-}
-
 func (this *CodeGenVipers) GetGenViper() *viper.Viper {
 	return this.genViper
-}
-
-func (this *CodeGenVipers) GetSysViper() *viper.Viper {
-	return this.messageViper
 }
 
 func InitCodeGenViper(genConfigName string) (err error) {
 	CodeGenViper = CodeGenVipers{}
 	err = CodeGenViper.InitGenViper(genConfigName)
-	if err != nil {
-		return
-	}
-	err = CodeGenViper.InitSysViper("sys")
 	if err != nil {
 		return
 	}
