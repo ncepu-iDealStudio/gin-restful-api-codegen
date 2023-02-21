@@ -16,6 +16,6 @@ func main() {
 	cmd.Execute()
 
 	// 程序完成
-	fmt.Println("执行完毕，程序推出!")
+	fmt.Println("执行完毕，程序退出!")
 	os.Exit(0)
 }
