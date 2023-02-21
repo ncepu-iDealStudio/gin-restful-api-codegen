@@ -1,24 +1,19 @@
-// coding: utf-8
-// @Author : lryself
-// @Date : 2022/3/22 22:04
-// @Software: GoLand
-
-package errHelper
+package errorPack
 
 import (
-	"GinCodeGen/globals/sys"
+	"GinCodeGen/tools/message"
 )
 
 func Error(err error) {
 	if err != nil {
-		sys.PrintErr(err)
+		message.PrintErr(err)
 	}
 }
 
 func ErrExit(err error) {
 	if err != nil {
-		sys.PrintErr(err)
-		sys.Exit()
+		message.PrintErr(err)
+		message.Exit()
 	}
 }
 

@@ -7,9 +7,9 @@ package cmd
 
 import (
 	"GinCodeGen/core"
-	"GinCodeGen/globals/sys"
-	"GinCodeGen/globals/vipers"
-	"GinCodeGen/utils/errHelper"
+	initialization "GinCodeGen/init"
+	"GinCodeGen/tools/errorPack"
+	"GinCodeGen/tools/message"
 	"github.com/spf13/cobra"
 )
 
@@ -19,16 +19,16 @@ var rootCmd = &cobra.Command{
 	Long:  `基于模板生成项目代码的工具`,
 	Run: func(cmd *cobra.Command, args []string) {
 		// Start doing things.开始做事情
-		sys.Println("开始生成代码！")
+		message.Println("开始生成代码！")
 		core.Execute()
-		sys.Println("代码生成完成！")
+		message.Println("代码生成完成！")
 	},
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
-	errHelper.ErrExit(rootCmd.Execute())
+	errorPack.ErrExit(rootCmd.Execute())
 }
 func init() {
 	cobra.OnInitialize(initConfig)
@@ -37,6 +37,6 @@ func init() {
 
 func initConfig() {
 	confName, err := rootCmd.Flags().GetString("Config")
-	errHelper.ErrExit(err)
-	errHelper.ErrExit(vipers.InitCodeGenViper(confName))
+	errorPack.ErrExit(err)
+	errorPack.ErrExit(initialization.InitCodeGenViper(confName))
 }

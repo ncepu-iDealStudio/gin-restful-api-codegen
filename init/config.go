@@ -3,17 +3,17 @@
 // @Date : 2022/3/10 22:16
 // @Software: GoLand
 
-package vipers
+package init
 
 import (
-	"GinCodeGen/globals/sys"
+	"GinCodeGen/tools/message"
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
 )
 
 type CodeGenVipers struct {
-	genViper *viper.Viper
-	sysViper *viper.Viper
+	genViper     *viper.Viper
+	messageViper *viper.Viper
 }
 
 var CodeGenViper CodeGenVipers
@@ -26,13 +26,13 @@ func InitViper(confName string) (_viper *viper.Viper, err error) {
 
 	err = _viper.ReadInConfig()
 	if err != nil {
-		sys.PrintErr("Fatal error config file: ", err)
+		message.PrintErr("Fatal error config file: ", err)
 		return nil, err
 	}
 	_viper.WatchConfig()
 
 	_viper.OnConfigChange(func(e fsnotify.Event) {
-		sys.Println("Config file:", e.Name, "Op: ", e.Op)
+		message.Println("Config file:", e.Name, "Op: ", e.Op)
 	})
 	return _viper, nil
 }
@@ -46,7 +46,7 @@ func (this *CodeGenVipers) InitGenViper(confName string) (err error) {
 }
 
 func (this *CodeGenVipers) InitSysViper(confName string) (err error) {
-	this.sysViper, err = InitViper(confName)
+	this.messageViper, err = InitViper(confName)
 	if err != nil {
 		return
 	}
@@ -58,7 +58,7 @@ func (this *CodeGenVipers) GetGenViper() *viper.Viper {
 }
 
 func (this *CodeGenVipers) GetSysViper() *viper.Viper {
-	return this.sysViper
+	return this.messageViper
 }
 
 func InitCodeGenViper(genConfigName string) (err error) {

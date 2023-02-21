@@ -7,8 +7,8 @@ package model
 
 import (
 	"GinCodeGen/core/database/mysql"
-	"GinCodeGen/globals/vipers"
-	"GinCodeGen/utils/str"
+	initialization "GinCodeGen/init"
+	"GinCodeGen/tools/common"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -99,7 +99,7 @@ type tableCodeDict struct {
 }
 
 func (d *tableCodeDict) Init(table *mysql.TableModel) error {
-	var genViper = vipers.GetCodeGenViper().GetSysViper()
+	var genViper = initialization.GetCodeGenViper().GetSysViper()
 	var typeDict TypeDict
 	dictTypeDict, err := ioutil.ReadFile(filepath.Join(genViper.GetString("genCode.dict_path"), "type_dict.json"))
 	if err != nil {
@@ -111,17 +111,17 @@ func (d *tableCodeDict) Init(table *mysql.TableModel) error {
 		return err
 	}
 	err = json.Unmarshal(staticDict, &d.Dict)
-	d.Dict["ProjectName"] = vipers.GetCodeGenViper().GetGenViper().GetString("database.database")
+	d.Dict["ProjectName"] = initialization.GetCodeGenViper().GetGenViper().GetString("database.database")
 	if err != nil {
 		return err
 	}
 	d.TableInfo.TableName = table.TableName
-	d.TableInfo.StructName = str.LineToUpCamel(table.TableName)
-	d.TableInfo.PackageName = str.LineToLowCamel(table.TableName)
+	d.TableInfo.StructName = common.LineToUpCamel(table.TableName)
+	d.TableInfo.PackageName = common.LineToLowCamel(table.TableName)
 
 	for _, column := range table.Columns {
 		var column1 columnModel
-		column1.FieldName = str.LineToUpCamel(column.Field)
+		column1.FieldName = common.LineToUpCamel(column.Field)
 		column1.Field = column.Field
 		column1.Type = column.Type
 		column1.DataType = typeDict.GetDataType(column.Type)
@@ -154,7 +154,7 @@ type tablesCodeDict struct {
 }
 
 func (d *tablesCodeDict) Init(tables *mysql.DataBaseModel) error {
-	var genViper = vipers.GetCodeGenViper().GetSysViper()
+	var genViper = initialization.GetCodeGenViper().GetSysViper()
 	var typeDict TypeDict
 	dictTypeDict, err := ioutil.ReadFile(filepath.Join(genViper.GetString("genCode.dict_path"), "type_dict.json"))
 	if err != nil {
@@ -166,7 +166,7 @@ func (d *tablesCodeDict) Init(tables *mysql.DataBaseModel) error {
 		return err
 	}
 	err = json.Unmarshal(staticDict, &d.Dict)
-	d.Dict["ProjectName"] = vipers.GetCodeGenViper().GetGenViper().GetString("database.database")
+	d.Dict["ProjectName"] = initialization.GetCodeGenViper().GetGenViper().GetString("database.database")
 	if err != nil {
 		return err
 	}
@@ -174,8 +174,8 @@ func (d *tablesCodeDict) Init(tables *mysql.DataBaseModel) error {
 	for _, table := range tables.Tables {
 		var table1 tableModel
 		table1.TableName = table.TableName
-		table1.StructName = str.LineToUpCamel(table.TableName)
-		table1.PackageName = str.LineToLowCamel(table.TableName)
+		table1.StructName = common.LineToUpCamel(table.TableName)
+		table1.PackageName = common.LineToLowCamel(table.TableName)
 
 		for _, column := range table.Columns {
 			var column1 columnModel

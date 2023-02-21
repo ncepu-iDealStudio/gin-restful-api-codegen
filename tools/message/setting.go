@@ -3,7 +3,7 @@
 // @Date : 2022/3/21 22:21
 // @Software: GoLand
 
-package sys
+package message
 
 import (
 	"fmt"

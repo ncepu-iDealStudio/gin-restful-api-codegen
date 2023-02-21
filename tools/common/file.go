@@ -3,7 +3,7 @@
 // @Date : 2022/2/14 19:50
 // @Software: GoLand
 
-package utils
+package common
 
 import (
 	"os"

@@ -7,17 +7,17 @@ package main
 
 import (
 	"GinCodeGen/cmd"
-	"GinCodeGen/globals/sys"
+	"GinCodeGen/tools/message"
 	"sync"
 )
 
 func main() {
 	var waitGroup sync.WaitGroup
 	waitGroup.Add(1)
-	go sys.InitMsg(&waitGroup)
+	go message.InitMsg(&waitGroup)
 
 	cmd.Execute()
 
-	sys.Exit()
+	message.Exit()
 	waitGroup.Wait()
 }

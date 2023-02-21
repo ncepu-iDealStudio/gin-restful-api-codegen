@@ -7,7 +7,7 @@ package model
 
 import (
 	"GinCodeGen/core/database/mysql"
-	"GinCodeGen/utils/str"
+	"GinCodeGen/tools/common"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -31,16 +31,16 @@ func GenTableCode(tableInfo *mysql.DataBaseModel, tmplPath string, outPath strin
 		var file *os.File
 		var codeFilename string
 		if strings.Index(filename, "%s") != -1 {
-			codeFilename = fmt.Sprintf(filename, str.LineToUpCamel(table.TableName)) + fmt.Sprintf(".%s", ext)
+			codeFilename = fmt.Sprintf(filename, common.LineToUpCamel(table.TableName)) + fmt.Sprintf(".%s", ext)
 		} else {
 			codeFilename = filename + fmt.Sprintf(".%s", ext)
 		}
 		if divideDir {
-			err = os.MkdirAll(filepath.Join(outPath, str.LineToLowCamel(table.TableName)), os.ModePerm)
+			err = os.MkdirAll(filepath.Join(outPath, common.LineToLowCamel(table.TableName)), os.ModePerm)
 			if err != nil {
 				return err
 			}
-			file, err = os.Create(filepath.Join(outPath, str.LineToLowCamel(table.TableName), codeFilename))
+			file, err = os.Create(filepath.Join(outPath, common.LineToLowCamel(table.TableName), codeFilename))
 		} else {
 			err = os.MkdirAll(outPath, os.ModePerm)
 			if err != nil {

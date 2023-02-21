@@ -8,8 +8,9 @@ package gen_db
 import (
 	"GinCodeGen/core/database/mysql"
 	"GinCodeGen/core/gen/gen_db/model"
-	"GinCodeGen/globals/vipers"
-	"GinCodeGen/utils/errHelper"
+	initialization "GinCodeGen/init"
+	"GinCodeGen/tools/errorPack"
+
 	"encoding/json"
 	"io/ioutil"
 	"path/filepath"
@@ -32,24 +33,24 @@ func (m makeFileDict) GetFileName() string {
 
 func GenDBCodeFromTemplate() {
 	dbModel, err := mysql.GetMysqlDBModel()
-	errHelper.ErrExit(err)
-	codeGenViper := vipers.GetCodeGenViper()
+	errorPack.ErrExit(err)
+	codeGenViper := initialization.GetCodeGenViper()
 	tmplPath := codeGenViper.GetSysViper().GetString("genCode.tmplPath")
 	resultPath := codeGenViper.GetGenViper().GetString("genCode.result_path")
 
 	var makefiles []makeFileDict
 	dictTypeDict, err := ioutil.ReadFile(filepath.Join(codeGenViper.GetSysViper().GetString("genCode.dict_path"), "makefile.json"))
-	errHelper.ErrExit(err)
-	errHelper.Error(json.Unmarshal(dictTypeDict, &makefiles))
+	errorPack.ErrExit(err)
+	errorPack.Error(json.Unmarshal(dictTypeDict, &makefiles))
 
 	for _, d := range makefiles {
 		if d.IsTables {
-			errHelper.Error(model.GenTablesCode(dbModel,
+			errorPack.Error(model.GenTablesCode(dbModel,
 				filepath.Join(tmplPath, d.TmplPath),
 				filepath.Join(resultPath, d.OutPath),
 			))
 		} else {
-			errHelper.Error(model.GenTableCode(dbModel,
+			errorPack.Error(model.GenTableCode(dbModel,
 				filepath.Join(tmplPath, d.TmplPath),
 				filepath.Join(resultPath, d.OutPath),
 				d.DivideDir,

@@ -3,7 +3,7 @@
 // @Date : 2022/2/25 17:22
 // @Software: GoLand
 
-package str
+package common
 
 import "strings"
 
