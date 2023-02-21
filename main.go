@@ -7,17 +7,15 @@ package main
 
 import (
 	"GinCodeGen/cmd"
-	"GinCodeGen/tools/message"
-	"sync"
+	"fmt"
+	"os"
 )
 
 func main() {
-	var waitGroup sync.WaitGroup
-	waitGroup.Add(1)
-	go message.InitMsg(&waitGroup)
-
+	// 命令行执行
 	cmd.Execute()
 
-	message.Exit()
-	waitGroup.Wait()
+	// 程序完成
+	fmt.Println("执行完毕，程序推出!")
+	os.Exit(0)
 }

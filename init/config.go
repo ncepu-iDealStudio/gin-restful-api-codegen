@@ -6,9 +6,10 @@
 package init
 
 import (
-	"GinCodeGen/tools/message"
+	"fmt"
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
+	"os"
 )
 
 const (
@@ -31,13 +32,13 @@ func InitViper(confName string) (_viper *viper.Viper, err error) {
 
 	err = _viper.ReadInConfig()
 	if err != nil {
-		message.PrintErr("Fatal error config file: ", err)
+		_, _ = fmt.Fprint(os.Stderr, fmt.Sprintln("Fatal error config file: ", err))
 		return nil, err
 	}
 	_viper.WatchConfig()
 
 	_viper.OnConfigChange(func(e fsnotify.Event) {
-		message.Println("Config file:", e.Name, "Op: ", e.Op)
+		_, _ = fmt.Fprint(os.Stdout, fmt.Sprintln("Config file:", e.Name, "Op: ", e.Op))
 	})
 	return _viper, nil
 }

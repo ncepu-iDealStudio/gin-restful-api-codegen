@@ -9,8 +9,9 @@ import (
 	"GinCodeGen/core"
 	initialization "GinCodeGen/init"
 	"GinCodeGen/tools/errorPack"
-	"GinCodeGen/tools/message"
+	"fmt"
 	"github.com/spf13/cobra"
+	"os"
 )
 
 var rootCmd = &cobra.Command{
@@ -19,9 +20,9 @@ var rootCmd = &cobra.Command{
 	Long:  `基于模板生成项目代码的工具`,
 	Run: func(cmd *cobra.Command, args []string) {
 		// Start doing things.开始做事情
-		message.Println("开始生成代码！")
+		_, _ = fmt.Fprint(os.Stdout, "开始生成代码！\n")
 		core.Execute()
-		message.Println("代码生成完成！")
+		_, _ = fmt.Fprint(os.Stdout, "代码生成完成！\n")
 	},
 }
 

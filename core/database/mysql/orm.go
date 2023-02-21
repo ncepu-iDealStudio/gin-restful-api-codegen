@@ -6,9 +6,10 @@
 package mysql
 
 import (
-	"GinCodeGen/tools/message"
 	"database/sql"
+	"fmt"
 	_ "github.com/go-sql-driver/mysql"
+	"os"
 )
 
 type MySQLOrm struct {
@@ -34,7 +35,7 @@ func (orm *MySQLOrm) GetDBOrm(dataSourceName string) (err error) {
 		//		Logger:         logger.Default,
 		//	})
 		if err != nil {
-			message.PrintErr("please check your database config")
+			_, _ = fmt.Fprint(os.Stderr, "please check your database config！\n")
 			return
 		}
 	}
@@ -82,7 +83,7 @@ func (orm *MySQLOrm) GetTables(dbName string) (map[string]string, error) {
 		if rows != nil {
 			err = rows.Close()
 			if err != nil {
-				message.PrintErr(err)
+				_, _ = fmt.Fprint(os.Stderr, fmt.Sprintln(err))
 			}
 		}
 	}(rows)

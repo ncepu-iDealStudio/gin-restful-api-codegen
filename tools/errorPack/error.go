@@ -1,19 +1,20 @@
 package errorPack
 
 import (
-	"GinCodeGen/tools/message"
+	"fmt"
+	"os"
 )
 
 func Error(err error) {
 	if err != nil {
-		message.PrintErr(err)
+		_, _ = fmt.Fprint(os.Stderr, fmt.Sprintln(err))
 	}
 }
 
 func ErrExit(err error) {
 	if err != nil {
-		message.PrintErr(err)
-		message.Exit()
+		_, _ = fmt.Fprint(os.Stderr, fmt.Sprintln(err))
+		os.Exit(1)
 	}
 }
 

@@ -6,8 +6,9 @@
 package cmd
 
 import (
-	"GinCodeGen/tools/message"
+	"fmt"
 	"github.com/spf13/cobra"
+	"os"
 )
 
 var versionCmd = &cobra.Command{
@@ -15,7 +16,7 @@ var versionCmd = &cobra.Command{
 	Short: "显示版本信息",
 
 	Run: func(cmd *cobra.Command, args []string) {
-		message.Println("v1.0")
+		_, _ = fmt.Fprint(os.Stdout, "GinCodeGen v1.0\n")
 	},
 }
 
