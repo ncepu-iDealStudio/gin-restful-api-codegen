@@ -19,37 +19,37 @@ var (
 	logOnce sync.Once
 )
 
+const (
+	FileType string = "File"
+	FIlePath string = "logs"
+	FileName string = "system.log"
+)
+
 func GetLogger() *logrus.Logger {
-	logOnce.Do(func() {
-		log = loggerToCmd()
-		log.Infoln("日志初始化服务完成!")
-	})
 	return log
 }
 func InitLogger(logType string) {
 	logOnce.Do(func() {
-		log = loggerToCmd()
+		if logType == "File" {
+			log = loggerToFile()
+		} else if logType == "ES" {
+			log = loggerToES()
+		} else {
+			log = loggerToCmd()
+		}
+		log.Infoln("日志初始化服务完成!")
 	})
-	if logType == "File" {
-		log = loggerToFile()
-	} else if logType == "ES" {
-		log = loggerToES()
-	} else {
-		log = loggerToCmd()
-	}
-	log.Infoln("日志初始化服务完成!")
 }
 
 // 日志记录到文件
 func loggerToFile() *logrus.Logger {
 	basePath, _ := os.Getwd()
-	logFilePath := path.Join(basePath, viper.GetString("log.filepath"))
-	logFileName := viper.GetString("log.filename")
+	logFilePath := path.Join(basePath, FIlePath)
 	//logFilePath := path.Join(basePath, "logs")
 	//logFileName := "system.log"
 
 	// 日志文件
-	fileName := path.Join(logFilePath, logFileName)
+	fileName := path.Join(logFilePath, FileName)
 
 	// 写入文件
 	src, err := os.OpenFile(fileName, os.O_APPEND|os.O_WRONLY, os.ModeAppend)
@@ -69,10 +69,10 @@ func loggerToFile() *logrus.Logger {
 	// 设置 rotatelogs
 	logWriter, err := rotatelogs.New(
 		// 分割后的文件名称
-		fileName+".%Y%m%d.log",
+		fileName+"%Y%m%d.log",
 
-		// 生成软链，指向最新日志文件
-		rotatelogs.WithLinkName(fileName),
+		//// 生成软链，指向最新日志文件
+		//rotatelogs.WithLinkName(fileName),
 
 		// 设置最大保存时间(7天)
 		rotatelogs.WithMaxAge(7*24*time.Hour),

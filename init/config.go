@@ -16,6 +16,7 @@ const (
 	TemplatesPath string = "assets/project_layout"
 	DictPath      string = "assets/dict"
 	TmplPath      string = "assets/template"
+	LogPath       string = "logs/codegen_log"
 )
 
 type CodeGenVipers struct {

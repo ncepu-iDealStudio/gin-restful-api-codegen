@@ -7,11 +7,15 @@ package main
 
 import (
 	"GinCodeGen/cmd"
+	"GinCodeGen/tools/logger"
 	"fmt"
 	"os"
 )
 
 func main() {
+	// 初始化日志模块
+	logger.InitLogger(logger.FileType)
+
 	// 命令行执行
 	cmd.Execute()
 
