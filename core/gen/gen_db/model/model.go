@@ -99,14 +99,13 @@ type tableCodeDict struct {
 }
 
 func (d *tableCodeDict) Init(table *mysql.TableModel) error {
-	var genViper = initialization.GetCodeGenViper().GetSysViper()
 	var typeDict TypeDict
-	dictTypeDict, err := ioutil.ReadFile(filepath.Join(genViper.GetString("genCode.dict_path"), "type_dict.json"))
+	dictTypeDict, err := ioutil.ReadFile(filepath.Join(initialization.DictPath, "type_dict.json"))
 	if err != nil {
 		return err
 	}
 	err = json.Unmarshal(dictTypeDict, &typeDict)
-	staticDict, err := ioutil.ReadFile(filepath.Join(genViper.GetString("genCode.dict_path"), "static_dict.json"))
+	staticDict, err := ioutil.ReadFile(filepath.Join(initialization.DictPath, "static_dict.json"))
 	if err != nil {
 		return err
 	}
@@ -154,14 +153,13 @@ type tablesCodeDict struct {
 }
 
 func (d *tablesCodeDict) Init(tables *mysql.DataBaseModel) error {
-	var genViper = initialization.GetCodeGenViper().GetSysViper()
 	var typeDict TypeDict
-	dictTypeDict, err := ioutil.ReadFile(filepath.Join(genViper.GetString("genCode.dict_path"), "type_dict.json"))
+	dictTypeDict, err := ioutil.ReadFile(filepath.Join(initialization.DictPath, "type_dict.json"))
 	if err != nil {
 		return err
 	}
 	err = json.Unmarshal(dictTypeDict, &typeDict)
-	staticDict, err := ioutil.ReadFile(filepath.Join(genViper.GetString("genCode.dict_path"), "static_dict.json"))
+	staticDict, err := ioutil.ReadFile(filepath.Join(initialization.DictPath, "static_dict.json"))
 	if err != nil {
 		return err
 	}

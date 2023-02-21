@@ -1,7 +1,7 @@
 database:
   driver : "mysql"
-  host : "127.0.0.1"
+  host : "139.9.128.8"
   port : "3306"
-  username : "xxx"
-  password : "xxx"
-  database : "xxx"
+  username : "root"
+  password : "idealwifi@dmin"
+  database : "innovate-show-center"

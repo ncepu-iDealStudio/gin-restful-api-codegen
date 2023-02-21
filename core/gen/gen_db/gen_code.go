@@ -36,7 +36,7 @@ func GenDBCodeFromTemplate() {
 	dbModel, err := mysql.GetMysqlDBModel()
 	errorPack.ErrExit(err)
 	codeGenViper := initialization.GetCodeGenViper()
-	tmplPath := initialization.TemplatesPath
+	tmplPath := initialization.TmplPath
 	resultPath := fmt.Sprintf("dist/%s", codeGenViper.GetGenViper().GetString("database.database"))
 
 	var makefiles []makeFileDict
