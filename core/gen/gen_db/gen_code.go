@@ -40,6 +40,9 @@ func GenDBCodeFromTemplate() {
 	err = database.CheckDatabase(dbModel)
 	errorPack.ErrExit(err)
 
+	err = database.CheckPrimaryKey(dbModel)
+	errorPack.ErrExit(err)
+
 	codeGenViper := initialization.GetCodeGenViper()
 	tmplPath := initialization.TmplPath
 	resultPath := fmt.Sprintf("dist/%s", codeGenViper.GetGenViper().GetString("database.database"))

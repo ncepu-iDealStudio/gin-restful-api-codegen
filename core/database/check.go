@@ -42,6 +42,26 @@ func CheckDatabase(model *mysql.DataBaseModel) (err error) {
 }
 
 // CheckPrimaryKey 检查目标表是否有主键
-func CheckPrimaryKey() {
+func CheckPrimaryKey(model *mysql.DataBaseModel) (err error) {
+	var havePrimaryKey bool
+	tables := model.Tables
+	for _, table := range tables {
+		havePrimaryKey = false
+		for _, column := range table.Columns {
+			if column.Key == "PRI" {
+				havePrimaryKey = true
+				break
+			}
+		}
 
+		if !havePrimaryKey {
+			msg := fmt.Sprintf(
+				"Table '%s' does not contain a primary key.",
+				table.TableName,
+			)
+			err = errors.New(msg)
+			return
+		}
+	}
+	return nil
 }
