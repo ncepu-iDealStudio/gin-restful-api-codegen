@@ -82,10 +82,10 @@ func (orm *MySQLOrm) GetTablesName() ([]string, error) {
 	return tables, nil
 }
 
-func (orm *MySQLOrm) GetTables(dbName string) (map[string]string, error) {
-	result := map[string]string{}
+func (orm *MySQLOrm) GetTables(dbName string) (map[string][]string, error) {
+	result := map[string][]string{}
 	var err error
-	rows, err := orm.Raw("SELECT TABLE_NAME,TABLE_COMMENT FROM information_schema.TABLES WHERE table_schema= '" + dbName + "'")
+	rows, err := orm.Raw("SELECT TABLE_NAME,TABLE_COMMENT,TABLE_TYPE FROM information_schema.TABLES WHERE table_schema= '" + dbName + "'")
 	defer func(rows *sql.Rows) {
 		if rows != nil {
 			err = rows.Close()
@@ -99,18 +99,18 @@ func (orm *MySQLOrm) GetTables(dbName string) (map[string]string, error) {
 	if err != nil {
 		log := logger.GetLogger()
 		log.Error(err)
-		return map[string]string{}, err
+		return map[string][]string{}, err
 	}
 
 	for rows.Next() {
-		var table, comment string
-		err1 := rows.Scan(&table, &comment)
+		var table, comment, tableType string
+		err1 := rows.Scan(&table, &comment, &tableType)
 		if err1 != nil {
 			log := logger.GetLogger()
 			log.Error(fmt.Sprintf("error occur during scaning rows of a table: %s", err))
 			return nil, err1
 		}
-		result[table] = comment
+		result[table] = []string{comment, tableType}
 	}
 	return result, nil
 }

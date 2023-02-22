@@ -21,6 +21,7 @@ type DataBaseModel struct {
 type TableModel struct {
 	TableName string
 	Comment   string
+	TableType string
 	Columns   []columnModel
 }
 
@@ -45,7 +46,8 @@ func (m *DataBaseModel) GetTables(orm *MySQLOrm) error {
 	for k, v := range tables {
 		var table TableModel
 		table.TableName = k
-		table.Comment = v
+		table.Comment = v[0]
+		table.TableType = v[1]
 		table.GetColumns(orm)
 		m.Tables = append(m.Tables, table)
 	}

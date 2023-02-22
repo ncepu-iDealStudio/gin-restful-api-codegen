@@ -47,6 +47,9 @@ func CheckPrimaryKey(model *mysql.DataBaseModel) (err error) {
 	tables := model.Tables
 	for _, table := range tables {
 		havePrimaryKey = false
+		if table.TableType == "VIEW" {
+			continue
+		}
 		for _, column := range table.Columns {
 			if column.Key == "PRI" {
 				havePrimaryKey = true
