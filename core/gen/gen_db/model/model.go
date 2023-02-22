@@ -45,6 +45,7 @@ type tableModel struct {
 	Columns      []columnModel
 	NaturalKey   []string
 	HasTimeField bool
+	TableType    string
 }
 
 type columnModel struct {
@@ -174,6 +175,7 @@ func (d *tablesCodeDict) Init(tables *mysql.DataBaseModel) error {
 		table1.TableName = table.TableName
 		table1.StructName = common.LineToUpCamel(table.TableName)
 		table1.PackageName = common.LineToLowCamel(table.TableName)
+		table1.TableType = table.TableType
 
 		for _, column := range table.Columns {
 			var column1 columnModel
