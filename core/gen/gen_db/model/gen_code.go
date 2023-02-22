@@ -6,8 +6,10 @@
 package model
 
 import (
+	"GinCodeGen/core/database"
 	"GinCodeGen/core/database/mysql"
 	"GinCodeGen/tools/common"
+	"GinCodeGen/tools/logger"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -59,6 +61,23 @@ func GenTableCode(tableInfo *mysql.DataBaseModel, tmplPath string, outPath strin
 	return nil
 }
 func GenTablesCode(tablesInfo *mysql.DataBaseModel, tmplPath string, outPath string) error {
+	for i, table := range tablesInfo.Tables {
+		// check name and field name of tables, ensuring name wouldn't be keyword in golang
+		err := database.CheckTable(table)
+		if err != nil {
+			fmt.Println(err)
+			logger.GetLogger().Error(err)
+			tablesInfo.Tables = append(tablesInfo.Tables[:i], tablesInfo.Tables[i+1:]...)
+		}
+		// check primary key of tables
+		err = database.CheckPrimaryKey(table)
+		if err != nil {
+			fmt.Println(err)
+			logger.GetLogger().Error(err)
+			tablesInfo.Tables = append(tablesInfo.Tables[:i], tablesInfo.Tables[i+1:]...)
+		}
+	}
+
 	var codeDict tablesCodeDict
 	err := codeDict.Init(tablesInfo)
 	if err != nil {
