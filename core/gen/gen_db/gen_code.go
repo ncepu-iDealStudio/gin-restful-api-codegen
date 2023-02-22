@@ -6,6 +6,7 @@
 package gen_db
 
 import (
+	"GinCodeGen/core/database"
 	"GinCodeGen/core/database/mysql"
 	"GinCodeGen/core/gen/gen_db/model"
 	initialization "GinCodeGen/init"
@@ -35,6 +36,10 @@ func (m makeFileDict) GetFileName() string {
 func GenDBCodeFromTemplate() {
 	dbModel, err := mysql.GetMysqlDBModel()
 	errorPack.ErrExit(err)
+
+	err = database.CheckDatabase(dbModel)
+	errorPack.ErrExit(err)
+
 	codeGenViper := initialization.GetCodeGenViper()
 	tmplPath := initialization.TmplPath
 	resultPath := fmt.Sprintf("dist/%s", codeGenViper.GetGenViper().GetString("database.database"))
