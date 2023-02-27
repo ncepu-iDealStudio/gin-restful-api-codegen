@@ -12,7 +12,7 @@
 - 目标项目包含基于Docker容器的部署脚本
 
 ## 使用Go-GinGodeGen
-查看我们的文档 []()
+查看我们的文档 [GoCodeGen](https://idealstudio-ncepu.yuque.com/kgagg7/pkp1rg/ng5sg765x4nqfl28)
 
 1. 下载我们的最新发行版，进行解压。项目结构如下
 
