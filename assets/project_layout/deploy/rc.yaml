@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: project_layout #调度对象的全称，全局唯一
+spec:
+  replicas: 1    #表示创建1个pod副本数量
+  selector:
+    app: project_layout
+  template:
+    metadata:
+      labels:
+        app: project_layout # pod拥有的标签
+    spec:
+      volumes:
+        - name: project_layout-logs
+          hostPath:
+            path: "/docker/volumes/project_layout/logs"
+      containers:
+        - name: project_layout-v1
+          image: project_layout  # 对应的从docker拉取的镜像名称
+          imagePullPolicy: Never # Always, Never, IfNotPresent
+          ports:
+            - containerPort: 8000   #容器暴露的端口号
+            - containerPort: 8002   #容器暴露的端口号
+          volumeMounts:
+            - name: project_layout-logs
+              mountPath: /apps/logs

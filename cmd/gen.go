@@ -8,9 +8,10 @@ package cmd
 import (
 	"GinCodeGen/core/gen/gen_db"
 	"GinCodeGen/core/gen/gen_program"
-	"GinCodeGen/globals/sys"
 	"errors"
+	"fmt"
 	"github.com/spf13/cobra"
+	"os"
 )
 
 var genCmd = &cobra.Command{
@@ -33,7 +34,7 @@ var genCmd = &cobra.Command{
 		return nil
 	},
 	Run: func(cmd *cobra.Command, args []string) {
-		sys.Println("开始生成代码！")
+		_, _ = fmt.Fprint(os.Stdout, "开始生成代码！\n")
 		for _, arg := range args {
 			if arg == "p" {
 				gen_program.GenProgramCodeFromTemplates()
@@ -41,7 +42,7 @@ var genCmd = &cobra.Command{
 				gen_db.GenDBCodeFromTemplate()
 			}
 		}
-		sys.Println("生成结束！")
+		_, _ = fmt.Fprint(os.Stdout, "生成结束！\n")
 	},
 }
 

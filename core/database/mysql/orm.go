@@ -6,9 +6,11 @@
 package mysql
 
 import (
-	"GinCodeGen/globals/sys"
+	"GinCodeGen/tools/logger"
 	"database/sql"
+	"fmt"
 	_ "github.com/go-sql-driver/mysql"
+	"os"
 )
 
 type MySQLOrm struct {
@@ -34,7 +36,9 @@ func (orm *MySQLOrm) GetDBOrm(dataSourceName string) (err error) {
 		//		Logger:         logger.Default,
 		//	})
 		if err != nil {
-			sys.PrintErr("please check your database config")
+			_, _ = fmt.Fprint(os.Stderr, "please check your database config！\n")
+			log := logger.GetLogger()
+			log.Error("please check your database config！\n")
 			return
 		}
 	}
@@ -60,6 +64,8 @@ func (orm *MySQLOrm) GetTablesName() ([]string, error) {
 	rows, err := orm.DB.Query("show tables")
 	defer rows.Close()
 	if err != nil {
+		log := logger.GetLogger()
+		log.Error(err)
 		return nil, err
 	}
 
@@ -67,36 +73,44 @@ func (orm *MySQLOrm) GetTablesName() ([]string, error) {
 		var table string
 		err := rows.Scan(&table)
 		if err != nil {
-			return nil, err
+			log := logger.GetLogger()
+			log.Error(err)
+			log.Error(fmt.Sprintf("error occur during scaning rows of a table: %s", err))
 		}
 		tables = append(tables, table)
 	}
 	return tables, nil
 }
 
-func (orm *MySQLOrm) GetTables(dbName string) (map[string]string, error) {
-	result := map[string]string{}
+func (orm *MySQLOrm) GetTables(dbName string) (map[string][]string, error) {
+	result := map[string][]string{}
 	var err error
-	rows, err := orm.Raw("SELECT TABLE_NAME,TABLE_COMMENT FROM information_schema.TABLES WHERE table_schema= '" + dbName + "'")
+	rows, err := orm.Raw("SELECT TABLE_NAME,TABLE_COMMENT,TABLE_TYPE FROM information_schema.TABLES WHERE table_schema= '" + dbName + "'")
 	defer func(rows *sql.Rows) {
 		if rows != nil {
 			err = rows.Close()
 			if err != nil {
-				sys.PrintErr(err)
+				_, _ = fmt.Fprint(os.Stderr, fmt.Sprintln(err))
+				log := logger.GetLogger()
+				log.Error(fmt.Sprintf("unable to get tables: %s", err))
 			}
 		}
 	}(rows)
 	if err != nil {
-		return map[string]string{}, err
+		log := logger.GetLogger()
+		log.Error(err)
+		return map[string][]string{}, err
 	}
 
 	for rows.Next() {
-		var table, comment string
-		err1 := rows.Scan(&table, &comment)
+		var table, comment, tableType string
+		err1 := rows.Scan(&table, &comment, &tableType)
 		if err1 != nil {
+			log := logger.GetLogger()
+			log.Error(fmt.Sprintf("error occur during scaning rows of a table: %s", err))
 			return nil, err1
 		}
-		result[table] = comment
+		result[table] = []string{comment, tableType}
 	}
 	return result, nil
 }
@@ -125,6 +139,8 @@ func (orm *MySQLOrm) GetColumns(tableName string) ([]columns, error) {
 		var c columns
 		err1 := rows.Scan(&c.Field, &c.Type, &c.Collation, &c.Null, &c.Key, &c.Default, &c.Extra, &c.Privileges, &c.Comment)
 		if err1 != nil {
+			log := logger.GetLogger()
+			log.Error(err)
 			return nil, err1
 		}
 		result = append(result, c)

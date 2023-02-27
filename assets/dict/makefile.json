@@ -13,19 +13,19 @@
   },
   {
     "tmplPath": "api.go.tpl",
-    "outPath": "internal/apis/api_1_0",
+    "outPath": "apis/api_1_0",
     "divideDir": true,
     "filename": "%sResource"
   },
   {
     "tmplPath": "router.go.tpl",
-    "outPath": "internal/apis/api_1_0",
+    "outPath": "apis/api_1_0",
     "divideDir": true,
     "filename": "urls"
   },
   {
     "tmplPath": "urls.go.tpl",
-    "outPath": "internal/apis/api_1_0/urls.go",
+    "outPath": "apis/api_1_0/urls.go",
     "isTables": true
   }
 ]

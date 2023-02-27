@@ -1,0 +1,17 @@
+version: "3"
+services:
+  tem_go_project:
+    privileged: true
+    stdin_open: true
+    tty: true
+    build: .
+    image: tem_go_project
+#    container_name: project_layout
+    restart: always
+    volumes:
+      - /docker/project_layout/configs:/apps/configs
+      - /docker/project_layout/logs:/apps/logs
+    ports:
+      - "8000:8000"
+    command:
+      - /apps/golang_app

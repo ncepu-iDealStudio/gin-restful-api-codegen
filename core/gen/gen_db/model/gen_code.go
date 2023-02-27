@@ -6,8 +6,10 @@
 package model
 
 import (
+	"GinCodeGen/core/database"
 	"GinCodeGen/core/database/mysql"
-	"GinCodeGen/utils/str"
+	"GinCodeGen/tools/common"
+	"GinCodeGen/tools/logger"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -31,16 +33,16 @@ func GenTableCode(tableInfo *mysql.DataBaseModel, tmplPath string, outPath strin
 		var file *os.File
 		var codeFilename string
 		if strings.Index(filename, "%s") != -1 {
-			codeFilename = fmt.Sprintf(filename, str.LineToUpCamel(table.TableName)) + fmt.Sprintf(".%s", ext)
+			codeFilename = fmt.Sprintf(filename, common.LineToUpCamel(table.TableName)) + fmt.Sprintf(".%s", ext)
 		} else {
 			codeFilename = filename + fmt.Sprintf(".%s", ext)
 		}
 		if divideDir {
-			err = os.MkdirAll(filepath.Join(outPath, str.LineToLowCamel(table.TableName)), os.ModePerm)
+			err = os.MkdirAll(filepath.Join(outPath, common.LineToLowCamel(table.TableName)), os.ModePerm)
 			if err != nil {
 				return err
 			}
-			file, err = os.Create(filepath.Join(outPath, str.LineToLowCamel(table.TableName), codeFilename))
+			file, err = os.Create(filepath.Join(outPath, common.LineToLowCamel(table.TableName), codeFilename))
 		} else {
 			err = os.MkdirAll(outPath, os.ModePerm)
 			if err != nil {
@@ -59,6 +61,23 @@ func GenTableCode(tableInfo *mysql.DataBaseModel, tmplPath string, outPath strin
 	return nil
 }
 func GenTablesCode(tablesInfo *mysql.DataBaseModel, tmplPath string, outPath string) error {
+	for i, table := range tablesInfo.Tables {
+		// check name and field name of tables, ensuring name wouldn't be keyword in golang
+		err := database.CheckTable(table)
+		if err != nil {
+			fmt.Println(err)
+			logger.GetLogger().Error(err)
+			tablesInfo.Tables = append(tablesInfo.Tables[:i], tablesInfo.Tables[i+1:]...)
+		}
+		// check primary key of tables
+		err = database.CheckPrimaryKey(table)
+		if err != nil {
+			fmt.Println(err)
+			logger.GetLogger().Error(err)
+			tablesInfo.Tables = append(tablesInfo.Tables[:i], tablesInfo.Tables[i+1:]...)
+		}
+	}
+
 	var codeDict tablesCodeDict
 	err := codeDict.Init(tablesInfo)
 	if err != nil {

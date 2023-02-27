@@ -1,4 +1,0 @@
-genCode:
-  templates_path: "assets/tem_go_project"
-  dict_path: "assets/dict"
-  tmplPath: "assets/template"
