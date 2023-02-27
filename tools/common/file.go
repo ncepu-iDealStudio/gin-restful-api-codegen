@@ -3,28 +3,12 @@
 // @Date : 2022/2/14 19:50
 // @Software: GoLand
 
-<<<<<<< HEAD
 package common
 
 import (
 	"os"
 )
 
-=======
-package utils
-
-import (
-	"os"
-	"sync"
-)
-
-var waitGroup sync.WaitGroup
-
-func GetWaitGroup() *sync.WaitGroup {
-	return &waitGroup
-}
-
->>>>>>> develop
 func PathExists(p string) bool {
 	_, err := os.Stat(p)
 	if err == nil {

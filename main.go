@@ -7,18 +7,26 @@ package main
 
 import (
 	"GinCodeGen/cmd"
-	"GinCodeGen/globals/sys"
-	"sync"
+	"GinCodeGen/tools/logger"
+	"fmt"
+	"os"
 )
 
 func main() {
+<<<<<<< HEAD
 	var waitGroup sync.WaitGroup
 	waitGroup.Add(1)
 
 	go sys.InitMsg(&waitGroup)
+=======
+	// 初始化日志模块
+	logger.InitLogger(logger.FileType)
+>>>>>>> develop
 
+	// 命令行执行
 	cmd.Execute()
 
-	sys.Exit()
-	waitGroup.Wait()
+	// 程序完成
+	fmt.Println("执行完毕，程序退出!")
+	os.Exit(0)
 }

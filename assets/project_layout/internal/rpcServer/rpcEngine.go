@@ -12,10 +12,11 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/grpclog"
 	"net"
-	"tem_go_project/globals/errHelper"
-	"tem_go_project/globals/sys"
+	"tem_go_project/utils/errHelper"
+
 	"tem_go_project/internal/rpcServer/middlewares"
 	"tem_go_project/utils/loggers"
+	"tem_go_project/utils/message"
 )
 
 type myLoggerV2 struct {
@@ -47,9 +48,9 @@ func StartRPCEngine() {
 	errHelper.ErrExit(err)
 
 	// 4. 运行rpcServer，传入listener
-	sys.Println("rpc服务已启动")
+	message.Println("rpc服务已启动")
 	_ = rpcServer.Serve(listener)
-	sys.PrintWarn("rpc服务关闭")
+	message.PrintWarn("rpc服务关闭")
 }
 
 func registerServer(rpcServer *grpc.Server) {

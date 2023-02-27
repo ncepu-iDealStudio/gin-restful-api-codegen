@@ -6,7 +6,8 @@
 package mysql
 
 import (
-	"GinCodeGen/globals/vipers"
+	initialization "GinCodeGen/init"
+	"GinCodeGen/tools/logger"
 	"fmt"
 	"sort"
 	"strings"
@@ -20,6 +21,7 @@ type DataBaseModel struct {
 type TableModel struct {
 	TableName string
 	Comment   string
+	TableType string
 	Columns   []columnModel
 }
 
@@ -44,7 +46,8 @@ func (m *DataBaseModel) GetTables(orm *MySQLOrm) error {
 	for k, v := range tables {
 		var table TableModel
 		table.TableName = k
-		table.Comment = v
+		table.Comment = v[0]
+		table.TableType = v[1]
 		table.GetColumns(orm)
 		m.Tables = append(m.Tables, table)
 	}
@@ -83,7 +86,7 @@ func (m *TableModel) GetColumns(orm *MySQLOrm) {
 }
 
 func GetMysqlDBModel() (*DataBaseModel, error) {
-	var genViper = vipers.GetCodeGenViper().GetGenViper()
+	var genViper = initialization.GetCodeGenViper().GetGenViper()
 	var DBModel DataBaseModel
 	var err error
 	orm, err := InitDBOrm(fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local&interpolateParams=True",
@@ -94,12 +97,16 @@ func GetMysqlDBModel() (*DataBaseModel, error) {
 		genViper.GetString("database.database"),
 	))
 	if err != nil {
+		log := logger.GetLogger()
+		log.Error(fmt.Sprintf("error occur during connecting to the database: %s", err))
 		return nil, err
 	}
 	defer orm.DestroyDB()
 	DBModel.DataBaseName = genViper.GetString("database.database")
 	err = DBModel.GetTables(orm)
 	if err != nil {
+		log := logger.GetLogger()
+		log.Error(fmt.Sprintf("error occur during getting the tables: %s", err))
 		return nil, err
 	}
 	return &DBModel, nil

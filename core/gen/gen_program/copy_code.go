@@ -7,22 +7,28 @@ package gen_program
 
 import (
 	"GinCodeGen/core/gen/gen_program/model"
-	"GinCodeGen/globals/vipers"
-	"GinCodeGen/utils/errHelper"
+	initialization "GinCodeGen/init"
+	"GinCodeGen/tools/errorPack"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"path/filepath"
 )
 
 func GenProgramCodeFromTemplates() {
-	codeGenViper := vipers.GetCodeGenViper()
-	dirModel, err := model.GetDirModel(codeGenViper.GetSysViper().GetString("genCode.templates_path"))
-	errHelper.ErrExit(err)
-	dictKeywordFile, err := ioutil.ReadFile(filepath.Join(codeGenViper.GetSysViper().GetString("genCode.dict_path"), "keyword.json"))
-	errHelper.ErrExit(err)
+	codeGenViper := initialization.GetCodeGenViper()
+	dirModel, err := model.GetDirModel(initialization.TemplatesPath)
+	errorPack.ErrExit(err)
+	dictKeywordFile, err := ioutil.ReadFile(filepath.Join(initialization.DictPath, "keyword.json"))
+	errorPack.ErrExit(err)
 	var replaceDict model.KeyWord
+<<<<<<< HEAD
 	errHelper.ErrExit(json.Unmarshal(dictKeywordFile, &replaceDict))
 	replaceDict.Replace["project_layout"] = codeGenViper.GetGenViper().GetString("database.database")
+=======
+	errorPack.ErrExit(json.Unmarshal(dictKeywordFile, &replaceDict))
+	replaceDict.Replace["tem_go_project"] = codeGenViper.GetGenViper().GetString("database.database")
+>>>>>>> develop
 	replaceDict.Replace["mysql_host"] = codeGenViper.GetGenViper().GetString("database.host")
 	replaceDict.Replace["mysql_port"] = codeGenViper.GetGenViper().GetString("database.port")
 	replaceDict.Replace["mysql_username"] = codeGenViper.GetGenViper().GetString("database.username")
@@ -30,5 +36,5 @@ func GenProgramCodeFromTemplates() {
 	replaceDict.Replace["mysql_database"] = codeGenViper.GetGenViper().GetString("database.database")
 	replaceDict.Replace["redis_host"] = codeGenViper.GetGenViper().GetString("redis.host")
 	replaceDict.Replace["redis_password"] = codeGenViper.GetGenViper().GetString("redis.password")
-	errHelper.ErrExit(dirModel.MakeDir(codeGenViper.GetGenViper().GetString("genCode.result_path"), replaceDict))
+	errorPack.ErrExit(dirModel.MakeDir(fmt.Sprintf("dist/%s", codeGenViper.GetGenViper().GetString("database.database")), replaceDict))
 }

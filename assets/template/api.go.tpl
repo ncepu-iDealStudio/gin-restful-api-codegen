@@ -12,36 +12,7 @@ import (
     {{if .TableInfo.HasTimeField}} "time" {{end}}
 )
 
-func {{$CodeDict.TableInfo.StructName}}PostHandler(c *gin.Context) {
-    var err error
-
-    var Parser struct { {{range .TableInfo.Columns}}
-        {{.FieldName}} {{.DataType}} `json:"{{.Field}}" form:"{{.Field}}"{{if .NaturalKey}} binding:"required"{{end}}`{{end}}
-    }
-    err = c.ShouldBind(&Parser)
-    if err != nil {
-        parser.JsonParameterIllegal(c, "", err)
-        return
-    }
-
-	args, err := structs.StructToMap(Parser, "json")
-	if err != nil {
-		parser.JsonParameterIllegal(c, "", err)
-		return
-	}
-
-    var {{$CodeDict.TableInfo.StructName}}Service services.{{$CodeDict.TableInfo.StructName}}Service
-    {{$CodeDict.TableInfo.StructName}}Service.Assign(Parser)
-
-    err = {{$CodeDict.TableInfo.StructName}}Service.Add(args)
-    if err != nil {
-        parser.JsonDBError(c, "", err)
-        return
-    }
-    parser.JsonOK(c, "", {{$CodeDict.TableInfo.StructName}}Service)
-}
-
-func {{$CodeDict.TableInfo.StructName}}GetBasicHandler(c *gin.Context) {
+{{ if gt $CodeDict.TableInfo.TableType "BASE TABLE" }}func {{$CodeDict.TableInfo.StructName}}GetBasicHandler(c *gin.Context) {
 	var err error
     {{ if $CodeDict.TableInfo.NaturalKey }}
 	{{ (index $CodeDict.TableInfo.NaturalKey 0) }} := c.Param("{{ (index $CodeDict.TableInfo.NaturalKey 0) }}"{{ else }}{{ (index $CodeDict.TableInfo.Columns 0).Field }} := c.Param("{{ (index $CodeDict.TableInfo.Columns 0).Field }}"{{ end }})
@@ -56,7 +27,7 @@ func {{$CodeDict.TableInfo.StructName}}GetBasicHandler(c *gin.Context) {
 	}
 	parser.JsonOK(c, "", {{$CodeDict.TableInfo.StructName}}Service)
 }
-
+{{ end }}
 func {{$CodeDict.TableInfo.StructName}}GetHandler(c *gin.Context) {
     var err error
 
@@ -78,6 +49,35 @@ func {{$CodeDict.TableInfo.StructName}}GetHandler(c *gin.Context) {
     var {{$CodeDict.TableInfo.StructName}}Service services.{{$CodeDict.TableInfo.StructName}}Service
     {{$CodeDict.TableInfo.StructName}}Service.Assign(Parser)
     err = {{$CodeDict.TableInfo.StructName}}Service.Get(args)
+    if err != nil {
+        parser.JsonDBError(c, "", err)
+        return
+    }
+    parser.JsonOK(c, "", {{$CodeDict.TableInfo.StructName}}Service)
+}
+
+{{ if gt $CodeDict.TableInfo.TableType "BASE TABLE" }}func {{$CodeDict.TableInfo.StructName}}PostHandler(c *gin.Context) {
+    var err error
+
+    var Parser struct { {{range .TableInfo.Columns}}
+        {{.FieldName}} {{.DataType}} `json:"{{.Field}}" form:"{{.Field}}"{{if .NaturalKey}} binding:"required"{{end}}`{{end}}
+    }
+    err = c.ShouldBind(&Parser)
+    if err != nil {
+        parser.JsonParameterIllegal(c, "", err)
+        return
+    }
+
+	args, err := structs.StructToMap(Parser, "json")
+	if err != nil {
+		parser.JsonParameterIllegal(c, "", err)
+		return
+	}
+
+    var {{$CodeDict.TableInfo.StructName}}Service services.{{$CodeDict.TableInfo.StructName}}Service
+    {{$CodeDict.TableInfo.StructName}}Service.Assign(Parser)
+
+    err = {{$CodeDict.TableInfo.StructName}}Service.Add(args)
     if err != nil {
         parser.JsonDBError(c, "", err)
         return
@@ -144,6 +144,9 @@ func {{$CodeDict.TableInfo.StructName}}DeleteHandler(c *gin.Context) {
     }
     parser.JsonOK(c, "", {{$CodeDict.TableInfo.StructName}}Service)
 }
+
+{{ end }}
+
 // 获取列表
 func {{$CodeDict.TableInfo.StructName}}GetListHandler(c *gin.Context) {
     var err error

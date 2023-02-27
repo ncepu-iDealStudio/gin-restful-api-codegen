@@ -6,19 +6,32 @@
 package errHelper
 
 import (
+<<<<<<< HEAD
 	"GinCodeGen/globals/sys"
+=======
+	"tem_go_project/utils/message"
+>>>>>>> develop
 )
 
 func Error(err error) {
 	if err != nil {
+<<<<<<< HEAD
 		sys.PrintErr(err)
+=======
+		message.PrintErr(err)
+>>>>>>> develop
 	}
 }
 
 func ErrExit(err error) {
 	if err != nil {
+<<<<<<< HEAD
 		sys.PrintErr(err)
 		sys.Exit()
+=======
+		message.PrintErr(err)
+		message.Exit()
+>>>>>>> develop
 	}
 }
 

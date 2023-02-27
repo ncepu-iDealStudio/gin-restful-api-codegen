@@ -6,7 +6,7 @@ package api_1_0
 
 import (
     "github.com/gin-gonic/gin"{{range $CodeDict.TablesInfo}}
-    "{{$CodeDict.Dict.ProjectName}}/internal/apis/api_1_0/{{.PackageName}}"{{end}}
+    "{{$CodeDict.Dict.ProjectName}}/apis/api_1_0/{{.PackageName}}"{{end}}
 )
 
 var (

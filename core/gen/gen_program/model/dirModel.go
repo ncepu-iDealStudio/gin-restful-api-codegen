@@ -6,7 +6,7 @@
 package model
 
 import (
-	"GinCodeGen/utils"
+	"GinCodeGen/tools/common"
 	"errors"
 	"io/ioutil"
 	"os"
@@ -31,7 +31,7 @@ type FileModel struct {
 func GetDirModel(dirPath string) (*DirModel, error) {
 	var dirModel DirModel
 	var err error
-	if !utils.PathExists(dirPath) {
+	if !common.PathExists(dirPath) {
 		return nil, errors.New("文件夹不存在！")
 	}
 	dirModel.Name = filepath.Base(dirPath)
@@ -81,7 +81,7 @@ func (d *DirModel) ReadDir(p string) error {
 
 func (d *DirModel) MakeDir(p string, replaceDict KeyWord) error {
 	var err error
-	if !utils.PathExists(filepath.Join(p, d.Path)) {
+	if !common.PathExists(filepath.Join(p, d.Path)) {
 		err = os.MkdirAll(filepath.Join(p, d.Path), os.ModePerm)
 		if err != nil {
 			return err

@@ -6,7 +6,6 @@
 package cmd
 
 import (
-	"GinCodeGen/globals/sys"
 	"fmt"
 	"github.com/spf13/cobra"
 	"os"
@@ -14,7 +13,7 @@ import (
 )
 
 func Error(cmd *cobra.Command, args []string, err error) {
-	sys.PrintErr(fmt.Sprintf("execute %s args:%v error:%v\n", cmd.Name(), args, err))
+	_, _ = fmt.Fprint(os.Stderr, fmt.Sprintf("execute %s args:%v error:%v\n", cmd.Name(), args, err))
 	os.Exit(1)
 }
 
