@@ -12,7 +12,7 @@ import (
     {{if .TableInfo.HasTimeField}} "time" {{end}}
 )
 
-{{ if gt $CodeDict.TableInfo.TableType "BASE TABLE" }}func {{$CodeDict.TableInfo.StructName}}GetBasicHandler(c *gin.Context) {
+{{ if eq $CodeDict.TableInfo.TableType "BASE TABLE" }}func {{$CodeDict.TableInfo.StructName}}GetBasicHandler(c *gin.Context) {
 	var err error
     {{ if $CodeDict.TableInfo.NaturalKey }}
 	{{ (index $CodeDict.TableInfo.NaturalKey 0) }} := c.Param("{{ (index $CodeDict.TableInfo.NaturalKey 0) }}"{{ else }}{{ (index $CodeDict.TableInfo.Columns 0).Field }} := c.Param("{{ (index $CodeDict.TableInfo.Columns 0).Field }}"{{ end }})
@@ -56,7 +56,7 @@ func {{$CodeDict.TableInfo.StructName}}GetHandler(c *gin.Context) {
     parser.JsonOK(c, "", {{$CodeDict.TableInfo.StructName}}Service)
 }
 
-{{ if gt $CodeDict.TableInfo.TableType "BASE TABLE" }}func {{$CodeDict.TableInfo.StructName}}PostHandler(c *gin.Context) {
+{{ if eq $CodeDict.TableInfo.TableType "BASE TABLE" }}func {{$CodeDict.TableInfo.StructName}}PostHandler(c *gin.Context) {
     var err error
 
     var Parser struct { {{range .TableInfo.Columns}}

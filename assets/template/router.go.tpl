@@ -15,7 +15,7 @@ var (
 func Init{{$CodeDict.TableInfo.StructName}}RouterGroup(engine *gin.RouterGroup) {
     Api = engine.Group("{{$CodeDict.TableInfo.PackageName}}")
     Api.GET("", {{$CodeDict.TableInfo.StructName}}GetHandler)
-    {{ if gt $CodeDict.TableInfo.TableType "BASE TABLE" }}Api.GET(":{{ if $CodeDict.TableInfo.NaturalKey }}{{ (index $CodeDict.TableInfo.NaturalKey 0) }}{{ else }}{{ (index $CodeDict.TableInfo.Columns 0).Field }}{{ end }}", {{$CodeDict.TableInfo.StructName}}GetBasicHandler)
+    {{ if eq $CodeDict.TableInfo.TableType "BASE TABLE" }}Api.GET(":{{ if $CodeDict.TableInfo.NaturalKey }}{{ (index $CodeDict.TableInfo.NaturalKey 0) }}{{ else }}{{ (index $CodeDict.TableInfo.Columns 0).Field }}{{ end }}", {{$CodeDict.TableInfo.StructName}}GetBasicHandler)
     Api.POST("", {{$CodeDict.TableInfo.StructName}}PostHandler)
     Api.PUT(":{{ if $CodeDict.TableInfo.NaturalKey }}{{ (index $CodeDict.TableInfo.NaturalKey 0) }}{{ else }}{{ (index $CodeDict.TableInfo.Columns 0).Field }}{{ end }}", {{$CodeDict.TableInfo.StructName}}PutHandler)
     Api.DELETE("", {{$CodeDict.TableInfo.StructName}}DeleteHandler){{ end }}

@@ -14,7 +14,6 @@ import (
 	"io/ioutil"
 	"path/filepath"
 	"regexp"
-	"strings"
 )
 
 type TypeDict struct {
@@ -118,6 +117,7 @@ func (d *tableCodeDict) Init(table *mysql.TableModel) error {
 	d.TableInfo.TableName = table.TableName
 	d.TableInfo.StructName = common.LineToUpCamel(table.TableName)
 	d.TableInfo.PackageName = common.LineToLowCamel(table.TableName)
+	d.TableInfo.TableType = table.TableType
 
 	for _, column := range table.Columns {
 		var column1 columnModel
@@ -195,7 +195,7 @@ func (d *tablesCodeDict) Init(tables *mysql.DataBaseModel) error {
 				table1.HasTimeField = true
 			}
 
-			if strings.ToLower(column.Field) != "autoid" && column.Key == "PRI" {
+			if column.Key == "PRI" {
 				table1.NaturalKey = append(table1.NaturalKey, column.Field)
 			}
 			table1.Columns = append(table1.Columns, column1)
